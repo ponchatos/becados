@@ -6,6 +6,8 @@ parent::__construct();
 
 // Load form helper library
 $this->load->helper('form');
+$this->load->helper('url');
+$this->load->helper('captcha');
 
 // Load form validation library
 $this->load->library('form_validation');
@@ -15,16 +17,52 @@ $this->load->library('session');
 
 // Load database
 
-
 }
 
 public function prueba(){
-	echo date('Y-m-d');
+	$this->load->view('prueba');
 }
 
+
+public function prueba2(){
+	$this->form_validation->set_rules('asd','asd','trim|required|xss_clean|numeric');
+	$this->form_validation->set_rules('asd2','asd2','trim|required|xss_clean');
+
+	if($this->form_validation->run() == FALSE){
+		$this->load->view('prueba');
+	}else{
+		redirect(base_url().'solicitud/prueba2','refresh');
+	}
+	
+}
+
+public function recaptcha($str=''){
+  $google_url="https://www.google.com/recaptcha/api/siteverify";
+  $secret='6Lc7yCUTAAAAAJgSQmwSqXMAe2RoKDmcE6GKEnP_';
+  $ip=$_SERVER['REMOTE_ADDR'];
+  $url=$google_url."?secret=".$secret."&response=".$str."&remoteip=".$ip;
+  //echo "<script>alert('".$str."');</script>";
+  /*$curl = curl_init();
+  curl_setopt($curl, CURLOPT_URL, $url);
+  curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+  curl_setopt($curl, CURLOPT_TIMEOUT, 10);
+  curl_setopt($curl, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2.16) Gecko/20110319 Firefox/3.6.16");
+  $res = curl_exec($curl);
+  curl_close($curl);*/
+  $res=file_get_contents($url);
+
+  $res= json_decode($res, true);
+  //reCaptcha success check
+  if($res['success']){
+    return TRUE;
+  }
+  else{
+    $this->form_validation->set_message('recaptcha', 'Es necesario resolver el captcha');
+    return FALSE;
+  }
+}
 public function index(){
 	$this->load->model('solicitud_db');
-	//$this->load->model('leer_datos');
 	$data=$this->solicitud_db->get_spinner_datas();
 	$this->load->view('barra_nav');
 	$this->load->view('solicitud',$data);
@@ -89,8 +127,15 @@ public function registrar_solicitud(){
 	$this->form_validation->set_rules('p9', 'Pregunta 9', 'trim|required|xss_clean');
 	$this->form_validation->set_rules('p10', 'Pregunta 10', 'trim|required|xss_clean');
 
+    $this->form_validation->set_rules('g-recaptcha-response','Captcha','callback_recaptcha');
+
+
+	$this->load->model('solicitud_db');
+
 	if ($this->form_validation->run() == FALSE) {
-		$this->load->view('validation_errors');
+		$data=$this->solicitud_db->get_spinner_datas();
+		$this->load->view('barra_nav');
+		$this->load->view('solicitud',$data);
 	}else{
 		$data['datos_personales']=array(
 			'nombre'=>$this->input->post('nombre'),
@@ -209,10 +254,11 @@ public function registrar_solicitud(){
 			'p9'=>$this->input->post('p9'),
 			'p10'=>$this->input->post('p10')
 			);*/
-		$this->load->model('solicitud_db');
 		$result=$this->solicitud_db->registrar_solicitud($data);
 		if($result==FALSE){
-			echo "falsee";
+			$data=$this->solicitud_db->get_spinner_datas();
+			$this->load->view('barra_nav');
+			$this->load->view('solicitud',$data);
 		}else{
 			$this->session->set_flashdata("message", $data['datos_personales']['nombre']." ".$data['datos_personales']['ape_pat']." ".$data['datos_personales']['ape_mat']." Registrado Correctamente.");
 			redirect(base_url(),'refresh');

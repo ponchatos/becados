@@ -3,7 +3,7 @@
   <?php
   if (isset($this->session->userdata['logged_in'])) {
 
-    header("location: ".base_url()."administracion/");
+    header("location: ".base_url()."dashboard/");
   }?>
 
   <head>
@@ -40,7 +40,7 @@
         </form>
       </div>
        <div class="bar ">
-     <p>SISTEMA DE CONTROL DE INSCRIPCIONES</p>
+     <p>SISTEMA DE BECADOS</p>
     </div>
 </body>
 </html>

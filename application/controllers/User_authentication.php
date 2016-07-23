@@ -37,7 +37,7 @@ if ($this->form_validation->run() == FALSE) {
 	if(isset($this->session->userdata['logged_in'])){
 		//$this->load->view('juego/header');
 		//$this->load->view('juego/game');
-		redirect(base_url().'administracion/','refresh');
+		redirect(base_url().'dashboard/','refresh');
 	}else{
 		$data= array('error_message'=>'El campo usuario y contraseña son obligatorios');
 		$this->load->view('login_form',$data);
@@ -60,7 +60,7 @@ if ($this->form_validation->run() == FALSE) {
 			);
 			// Add user data in session
 			$this->session->set_userdata('logged_in', $session_data);
-			redirect(base_url().'administracion/','refresh');
+			redirect(base_url().'dashboard/','refresh');
 		}
 	} else {
 		$data = array(

@@ -8,6 +8,7 @@
     <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
     <!--webfonts-->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text.css'/>
+    <script src="https://www.google.com/recaptcha/api.js"></script>
     <!--//webfonts-->
 </head>
 <body>
@@ -19,6 +20,7 @@
     </div>
     </div>
     <p>FAVOR DE LLENAR TODOS LOS CAMPOS</p>
+    <p><?php echo validation_errors(); ?></p>
   
   <br>
 	<form id="form" method="post" action="<?php echo base_url();?>solicitud/registrar_solicitud">
@@ -345,7 +347,10 @@
 				<input  type="text" name="p10" placeholder="P10" value="2" required/></a>
 				<div class="clear"> </div>
         	</li>
-
+        	<li>
+        		  <?php echo form_error('g-recaptcha-response','<div style="color:red;">','</div>');?>
+        		<div class="g-recaptcha" data-sitekey="6Lc7yCUTAAAAAHp5VeVPxlKuK0rEyElECzsoWIhn"></div>
+        	</li>
 				<input type="submit" name="enviar" value="Registrar"/>
 		
 		   <div class="clear"> </div>
