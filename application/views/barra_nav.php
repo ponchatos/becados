@@ -5,7 +5,7 @@
 	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 	<link href='https://fonts.googleapis.com/css?family=Lato:400,700italic' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>css/main.css">
-	<title>Sitio Web</title>
+	<title>Becas Patronato</title>
 </head>
 <body>
 <header id="main-header">
