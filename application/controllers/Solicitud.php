@@ -214,7 +214,8 @@ public function registrar_solicitud(){
 		if($result==FALSE){
 			echo "falsee";
 		}else{
-			echo "truee";
+			$this->session->set_flashdata("message", $data['datos_personales']['nombre']." ".$data['datos_personales']['ape_pat']." ".$data['datos_personales']['ape_mat']." Registrado Correctamente.");
+			redirect(base_url(),'refresh');
 		}
 	}
 }

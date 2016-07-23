@@ -25,7 +25,11 @@
           <div class="head">
             <img src="<?php echo base_url();?>css/images/log.jpg" alt=""/>
           </div>
-
+          <?php 
+            if($this->session->flashdata("message") != null){
+              echo $this->session->flashdata("message");
+            }
+          ?>
         <form action=<?php echo '"'.base_url().'user_authentication/user_login_process/"'; ?> method="post">
           <?php echo validation_errors(); ?>
             <input type="text" name="username" class="text" placeholder="USUARIO" >
