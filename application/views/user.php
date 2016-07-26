@@ -30,6 +30,8 @@ Periodo:
 <input type="text" name="periodo" disabled value="<?php echo isset($periodo)?$periodo:'';?>"/>
 Horas:
 <input type="text" name="horas" disabled value="<?php echo isset($horas)?$horas:'';?>"/>
+Status:
+<input type="text" name="status" disabled value="<?php echo isset($status)?$status:'';?>"/>
 Comprobante de pago:
 <button id="btn_compobante">Ver Comprobante</button>
 Boleta de calificaciones
@@ -43,9 +45,23 @@ Boleta de calificaciones
 	    	<span class="close">×</span>
 	    	<h3 class="modalTitle">Titulo</h3>
   		</div>
+  		<div class="modalImg">
+  			<a style="display:none" class="a_comprobante a_pago" href="<?php if(isset($comprobantes['pago'])) echo base_url()."".$comprobantes['pago']['url']; ?>" target="_blank">
+  				<img class="img_pago" src="<?php if(isset($comprobantes['pago'])) echo base_url()."".$comprobantes['pago']['url']; ?>" width="400px"/>
+  			</a><br>
+  			<a style="display:none" class="a_comprobante a_boleta" href="<?php if(isset($comprobantes['boleta'])) echo base_url()."".$comprobantes['boleta']['url']; ?>" target="_blank">
+  				<img class="img_boleta" src="<?php if(isset($comprobantes['boleta'])) echo base_url()."".$comprobantes['boleta']['url']; ?>" width="400px"/>
+  			</a><br>
+  		</div>
   		<div class="modal-body">
 
   		</div>
+  		<div class="modal-button">
+	  		<button id="send_pago">Cambiar Comprobante</button>
+	  		<button id="send_boleta">Cambiar Comprobante</button>
+	  		<div class="loader"></div>
+  		</div>
+  		<div class="modalMessage" style="color:red;"></div>
   	</div>
 </div>
 
@@ -53,58 +69,132 @@ Boleta de calificaciones
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
+
+	$("#send_pago,#send_boleta,.loader").hide();
+
+	$("#modify_data").click(function(event) {
+		event.preventDefault();
+		$(".modalTitle").text('Modificar Datos Personales');
+		$(".modal-body").text('Texto');
+		$("#myModal").show();
+	});
+
 	$("#btn_compobante").click(function(event) {
 		event.preventDefault();
 		$(".modalTitle").text('Comprobante');
-		$(".modal-body").text('Texto');
+		$(".modal-body,.modalMessage").text('');
+		$(".a_pago").show();
+		<?php 
+		echo '$(".modal-body").append(\'';
+		$valid='';
+		if(isset($comprobantes['pago'])){
+			$valid=$comprobantes['pago']['validacion']==1?'disabled':'';
+			if($valid) echo 'Tu comprobante ya fue validado.<br> ';
+		}
+			echo '<form id="form_pago" method="post" enctype="multipart/form-data">';
+			echo '<input id="file" type="file" name="userfile" '.$valid.'/>';
+			
+			echo '</form>';
+			echo '\');';
+		?>
+		$("#send_pago").show();
 		$("#myModal").show();
+	});
+
+	$("#send_pago").click(function(event){
+		event.preventDefault();
+		var formData = new FormData( $("#form_pago")[0] );
+		$(".loader").show();
+		$.ajax({
+            url : "http://<?php echo $_SERVER['SERVER_NAME']; ?>/becados/dashboard/upload_comprobante",
+            type : 'POST',
+            data : formData,
+            //async : false,
+            cache : false,
+            contentType : false,
+            processData : false,
+            success : function(data) {
+                var obj = jQuery.parseJSON(data);
+                if(obj.img_success==1){
+                	$(".modalMessage").text(obj.img_message);
+                	$(".img_pago").attr('src',"<?php echo base_url(); ?>"+obj.img_url);
+                	$(".a_pago").attr('href',"<?php echo base_url(); ?>"+obj.img_url);
+                }else{
+                	$(".modalMessage").text(obj.img_message);
+                }
+                $(".loader").hide();
+            },
+            error : function(xhr){
+            	$(".modalMessage").text(xhr.statusText);
+            	$(".loader").hide();
+            }
+        });
 	});
 
 	$("#btn_boleta").click(function(event) {
 		event.preventDefault();
 		$(".modalTitle").text('Boleta');
-		$(".modal-body").text('Texto');
+		$(".modal-body,.modalMessage").text('');
+		$(".a_boleta").show();
+		<?php 
+		echo '$(".modal-body").append(\'';
+		$valid='';
+		if(isset($comprobantes['boleta'])){
+			$valid=$comprobantes['boleta']['validacion']==1?'disabled':'';
+			if($valid) echo 'Tu comprobante ya fue validado.<br> ';
+		}
+			echo '<form id="form_boleta" method="post" enctype="multipart/form-data">';
+			echo '<input id="file" type="file" name="userfile" '.$valid.'/>';
+			
+			echo '</form>';
+			echo '\');';
+		?>
+		$("#send_boleta").show();
 		$("#myModal").show();
+	});
+
+	$("#send_boleta").click(function(event){
+		event.preventDefault();
+		var formData = new FormData( $("#form_boleta")[0] );
+		$(".loader").show();
+		$.ajax({
+            url : "http://<?php echo $_SERVER['SERVER_NAME']; ?>/becados/dashboard/upload_boleta",
+            type : 'POST',
+            data : formData,
+            //async : false,
+            cache : false,
+            contentType : false,
+            processData : false,
+            success : function(data) {
+                var obj = jQuery.parseJSON(data);
+                if(obj.img_success==1){
+                	$(".modalMessage").text(obj.img_message);
+                	$(".img_boleta").attr('src',"<?php echo base_url(); ?>"+obj.img_url);
+                	$(".a_boleta").attr('href',"<?php echo base_url(); ?>"+obj.img_url);
+                }else{
+                	$(".modalMessage").text(obj.img_message);
+                }
+                $(".loader").hide();
+            },
+            error : function(xhr){
+            	$(".modalMessage").text(xhr.statusText);
+            	$(".loader").hide();
+            }
+        });
 	});
 
 	$(".close").click(function(event){
 		event.preventDefault();
+		$("#send_pago,#send_boleta,.loader,.a_pago,.a_boleta").hide();
 		$("#myModal").hide();
 	});
 
 	$(window).click(function(event){
-		event.preventDefault();
 		if(event.target.id == "myModal"){
+			$("#send_pago,#send_boleta,.loader,.a_pago,.a_boleta").hide();
 			$("#myModal").hide();
 		}
 	});
 });
 </script>
-<!--<script type="text/javascript">
-	// Get the modal
-	var modal = document.getElementById('myModal');
-
-	// Get the button that opens the modal
-	var btn = document.getElementById("modify_data");
-
-	// Get the <span> element that closes the modal
-	var span = document.getElementsByClassName("close")[0];
-
-	// When the user clicks on the button, open the modal 
-	btn.onclick = function() {
-	    modal.style.display = "block";
-	}
-
-	// When the user clicks on <span> (x), close the modal
-	span.onclick = function() {
-	    modal.style.display = "none";
-	}
-
-	// When the user clicks anywhere outside of the modal, close it
-	window.onclick = function(event) {
-	    if (event.target == modal) {
-	        modal.style.display = "none";
-	    }
-	}
-</script>-->
 </html>

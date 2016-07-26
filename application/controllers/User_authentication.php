@@ -56,7 +56,8 @@ if ($this->form_validation->run() == FALSE) {
 		if ($result != false) {
 			$session_data = array(
 			'username' => $result->usuario,
-			'privilegios'=>$result->privilegios
+			'privilegios'=>$result->privilegios,
+			'id_becado'=>$result->id_becado
 			);
 			// Add user data in session
 			$this->session->set_userdata('logged_in', $session_data);
