@@ -19,7 +19,16 @@ $this->load->model('read_data');
 }
 
 public function prueba(){
-	$this->load->view('prueba');
+	//$this->load->view('prueba');
+	$data=array(
+				'id_becado'=>1,
+				'tel'=>555,
+				'cel'=>555,
+				'correo'=>"update@update.com",
+				'facebook'=>"new fb"
+			);
+	$this->load->model('user');
+	echo $this->user->modify_data($data)?'tru':'fols';
 }
 
 public function prueba2(){
@@ -61,11 +70,18 @@ public function modify_user(){
 				'id_becado'=>$this->session->userdata['logged_in']['id_becado'],
 				'tel'=>$this->input->post('mod_tel'),
 				'cel'=>$this->input->post('mod_cel'),
-				'correo'=>$this->input->post('correo'),
+				'correo'=>$this->input->post('mod_correo'),
 				'facebook'=>$this->input->post('mod_face')
 			);
 			$this->load->model('user');
 			$result=$this->user->modify_data($data);
+			if($result){
+				$response['success']=1;
+				$response['message']="Datos actualizados correctamente";
+			}else{
+				$response['success']=0;
+				$response['message']="No se han podido actualizar tus datos";
+			}
 		}
 		die(json_encode($response));
 	}else{

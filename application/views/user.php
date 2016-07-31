@@ -46,15 +46,17 @@ Boleta de calificaciones
 	    	<h3 class="modalTitle">Titulo</h3>
   		</div>
   		<div class="div_modify_user">
-			Teléfono:
-			<input type="text" name="mod_tel" value="<?php echo isset($tel)?$tel:'';?>"/>
-			Celular:
-			<input type="text" name="mod_cel" value="<?php echo isset($cel)?$cel:'';?>"/>
-			Correo:
-			<input type="text" name="mod_correo" value="<?php echo isset($correo)?$correo:'';?>"/>
-			Facebook:
-			<input type="text" name="mod_face" value="<?php echo isset($face)?$face:'';?>"/>
-			<button id="send_modify_data">Modificar Datos</button>
+  			<form id="form_modify_user">
+				Teléfono:
+				<input id="mod_tel" type="number" name="mod_tel" required value="<?php echo isset($tel)?$tel:'';?>"/>
+				Celular:
+				<input id="mod_cel" type="text" name="mod_cel" value="<?php echo isset($cel)?$cel:'';?>"/>
+				Correo:
+				<input id="mod_correo" type="text" name="mod_correo" value="<?php echo isset($correo)?$correo:'';?>"/>
+				Facebook:
+				<input id="mod_face" type="text" name="mod_face" value="<?php echo isset($face)?$face:'';?>"/>
+				<button id="send_modify_data">Modificar Datos</button>
+			</form>
   		</div>
   		<div class="modalImg">
   			<a style="display:none" class="a_comprobante a_pago" href="<?php if(isset($comprobantes['pago'])) echo base_url()."".$comprobantes['pago']['url']; ?>" target="_blank">
@@ -87,9 +89,43 @@ $(document).ready(function() {
 	$("#modify_data").click(function(event) {
 		event.preventDefault();
 		$(".modalTitle").text('Modificar Datos Personales');
+		$(".modal-body").text('');
 		$(".div_modify_user").show();
 		$("#myModal").show();
 	});
+
+	$("#form_modify_user").submit(function(e){
+		e.preventDefault();
+		$(".loader").show();
+		var tel=$('#mod_tel').val();
+		var cel=$('#mod_cel').val();
+		var correo=$('#mod_correo').val();
+		var face=$('#mod_face').val();
+		jQuery.ajax({
+			type: "POST",
+			url: "http://<?php echo $_SERVER['SERVER_NAME']; ?>/becados/dashboard/modify_user",
+			dataType: 'json',
+			data: {mod_tel:tel,mod_cel:cel,mod_correo:correo,mod_face:face},
+			success: function(obj) {
+				if(obj.success==1){
+					$( "input[name='tel']").val(tel);
+					$( "input[name='cel']").val(cel);
+					$( "input[name='correo']").val(correo);
+					$( "input[name='face']").val(face);
+					$(".div_modify_user").hide();
+					$("#myModal").hide();
+				}else{
+					$(".modalMessage").text(obj.message);
+				}
+				$(".loader").hide();
+			},
+			error: function(res){
+				$(".loader").hide();
+				$(".modalMessage").text(res.statusText);
+			}
+		});
+	});
+
 
 	$("#btn_compobante").click(function(event) {
 		event.preventDefault();
