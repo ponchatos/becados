@@ -87,7 +87,7 @@ public function registrar_solicitud(){
 	$this->form_validation->set_rules('ciudad', 'Ciudad', 'trim|required|xss_clean');
 	$this->form_validation->set_rules('telefono', 'Teléfono', 'trim|required|xss_clean');
 	$this->form_validation->set_rules('celular', 'Celular', 'trim|required|xss_clean');
-	$this->form_validation->set_rules('correo', 'Correo Electrónico', 'trim|required|xss_clean');
+	$this->form_validation->set_rules('correo', 'Correo Electrónico', 'trim|required|xss_clean|valid_email');
 
 	$this->form_validation->set_rules('padre_nombre', 'Nombre del padre o tutor', 'trim|required|xss_clean');
 	$this->form_validation->set_rules('padre_ape_pat', 'Apellido paterno del padre o tutor', 'trim|required|xss_clean');

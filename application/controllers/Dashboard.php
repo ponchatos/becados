@@ -46,6 +46,33 @@ public function index(){
 	}
 }
 
+public function modify_user(){
+	if(isset($this->session->userdata['logged_in'])){
+		$this->form_validation->set_rules('mod_tel', 'Teléfono', 'trim|required|xss_clean|numeric');
+		$this->form_validation->set_rules('mod_cel', 'Celular', 'trim|required|xss_clean|numeric');
+		$this->form_validation->set_rules('mod_correo', 'Correo', 'trim|required|xss_clean|valid_email');
+		$this->form_validation->set_rules('mod_face', 'Facebook', 'trim|required|xss_clean');
+
+		if ($this->form_validation->run() == FALSE) {
+			$response['success']=-1;
+			$response['message']="Todos los campos son necesarios";
+		}else{
+			$data=array(
+				'id_becado'=>$this->session->userdata['logged_in']['id_becado'],
+				'tel'=>$this->input->post('mod_tel'),
+				'cel'=>$this->input->post('mod_cel'),
+				'correo'=>$this->input->post('correo'),
+				'facebook'=>$this->input->post('mod_face')
+			);
+			$this->load->model('user');
+			$result=$this->user->modify_data($data);
+		}
+		die(json_encode($response));
+	}else{
+		redirect(base_url(),'refresh');
+	}
+}
+
 public function upload_comprobante(){
 	if(isset($this->session->userdata['logged_in'])){
 		$this->upload_file("pago");

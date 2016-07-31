@@ -45,6 +45,17 @@ Boleta de calificaciones
 	    	<span class="close">×</span>
 	    	<h3 class="modalTitle">Titulo</h3>
   		</div>
+  		<div class="div_modify_user">
+			Teléfono:
+			<input type="text" name="mod_tel" value="<?php echo isset($tel)?$tel:'';?>"/>
+			Celular:
+			<input type="text" name="mod_cel" value="<?php echo isset($cel)?$cel:'';?>"/>
+			Correo:
+			<input type="text" name="mod_correo" value="<?php echo isset($correo)?$correo:'';?>"/>
+			Facebook:
+			<input type="text" name="mod_face" value="<?php echo isset($face)?$face:'';?>"/>
+			<button id="send_modify_data">Modificar Datos</button>
+  		</div>
   		<div class="modalImg">
   			<a style="display:none" class="a_comprobante a_pago" href="<?php if(isset($comprobantes['pago'])) echo base_url()."".$comprobantes['pago']['url']; ?>" target="_blank">
   				<img class="img_pago" src="<?php if(isset($comprobantes['pago'])) echo base_url()."".$comprobantes['pago']['url']; ?>" width="400px"/>
@@ -56,6 +67,7 @@ Boleta de calificaciones
   		<div class="modal-body">
 
   		</div>
+  		
   		<div class="modal-button">
 	  		<button id="send_pago">Cambiar Comprobante</button>
 	  		<button id="send_boleta">Cambiar Comprobante</button>
@@ -70,12 +82,12 @@ Boleta de calificaciones
 <script type="text/javascript">
 $(document).ready(function() {
 
-	$("#send_pago,#send_boleta,.loader").hide();
+	$("#send_pago,#send_boleta,.loader,.div_modify_user").hide();
 
 	$("#modify_data").click(function(event) {
 		event.preventDefault();
 		$(".modalTitle").text('Modificar Datos Personales');
-		$(".modal-body").text('Texto');
+		$(".div_modify_user").show();
 		$("#myModal").show();
 	});
 
@@ -185,13 +197,13 @@ $(document).ready(function() {
 
 	$(".close").click(function(event){
 		event.preventDefault();
-		$("#send_pago,#send_boleta,.loader,.a_pago,.a_boleta").hide();
+		$("#send_pago,#send_boleta,.loader,.a_pago,.a_boleta,.div_modify_user").hide();
 		$("#myModal").hide();
 	});
 
 	$(window).click(function(event){
 		if(event.target.id == "myModal"){
-			$("#send_pago,#send_boleta,.loader,.a_pago,.a_boleta").hide();
+			$("#send_pago,#send_boleta,.loader,.a_pago,.a_boleta,.div_modify_user").hide();
 			$("#myModal").hide();
 		}
 	});
