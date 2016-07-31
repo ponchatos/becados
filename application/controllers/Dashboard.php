@@ -19,16 +19,9 @@ $this->load->model('read_data');
 }
 
 public function prueba(){
-	//$this->load->view('prueba');
-	$data=array(
-				'id_becado'=>1,
-				'tel'=>555,
-				'cel'=>555,
-				'correo'=>"update@update.com",
-				'facebook'=>"new fb"
-			);
-	$this->load->model('user');
-	echo $this->user->modify_data($data)?'tru':'fols';
+	$this->load->view('prueba');
+	//print_r($this->read_data->get_becados_hours());
+	//echo $this->callback_date_valid("2012-13-10")?'tru':'fols';
 }
 
 public function prueba2(){
@@ -37,18 +30,92 @@ public function prueba2(){
 }
 
 public function prueba3(){
-
 }
 
 public function index(){
 	if(isset($this->session->userdata['logged_in'])){
-		if($this->session->userdata['logged_in']['privilegios']>0){
+		if($this->session->userdata['logged_in']['privilegios']==99){
 			$this->load->view('admin');
+		}else if($this->session->userdata['logged_in']['privilegios']>0){
+			$this->asignar_horas();
 		}else{
 			$user_info=$this->read_data->get_user_info($this->session->userdata['logged_in']['id_becado']);
 			$user_info['comprobantes']=$this->read_data->get_comprobantes_info($this->session->userdata['logged_in']['id_becado']);
 
 			$this->load->view('user',$user_info);
+		}
+	}else{
+		redirect(base_url(),'refresh');
+	}
+}
+
+public function asignar_horas(){
+	if(isset($this->session->userdata['logged_in'])){
+		if($this->session->userdata['logged_in']['privilegios']>0){
+			$data['becados_tabla']=$this->read_data->get_becados_hours();
+			$this->load->view('asignar_horas',$data);
+		}else{
+			redirect(base_url().'dashboard/','refresh');
+		}
+	}else{
+		redirect(base_url(),'refresh');
+	}
+}
+
+function date_valid($date=0) {
+	 $this->form_validation->set_message($date);
+	if (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/", $date)) {
+	if(checkdate(substr($date, 5, 2), substr($date, 8, 2), substr($date, 0, 4)))
+	return true;
+	else
+	return false;
+	} else {
+	return false;
+	}
+} 
+
+public function agregar_horas(){
+	if(isset($this->session->userdata['logged_in'])){
+		if($this->session->userdata['logged_in']['privilegios']>0){
+
+			$this->form_validation->set_rules('id_becado_hddn', 'Becado', 'trim|required|xss_clean|numeric');
+			$this->form_validation->set_rules('evento', 'Evento', 'trim|required|xss_clean');
+			$this->form_validation->set_rules('horas', 'Horas', 'trim|required|xss_clean|numeric');
+			$this->form_validation->set_rules('fecha', 'Fecha', 'trim|required|xss_clean|callback_date_valid');
+			$this->form_validation->set_rules('observacion', 'Observacion', 'trim|xss_clean');
+
+			if ($this->form_validation->run() == FALSE) {
+				$response['success']=-1;
+				$response['message']="Todos los campos son necesarios";
+			}else{
+				$this->load->model('user');
+				$id_usuario=$this->user->get_id($this->session->userdata['logged_in']['username']);
+				if($id_usuario!=FALSE){
+					$data=array(
+						'id_becado'=>$this->input->post('id_becado_hddn'),
+						'id_periodo'=>$this->read_data->periodo_actual_id(),
+						'evento'=>$this->input->post('evento'),
+						'hora'=>$this->input->post('horas'),
+						'fecha'=>$this->input->post('fecha'),
+						'observacion'=>$this->input->post('observacion')!=null?$this->input->post('observacion'):'',
+						'id_usuario'=>$id_usuario
+					);
+					$result=$this->user->add_hours($data);
+					if($result){
+						$response['success']=1;
+						$response['message']="Horas agregadas correctamente";
+					}else{
+						$response['success']=0;
+						$response['message']="No se han podido agregar las horas";
+					}
+				}else{
+					$response['success']=0;
+					$response['message']="No tienes permisos para realizar esta acción";
+				}
+			}
+			die(json_encode($response));
+		}else{
+			redirect(base_url().'dashboard/','refresh');
 		}
 	}else{
 		redirect(base_url(),'refresh');

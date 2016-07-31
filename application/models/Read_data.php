@@ -2,6 +2,24 @@
 
 Class Read_data extends CI_Model {
 
+//PENDIENTE
+public function get_becados_hours(){
+	$this->db->select('id_becado,nombre,ape_pat,ape_mat');
+	$query_becados=$this->db->get('vista_becado');
+	$return=array();
+	foreach ($query_becados->result() as $row) {
+		$horas=$this->get_user_hours($row->id_becado);
+		$return[]=array(
+			'id_becado'=>$row->id_becado,
+			'nombre'=>$row->nombre,
+			'ape_pat'=>$row->ape_pat,
+			'ape_mat'=>$row->ape_mat,
+			'horas'=>$horas
+		);
+	}
+	return $return;
+}
+
 public function get_comprobantes_info($id_becado){
 	$this->load->model('metodos');
 	$id_periodo=$this->metodos->periodo_actual();
@@ -30,13 +48,30 @@ public function get_comprobantes_info($id_becado){
 
 }
 
+public function get_user_hours($id_becado){
+	//if($periodo==-1) $periodo=$this->periodo_actual_nombre();
+	$this->db->select('hora');
+	$this->db->where('id_becado',$id_becado);
+	$query_horas=$this->db->get('horas');
+	$horas=0;
+	if($query_horas->num_rows()>0){
+		foreach ($query_horas->result() as $row) {
+			$horas+=$row->hora;
+		}
+	}
+	$this->db->select('contador');
+	$this->db->where('id_becado',$id_becado);
+	$query_periodos=$this->db->get('becado');
+	$periodos=$query_periodos->row(0)->contador;
+	return $horas-(30*($periodos>0?$periodos-1:0));
+}
 
 public function get_user_info($id_becado){
 	$this->db->where('id_becado',$id_becado);
 
 	$query=$this->db->get('vista_becado');
 	if($query->num_rows()==1){
-		$this->db->where('id_becado',$id_becado);
+		/*$this->db->where('id_becado',$id_becado);
 		$this->db->where('periodo',$query->row(0)->periodo);
 		$query_horas=$this->db->get('vista_horas');
 		$horas=0;
@@ -44,7 +79,8 @@ public function get_user_info($id_becado){
 			foreach ($query_horas->result() as $row) {
 				$horas+=$row->hora;
 			}
-		}
+		}*/
+		$horas=$this->get_user_hours($id_becado,$query->row(0)->periodo);
 
 		$this->db->where('id_becado',$id_becado);
 		$this->db->where('id_periodo',$query->row(0)->periodo);
@@ -81,6 +117,26 @@ public function get_user_info($id_becado){
 		return FALSE;
 	}
 
+}
+
+public function periodo_actual_nombre(){
+	$this->db->where('status',1);
+	$query=$this->db->get('periodo');
+	if($query->num_rows()>0){
+		return $query->row(0)->nombre;
+	}else{
+		return -1;
+	}
+}
+
+public function periodo_actual_id(){
+	$this->db->where('status',1);
+	$query=$this->db->get('periodo');
+	if($query->num_rows()>0){
+		return $query->row(0)->id_periodo;
+	}else{
+		return -1;
+	}
 }
 
 }

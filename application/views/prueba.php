@@ -46,6 +46,10 @@
 	</script>
 </head>
 <body>
+	<form method="post" action="<?=base_url().'dashboard/prueba3'?>">
+		<input name="asd" type="date"/>
+		<input type="submit" value="asd"/>
+	</form>
 	<form id="form" method="post"  enctype="multipart/form-data" action="<?php echo base_url();?>dashboard/upload_comprobante">
 		<input id="file" type="file" name="userfile" />
 		<!--<input type="text" name="asd2" value="!form_error('asd2')?set_value('asd2'):''?>"/>-->

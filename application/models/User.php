@@ -2,6 +2,22 @@
 
 Class User extends CI_Model {
 
+public function add_hours($data){
+	$this->db->insert('horas',$data);
+	return $this->db->affected_rows()>0;
+}
+
+public function get_id($username){
+	$this->db->select('id_usuario');
+	$this->db->where('usuario',$username);
+	$query=$this->db->get('usuarios');
+	if($query->num_rows()==1){
+		return $query->row(0)->id_usuario;
+	}else{
+		return FALSE;
+	}
+}
+
 public function modify_data($data){
 	$this->db->select('tel,cel,correo,facebook');
 	$this->db->where('id_becado',$data['id_becado']);
