@@ -49,6 +49,47 @@ public function index(){
 	}
 }
 
+public function solicitudes(){
+	if(isset($this->session->userdata['logged_in'])){
+		if($this->session->userdata['logged_in']['privilegios']==99){
+			$data['solicitudes_tabla']=$this->read_data->get_solicitudes();
+			$this->load->view('admin_solicitudes',$data);
+		}else{
+			redirect(base_url().'dashboard/','refresh');
+		}
+	}else{
+		redirect(base_url(),'refresh');
+	}
+}
+
+public function get_solicitud_info(){
+	if(isset($this->session->userdata['logged_in'])){
+		if($this->session->userdata['logged_in']['privilegios']==99){
+			$this->form_validation->set_rules('id_solicitud', 'Solicitud', 'trim|required|xss_clean|numeric');
+			
+			if ($this->form_validation->run() == FALSE) {
+				$response['success']=-1;
+				$response['message']="Todos los campos son necesarios";
+			}else{
+				$solicitud_info=$this->read_data->get_solicitud_info($this->input->post('id_solicitud'));
+				if($solicitud_info!=FALSE){
+					$response['success']=1;
+					$response['message']="Exito";
+					$response['data']=$solicitud_info;
+				}else{
+					$response['success']=0;
+					$response['message']="No se encontró al solicitante";
+				}
+			}
+			die($response);
+		}else{
+			redirect(base_url().'dashboard/','refresh');
+		}
+	}else{
+		redirect(base_url(),'refresh');
+	}
+}
+
 public function asignar_horas(){
 	if(isset($this->session->userdata['logged_in'])){
 		if($this->session->userdata['logged_in']['privilegios']>0){

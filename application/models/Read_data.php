@@ -2,6 +2,109 @@
 
 Class Read_data extends CI_Model {
 
+public function get_solicitudes(){
+	$this->db->select('id_solicitud,fec_solicitud,nombre,ape_pat,ape_mat,promedio,nivel_educativo,puntaje');
+	$query=$this->db->get('vista_solicitud2');
+	if($query->num_rows()>0){
+		$return=array();
+		foreach ($query->result() as $row) {
+			$return[]=array(
+				'id_solicitud'=>$row->id_solicitud,
+				'fec_solicitud'=>$row->fec_solicitud,
+				'nombre'=>$row->nombre,
+				'ape_pat'=>$row->ape_pat,
+				'ape_mat'=>$row->ape_mat,
+				'promedio'=>$row->promedio,
+				'nivel_educativo'=>$row->nivel_educativo,
+				'puntaje'=>$row->puntaje
+				);
+		}
+		return $return;
+	}else{
+		return FALSE;
+	}
+}
+
+public function get_solicitud_info($id_solicitud){
+	$this->db->where('id_solicitud',$id_solicitud);
+	$query=$this->db->get('vista_solicitud2');
+	if($query->num_rows()>0){
+		$return=array(
+				'id_solicitud'=>$row->id_solicitud,
+				'fec_solicitud'=>$row->fec_solicitud,
+				'nombre'=>$row->nombre,
+				'ape_pat'=>$row->ape_pat,
+				'ape_mat'=>$row->ape_mat,
+				'sexo'=>$row->sexo,
+				'fec_nac'=>$row->fec_nac,
+				'estado_civil_solicitante'=>$row->estado_civil_solicitante,
+				'hijos'=>$row->hijos,
+				'calle'=>$row->calle,
+				'num_casa'=>$row->num_casa,
+				'colonia'=>$row->colonia,
+				'entre_calle_1'=>$row->entre_calle_1,
+				'entre_calle_2'=>$row->entre_calle_2,
+				'cerca_de'=>$row->cerca_de,
+				'ciudad'=>$row->ciudad,
+				'tel'=>$row->tel,
+				'cel'=>$row->cel,
+				'correo'=>$row->correo,
+				'facebook'=>$row->facebook,
+				'padre_nombre'=>$row->padre_nombre,
+				'padre_ape_pat'=>$row->padre_ape_pat,
+				'padre_ape_mat'=>$row->padre_ape_mat,
+				'padre_edad'=>$row->padre_edad,
+				'padre_nivel_educativo'=>$row->padre_nivel_educativo,
+				'padre_ocupacion'=>$row->padre_ocupacion,
+				'padre_vivo_muerto'=>$row->padre_vivo_muerto,
+				'madre_nombre'=>$row->madre_nombre,
+				'madre_ape_pat'=>$row->madre_ape_pat,
+				'madre_ape_mat'=>$row->madre_ape_mat,
+				'madre_edad'=>$row->madre_edad,
+				'madre_nivel_educativo'=>$row->madre_nivel_educativo,
+				'edo_civil_padres'=>$row->edo_civil_padres,
+				'vive_con'=>$row->vive_con,
+				'personas_dependen_ingreso'=>$row->personas_dependen_ingreso,
+				'familia_estudian'=>$row->familia_estudian,
+				'periodo'=>$row->periodo,
+				'nivel_educativo'=>$row->nivel_educativo,
+				'escuela'=>$row->escuela,
+				'carrera'=>$row->carrera,
+				'grado'=>$row->grado,
+				'turno'=>$row->turno,
+				'promedio'=>$row->promedio,
+				'estado'=>$row->estado,
+				'res1'=>$row->res1,
+				'res2'=>$row->res2,
+				'res3'=>$row->res3,
+				'res4'=>$row->res4,
+				'res5'=>$row->res5,
+				'res6'=>$row->res6,
+				'res7'=>$row->res7,
+				'res8'=>$row->res8,
+				'res9'=>$row->res9,
+				'res10'=>$row->res10,
+				'cal1'=>$row->cal1,
+				'cal2'=>$row->cal2,
+				'cal3'=>$row->cal3,
+				'cal4'=>$row->cal4,
+				'cal5'=>$row->cal5,
+				'cal6'=>$row->cal6,
+				'cal7'=>$row->cal7,
+				'cal8'=>$row->cal8,
+				'cal9'=>$row->cal9,
+				'cal10'=>$row->cal10,
+				'puntaje'=>$row->puntaje,
+				'nivel'=>$row->nivel,
+				'observaciones'=>$row->observaciones,
+				'proceso'=>$row->proceso
+			);
+		return $return;
+	}else{
+		return FALSE;
+	}
+}
+
 //PENDIENTE
 public function get_becados_hours(){
 	$this->db->select('id_becado,nombre,ape_pat,ape_mat');
@@ -21,8 +124,7 @@ public function get_becados_hours(){
 }
 
 public function get_comprobantes_info($id_becado){
-	$this->load->model('metodos');
-	$id_periodo=$this->metodos->periodo_actual();
+	$id_periodo=$this->periodo_actual_id();
 
 	$return=array();
 	$this->db->where('id_becado',$id_becado);
@@ -48,10 +150,11 @@ public function get_comprobantes_info($id_becado){
 
 }
 
-public function get_user_hours($id_becado){
-	//if($periodo==-1) $periodo=$this->periodo_actual_nombre();
+public function get_user_hours($id_becado,$periodo=-1){
+	if($periodo==-1) $periodo=$this->periodo_actual_id();
 	$this->db->select('hora');
 	$this->db->where('id_becado',$id_becado);
+	$this->db->where('id_periodo',$periodo);
 	$query_horas=$this->db->get('horas');
 	$horas=0;
 	if($query_horas->num_rows()>0){
@@ -59,11 +162,11 @@ public function get_user_hours($id_becado){
 			$horas+=$row->hora;
 		}
 	}
-	$this->db->select('contador');
+	$this->db->select('horas_acumuladas');
 	$this->db->where('id_becado',$id_becado);
 	$query_periodos=$this->db->get('becado');
-	$periodos=$query_periodos->row(0)->contador;
-	return $horas-(30*($periodos>0?$periodos-1:0));
+	$horas_acumuladas=$query_periodos->row(0)->horas_acumuladas;
+	return $horas+$horas_acumuladas;
 }
 
 public function get_user_info($id_becado){
