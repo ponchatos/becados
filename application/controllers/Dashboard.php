@@ -62,6 +62,76 @@ public function solicitudes(){
 	}
 }
 
+public function set_solicitud_info(){
+	if(isset($this->session->userdata['logged_in'])){
+		if($this->session->userdata['logged_in']['privilegios']==99){
+			$this->form_validation->set_rules('id_solicitud', 'Solicitud', 'trim|required|xss_clean|numeric');
+			$this->form_validation->set_rules('cal1', 'Calificación 1', 'trim|required|xss_clean|numeric');
+			$this->form_validation->set_rules('cal2', 'Calificación 2', 'trim|required|xss_clean|numeric');
+			$this->form_validation->set_rules('cal3', 'Calificación 3', 'trim|required|xss_clean|numeric');
+			$this->form_validation->set_rules('cal4', 'Calificación 4', 'trim|required|xss_clean|numeric');
+			$this->form_validation->set_rules('cal5', 'Calificación 5', 'trim|required|xss_clean|numeric');
+			$this->form_validation->set_rules('cal6', 'Calificación 6', 'trim|required|xss_clean|numeric');
+			$this->form_validation->set_rules('cal7', 'Calificación 7', 'trim|required|xss_clean|numeric');
+			$this->form_validation->set_rules('cal8', 'Calificación 8', 'trim|required|xss_clean|numeric');
+			$this->form_validation->set_rules('cal9', 'Calificación 9', 'trim|required|xss_clean|numeric');
+			$this->form_validation->set_rules('cal10', 'Calificación 10', 'trim|required|xss_clean|numeric');
+			$this->form_validation->set_rules('nivel', 'Nivel', 'trim|xss_clean');
+			$this->form_validation->set_rules('observaciones', 'Observaciones', 'trim|xss_clean');
+			$this->form_validation->set_rules('proceso', 'Proceso', 'trim|required|xss_clean');
+			
+			if ($this->form_validation->run() == FALSE) {
+				$response['success']=-1;
+				$response['message']="Todos los campos son necesarios";
+			}else{
+				$this->load->model('solicitud_db');
+				if($this->input->post('proceso')==3){
+					if($this->solicitud_db->delete_solicitud($this->input->post('id_solicitud'))){
+						$response['success']=1;
+						$response['message']="Solicitud eliminada correctamente";
+					}else{
+						$response['success']=0;
+						$response['message']="No se ha podido eliminar la Solicitud";
+					}
+				}else{
+					$puntaje=$this->input->post('cal1')+$this->input->post('cal2')+$this->input->post('cal3')+$this->input->post('cal4')+$this->input->post('cal5')+$this->input->post('cal6')+$this->input->post('cal7')+$this->input->post('cal8')+$this->input->post('cal9')+$this->input->post('cal10');
+					$send['id_solicitud']=$this->input->post('id_solicitud');
+					$send['encuesta_cal']=array(
+						'cal1'=>$this->input->post('cal1'),
+						'cal2'=>$this->input->post('cal2'),
+						'cal3'=>$this->input->post('cal3'),
+						'cal4'=>$this->input->post('cal4'),
+						'cal5'=>$this->input->post('cal5'),
+						'cal6'=>$this->input->post('cal6'),
+						'cal7'=>$this->input->post('cal7'),
+						'cal8'=>$this->input->post('cal8'),
+						'cal9'=>$this->input->post('cal9'),
+						'cal10'=>$this->input->post('cal10'),
+						'puntaje'=>$puntaje,
+						'nivel'=>$this->input->post('nivel')!=null?$this->input->post('nivel'):''
+						);
+					$send['proceso']=array(
+						'proceso'=>$this->input->post('proceso'),
+						'observaciones'=>$this->input->post('observaciones')!=null?$this->input->post('observaciones'):''
+						);
+					$result=$this->solicitud_db->set_calif($data);
+					if($result!=FALSE){
+						//MANDAR RESULTADO
+					}else{
+						$response['success']=0;
+						$response['message']="No se pudo realizar tu petición";
+					}
+				}
+			}
+			die(json_encode($response));
+		}else{
+			redirect(base_url().'dashboard/','refresh');
+		}
+	}else{
+		redirect(base_url(),'refresh');
+	}
+}
+
 public function get_solicitud_info(){
 	if(isset($this->session->userdata['logged_in'])){
 		if($this->session->userdata['logged_in']['privilegios']==99){
@@ -81,7 +151,7 @@ public function get_solicitud_info(){
 					$response['message']="No se encontró al solicitante";
 				}
 			}
-			die($response);
+			die(json_encode($response));
 		}else{
 			redirect(base_url().'dashboard/','refresh');
 		}

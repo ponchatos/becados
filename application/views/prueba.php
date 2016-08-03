@@ -46,8 +46,8 @@
 	</script>
 </head>
 <body>
-	<form method="post" action="<?=base_url().'dashboard/prueba3'?>">
-		<input name="asd" type="date"/>
+	<form method="post" action="<?=base_url().'dashboard/get_solicitud_info'?>">
+		<input name="id_solicitud" type="text" value="2"/>
 		<input type="submit" value="asd"/>
 	</form>
 	<form id="form" method="post"  enctype="multipart/form-data" action="<?php echo base_url();?>dashboard/upload_comprobante">

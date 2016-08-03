@@ -177,7 +177,9 @@ public function registrar_solicitud(){
 			'familia_estudian'=>$this->input->post('cuantas_estudian'),
 			'niveles_estudian'=>$this->input->post('en_que_niveles')
 			);
+		$this->load->model('read_data');
 		$data['datos_escolares']=array(
+			'id_periodo'=>$this->read_data->periodo_actual_id();
 			'id_nivel_educativo'=>$this->input->post('nivel_educativo'),
 			'id_escuela'=>$this->input->post('escuela'),
 			'carrera'=>$this->input->post('carrera'),

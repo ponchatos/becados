@@ -2,6 +2,89 @@
 
 Class Solicitud_db extends CI_Model {
 
+public function set_calif($data){
+	$this->db->trans_begin();
+
+	$this->db->where('id_solicitud',$data['id_solicitud']);
+	$this->db->insert('solicitud'$data['proceso']);
+	if($this->affected_rows()>0){
+		$this->db->select('id_encuesta');
+		$this->db->where('id_solicitud',$data['id_solicitud']);
+		$query=$this->db->get('solicitud')
+		if($query->num_rows()>0){
+			$this->db->where('id_encuesta',$query->row(0)->id_encuesta);
+			$this->db->insert('encuesta_p1',$data['encuesta_cal']);
+			if($this->affected_rows()>0){
+				$this->db->trans_commit();
+				return TRUE;
+			}else{
+				$this->db->trans_rollback();
+				return FALSE;
+			}
+		}else{
+			$this->db->trans_rollback();
+			return FALSE;
+		}
+	}else{
+		$this->db->trans_rollback();
+		return FALSE;
+	}
+}
+
+public function delete_solicitud($id_solicitud){
+	$this->db->trans_begin();
+
+	$this->db->where('id_solicitud',$id_solicitud);
+	$query=$this->db->get('solicitud');
+	if($query->num_rows()>0){
+		$id_dpersonales=$query->row(0)->id_dpersonales;
+		$id_dfamiliares=$query->row(0)->id_dfamiliares;
+		$id_descolares=$query->row(0)->id_descolares;
+		$id_encuesta=$query->row(0)->id_encuesta;
+
+		$this->db->where('id_dpersonales',$id_dpersonales);
+		$this->db->delete('datos_personales');
+		if($this->affected_rows()==0){
+			$this->db->trans_rollback();
+			return FALSE;
+		}
+
+		$this->db->where('id_dfamiliares',$id_dfamiliares);
+		$this->db->delete('datos_familiares');
+		if($this->affected_rows()==0){
+			$this->db->trans_rollback();
+			return FALSE;
+		}
+
+		$this->db->where('id_descolares',$id_descolares);
+		$this->db->delete('datos_escolares');
+		if($this->affected_rows()==0){
+			$this->db->trans_rollback();
+			return FALSE;
+		}
+
+		$this->db->where('id_encuesta',$id_encuesta);
+		$this->db->delete('encuesta_p1');
+		if($this->affected_rows()==0){
+			$this->db->trans_rollback();
+			return FALSE;
+		}
+
+		$this->db->where('id_solicitud',$id_solicitud);
+		$this->db->delete('solicitud');
+		if($this->db->affected_rows()>0){
+			$this->db->trans_commit();
+			return TRUE;
+		}else{
+			$this->db->trans_rollback();
+			return FALSE;
+		}
+	}else{
+		$this->db->trans_rollback();
+		return FALSE;
+	}
+}
+
 public function registrar_solicitud($data){
 	$this->db->trans_begin();
 
@@ -52,6 +135,8 @@ public function registrar_solicitud($data){
 		return FALSE;
 	}
 }
+
+
 
 public function get_spinner_datas(){
 	$niveles_educativos=$this->db->get('nivel');
