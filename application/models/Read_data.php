@@ -101,6 +101,7 @@ public function get_solicitud_info($id_solicitud){
 				'nivel'=>$query->row(0)->nivel,
 				//'observaciones'=>$query->row(0)->observaciones,
 				//'proceso'=>$query->row(0)->proceso
+				'proceso'=>1
 			);
 		return $return;
 	}else{

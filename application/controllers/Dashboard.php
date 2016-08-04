@@ -52,7 +52,9 @@ public function index(){
 public function solicitudes(){
 	if(isset($this->session->userdata['logged_in'])){
 		if($this->session->userdata['logged_in']['privilegios']==99){
-			$data['solicitudes_tabla']=$this->read_data->get_solicitudes();
+			$data=array();
+			$solicitudes=$this->read_data->get_solicitudes();
+			if($solicitudes!=FALSE) $data['solicitudes_tabla']=$solicitudes;
 			$this->load->view('admin_solicitudes',$data);
 		}else{
 			redirect(base_url().'dashboard/','refresh');
@@ -114,9 +116,10 @@ public function set_solicitud_info(){
 						'proceso'=>$this->input->post('proceso'),
 						'observaciones'=>$this->input->post('observaciones')!=null?$this->input->post('observaciones'):''
 						);
-					$result=$this->solicitud_db->set_calif($data);
+					$result=$this->solicitud_db->set_calif($send);
 					if($result!=FALSE){
-						//MANDAR RESULTADO
+						$response['success']=1;
+						$response['message']="Datos cambiados correctamente";
 					}else{
 						$response['success']=0;
 						$response['message']="No se pudo realizar tu petición";

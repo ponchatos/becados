@@ -12,6 +12,10 @@
 	</style>
 </head>
 <body>
+	<div id="div_message" class="w3-container w3-green w3-card-8" style="display:none;">
+		<span onclick="this.parentElement.style.display='none'" class="w3-closebtn">&times;</span>
+		<div id="message"></div>
+	</div>
 	<table id="solicitudes_tabla">
 		<thead>
 			<tr>
@@ -129,6 +133,9 @@
 	</div>
 	</div>
 
+
+
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
@@ -137,7 +144,21 @@ $(document).ready(function() {
 	    "pageLength": 10,
 	    "autoWidth": false
 	});
+
+
+
 	var id_solicitud;
+	$(".loader").hide();
+
+	$("#btn_prueba").click(function(e){
+		e.preventDefault();
+		$(".row_solicitud").each(function(){
+			if($(this).children('td:nth-child(1)').text()==4){
+				table.row($(this)).remove().draw();
+			}
+			
+		});
+	});
 
 	$(".cal").change(function () {
 	    //var suma = $("input[name='cal1']").val()+
@@ -150,9 +171,60 @@ $(document).ready(function() {
 	    $(":input[name='puntaje']").val(suma);
 	});
 
-	$('#btn_proc_solicitud').submit(function(e){
+	$('#form_cal').submit(function(e){
 		e.preventDefault();
+		$(".loader").show();
 
+		var cal1=$("input[name='cal1']").val();
+		var cal2=$("input[name='cal2']").val();
+		var cal3=$("input[name='cal3']").val();
+		var cal4=$("input[name='cal4']").val();
+		var cal5=$("input[name='cal5']").val();
+		var cal6=$("input[name='cal6']").val();
+		var cal7=$("input[name='cal7']").val();
+		var cal8=$("input[name='cal8']").val();
+		var cal9=$("input[name='cal9']").val();
+		var cal10=$("input[name='cal10']").val();
+		var nivel=$("input[name='nivel']").val();
+		var observaciones=$("input[name='observaciones']").val();
+		var proceso=$("select[name='proceso']").val();
+
+		if(proceso==3){
+			if(!confirm("¿Esta seguro de eliminar esta solicitud?\nNo habrá vuelta atras")){
+				$(".loader").hide();
+				return false;
+			}
+		}
+		jQuery.ajax({
+			type: "POST",
+			url: "http://<?php echo $_SERVER['SERVER_NAME']; ?>/becados/dashboard/set_solicitud_info",
+			dataType: 'json',
+			data: {id_solicitud:id_solicitud,cal1:cal1,cal2:cal2,cal3:cal3,cal4:cal4,cal5:cal5,cal6:cal6,cal7:cal7,cal8:cal8,cal9:cal9,cal10:cal10,nivel:nivel,observaciones:observaciones,proceso:proceso},
+			success: function(obj) {
+				if(obj.success==1){
+					$("#div_message").show();
+					$("#message").text(obj.message);
+					$("#myModal").hide();
+					
+					if(proceso==3){
+						$(".row_solicitud").each(function(){
+							if($(this).children('td:nth-child(1)').text()==id_solicitud){
+								table.row($(this)).remove().draw();
+							}
+						});
+					}
+				}else{
+					$("#div_modalMessage").show();
+					$("#modalMessage").text('');
+					$("#modalMessage").append('<h3>Error!</h3><p>'+obj.message+'</p>');
+				}
+				$(".loader").hide();
+			},
+			error: function(res){
+				$(".loader").hide();
+				$(".modalMessage").text('<h3>Error!</h3><p>'+res.statusText+'</p>');
+			}
+		});
 	});
 
 	$('#solicitudes_tabla tbody').on( 'click','tr',function (e) {
@@ -232,7 +304,8 @@ $(document).ready(function() {
 					$("input[name='puntaje']").val(obj.data.puntaje);
 					$("input[name='nivel']").val(obj.data.nivel);
 					$("input[name='observaciones']").val(obj.data.observaciones);
-					$("input[name='proceso']").val(obj.data.proceso);
+					$("select[name='proceso'] option[value='"+obj.data.proceso+"']").attr('selected','selected');
+					//alert($("select[name='proceso'] option[value="+obj.data.proceso+"]").text());
 				}else{
 					$("#div_modalMessage").show();
 					$("#modalMessage").text('');

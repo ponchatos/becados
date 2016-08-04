@@ -46,8 +46,21 @@
 	</script>
 </head>
 <body>
-	<form method="post" action="<?=base_url().'dashboard/get_solicitud_info'?>">
-		<input name="id_solicitud" type="text" value="2"/>
+	<form method="post" action="<?=base_url().'dashboard/set_solicitud_info'?>">
+		<input name="id_solicitud" type="text" value="3"/>
+		<input name="cal1" type="text" value="4"/>
+		<input name="cal2" type="text" value="3"/>
+		<input name="cal3" type="text" value="2"/>
+		<input name="cal4" type="text" value="1"/>
+		<input name="cal5" type="text" value="2"/>
+		<input name="cal6" type="text" value="3"/>
+		<input name="cal7" type="text" value="4"/>
+		<input name="cal8" type="text" value="5"/>
+		<input name="cal9" type="text" value="6"/>
+		<input name="cal10" type="text" value="7"/>
+		<input name="proceso" type="text" value="0"/>
+		<input name="nivel" type="text" value="B"/>
+		<input name="observaciones" type="text" value="Jijitl"/>
 		<input type="submit" value="asd"/>
 	</form>
 	<form id="form" method="post"  enctype="multipart/form-data" action="<?php echo base_url();?>dashboard/upload_comprobante">
