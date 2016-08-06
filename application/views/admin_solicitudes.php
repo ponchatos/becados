@@ -150,16 +150,6 @@ $(document).ready(function() {
 	var id_solicitud;
 	$(".loader").hide();
 
-	$("#btn_prueba").click(function(e){
-		e.preventDefault();
-		$(".row_solicitud").each(function(){
-			if($(this).children('td:nth-child(1)').text()==4){
-				table.row($(this)).remove().draw();
-			}
-			
-		});
-	});
-
 	$(".cal").change(function () {
 	    //var suma = $("input[name='cal1']").val()+
 	    //$(this).val()
