@@ -497,47 +497,88 @@
 		    </div>
 		    <div class="modal-body">
 		    	<div class="loader" style="display:none;"></div>
+		    	
 
-		    	<form id="form_becar" name="form_becar" method="post">
-					Recomendado por:
-					<input type="text" name="recomendado" />
-					Observación:
-					<input type="text" name="observacion_becado" />
-					Carta compromiso:
-					<input type="radio" name="car_compromiso" value="0" checked/>No<br>
-					<input type="radio" name="car_compromiso" value="1" />Si<br>
-					Formulario:
-					<input type="radio" name="formulario_IB" value="0" checked/>No<br>
-					<input type="radio" name="formulario_IB" value="1" />Si<br>
-					Facebook:
-					<input type="text" name="facebook"/>
-					Habilidades:
-					Artisticas:
-					<input type="text" name="h_artisticas"/>
-					Deportivas:
-					<input type="text" name="h_deportivas"/>
-					Civicas:
-					<input type="text" name="h_civicas"/>
-					Lenguaje:
-					<input type="text" name="h_lenguaje"/>
-					Puntaje:
-					<input type="text" name="puntaje"/>
-					V:
-					<input type="text" name="v"/>
-					Diagnostico Social:
-					<textarea form="form_becar" name="diagnostico_social" cols="50" rows="6" maxlength="400"></textarea>
+		    	<form id="form_becar" name="form_becar" method="post" class="form-inline">
+		    		<div class="form-group"> 
+						<p>Recomendado por:</p><input type="text" name="recomendado" />
+					</div>
+
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<div class="form-group"> 
+						<p>Carta compromiso:</p>
+						<input type="radio" name="car_compromiso" value="1" />Si
+						<input type="radio" name="car_compromiso" value="0" checked/>No	
+					</div>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<div class="form-group">
+						<p>Formulario:</p>
+						<input type="radio" name="formulario_IB" value="1" />Si
+						<input type="radio" name="formulario_IB" value="0" checked/>No
+					</div>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<div class="form-group">
+						<p>Facebook:</p>
+						<input type="text" name="facebook"/>
+					</div>
+						<p>---------------------------------------------------------------------------------------------------------------------------------</p>
 					<br>
-					Crear usuario:
-					<input type="text" name="username" required/>
-					Contraseña:
-					<input type="password" name="password" required/>
-					Confirmar contraseña:
-					<input type="password" name="confirm_password" required>
-					<button class="genPass" onclick="generate_password();" value="Generar Contraseña">Generar Contraseña</button>
-					<button class="genPass" onclick="toggle_password();" value="Ver/Ocultar Contraseña">Ver/Ocultar Contraseña</button>
-					
+					<p>HABILIDADES:</p>
+					<div class="form-group">
+						<P>Artisticas:</P>
+						<input type="text" name="h_artisticas"/>
+					</div>
+					<div class="form-group">
+						<P>Deportivas:</P>
+						<input type="text" name="h_deportivas"/>
+					</div>
+					<div class="form-group">
+						<P>Civicas:</P>
+						<input type="text" name="h_civicas"/>
+					</div>
+					<div class="form-group">
+						<P>Lenguaje:</P>
+						<input type="text" name="h_lenguaje"/>
+					</div>
+					<br><br>
+					<div class="form-group">
+						<P>Puntaje:</P>
+						<input type="text" name="puntaje"/>
+					</div>
+					<div class="form-group">
+						<P>V:</P>
+						<input type="text" name="v"/>
+					</div>
+					<div class="form-group">
+						<P>Diagnostico Social:</P>
+						<input type="text" name="diagnostico_social" />
+					</div>
+					<br><br>
+
+					<div class="form-group">
+						<P>Observación:</P>
+						<textarea form="form_becar" name="observacion_becado" cols="50" rows="6" maxlength="400"></textarea>
+					</div>					
+				<p>---------------------------------------------------------------------------------------------------------------------------------</p>
+				<p>USUARIOS</p>
 					<br>
-					<button type="submit" id="btn_becar" value="Becar">Becar</button>
+					<div class="form-group">
+						<P>Crear usuario:</P>
+						<input type="text" name="username" required/>
+					</div>
+					<br>	
+					<div class="form-group">
+						<P>Contraseña:</P>
+						<input type="password" name="password" required/>
+					</div>	
+					<div class="form-group">
+						<P>Confirmar contraseña:</P>
+						<input type="password" name="confirm_password" required>
+						<button class="genPass" onclick="generate_password();" value="Generar Contraseña">Generar Contraseña</button>
+						<button class="genPass" onclick="toggle_password();" value="Ver/Ocultar Contraseña">Ver/Ocultar Contraseña</button>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<button type="submit" id="btn_becar" value="Becar">Becar</button>
+					</div>
 					<div id="div_modalBecarMessage" class="w3-container w3-red w3-card-8" style="display:none;">
 						<span onclick="this.parentElement.style.display='none'" class="w3-closebtn">&times;</span>
 						<div id="modalBecarMessage"></div>
