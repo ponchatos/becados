@@ -164,6 +164,14 @@ public function get_becado_info($id_becado){
 			'estado'=>$query->row(0)->estado,
 			);
 
+		$comprobantes=$this->get_comprobantes_info($id_becado);
+		if($comprobantes!=null&&isset($comprobantes['boleta'])){
+			$return['boleta']=$comprobantes['boleta'];
+		}
+		if($comprobantes!=null&&isset($comprobantes['pago'])){
+			$return['pago']=$comprobantes['pago'];
+		}
+
 		$this->db->where('id_becado',$id_becado);
 		$pagos_query=$this->db->get('vista_pagos');
 		if($pagos_query->num_rows()>0){

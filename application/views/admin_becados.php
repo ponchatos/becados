@@ -154,6 +154,7 @@
 		   <li><a href="#" class="tablink" id="btn_dpersonales">DATOS PERSONALES</a></li>
 		   <li><a href="#" class="tablink" id="btn_dfamiliares">DATOS FAMILIARES</a></li>
 		   <li><a href="#" class="tablink" id="btn_descolares">DATOS ESCOLARES</a></li>
+		   <li><a href="#" class="tablink" id="btn_comprobantes">COMPROBANTES</a></li>
 		  </ul>
 
 
@@ -562,6 +563,27 @@
 					</form>
 
 			</div>
+
+			<div id="div_comprobantes">
+				Comprobante de pago:
+				<a href="" target="_blank">
+					<img width="300" name="img_pago" src="<?=base_url()?>images/sin_imagen.png" />
+				</a>
+				<select name="select_pago">
+					<option value="0">Sin Validar</option>
+					<option value="1">Validada</option>
+				</select>
+				<br>
+				Boleta de calificaciones:
+				<a href="" target="_blank">
+					<img width="300" name="img_boleta" src="<?=base_url()?>images/sin_imagen.png" />
+				</a>
+				<select name="select_boleta">
+					<option value="0">Sin Validar</option>
+					<option value="1">Validada</option>
+				</select>
+			</div>
+
 	    	<div class="loader" style="display:none;"></div>
 	    	<div id="div_modalMessage" class="w3-container w3-red w3-card-8" style="display:none;">
 				<span onclick="this.parentElement.style.display='none'" class="w3-closebtn">&times;</span>
@@ -593,6 +615,8 @@ $(document).ready(function() {
 		$("input").each(function(){
 			$(this).val('');
 		});
+		$("img[name='img_pago'],img[name='img_boleta']").attr('src',"<?=base_url()?>images/sin_imagen.png");
+		$("img[name='img_pago'],img[name='img_boleta']").parent().attr('href',"");
 	}
 
 	var id_becado;
@@ -677,6 +701,18 @@ $(document).ready(function() {
 					var str = "<tr><td>"+value.periodo+"</td><td>"+value.fecha+"</td><td>"+value.importe+"</td></tr>";
 					$("#pagos_tabla").children("tbody").append(str);
 				});
+
+				if(obj.data.pago!=null){
+					$("img[name='img_pago']").attr("src","<?=base_url()?>"+obj.data.pago.url);
+					$("img[name='img_pago']").parent().attr("href","<?=base_url()?>"+obj.data.pago.url);
+					$("select[name='select_pago'] option[value='"+obj.data.pago.validacion+"']").attr('selected','selected');
+				}
+
+				if(obj.data.boleta!=null){
+					$("img[name='img_boleta']").attr("src","<?=base_url()?>"+obj.data.boleta.url);
+					$("img[name='img_boleta']").parent().attr("href","<?=base_url()?>"+obj.data.boleta.url);
+					$("select[name='select_boleta'] option[value='"+obj.data.boleta.validacion+"']").attr('selected','selected');
+				}
 				//$("#div_modalMessage").show();
 				//$("#modalMessage").text('');
 				//$("#modalMessage").append(JSON.stringify(obj));
@@ -708,39 +744,42 @@ $(document).ready(function(){
 	$("#div_dfamiliares").hide();
 	$("#div_descolares").hide();
 	$("#div_dpersonales").hide();
+	$("#div_comprobantes").hide();
 
-	$("#btn_dgenerales").click(function(event){
-		event.preventDefault();
-		$("#div_dgenerales").show();
+	function selectTab(tab){
+		$("#div_dgenerales").hide();
 		$("#div_dfamiliares").hide();
 		$("#div_descolares").hide();
 		$("#div_dpersonales").hide();
+		$("#div_comprobantes").hide();
+		$(tab).show();
+	}
+
+	$("#btn_dgenerales").click(function(event){
+		event.preventDefault();
+		selectTab("#div_dgenerales");
 
 	});
 	$("#btn_dpersonales").click(function(event){
 		event.preventDefault();
-		$("#div_dgenerales").hide();
-		$("#div_dfamiliares").hide();
-		$("#div_descolares").hide();
-		$("#div_dpersonales").show();
+		selectTab("#div_dpersonales");
 
 	});
 
 	$("#btn_dfamiliares").click(function(event){
 		event.preventDefault();
-		$("#div_dpersonales").hide();
-		$("#div_dfamiliares").show();
-		$("#div_descolares").hide();
-		$("#div_dgenerales").hide();
+		selectTab("#div_dfamiliares");
 
 	});
 	$("#btn_descolares").click(function(event){
 		event.preventDefault();
-		$("#div_dpersonales").hide();
-		$("#div_dfamiliares").hide();
-		$("#div_descolares").show();
-		$("#div_dgenerales").hide();
+		selectTab("#div_descolares");
 
+	});
+
+	$("#btn_comprobantes").click(function (event){
+		event.preventDefault();
+		selectTab("#div_comprobantes");
 	});
 
 });
