@@ -14,7 +14,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="keywords" content="Gretong Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
 	Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
-	<!--<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>-->
+	<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
 	<link href="<?=base_url();?>css/bootstrap.min.css" rel='stylesheet' type='text/css' />
 	<link href="<?=base_url();?>css/style.css" rel='stylesheet' type='text/css' />
 	<link href="<?=base_url();?>css/font-awesome.css" rel="stylesheet"> 
@@ -144,6 +144,7 @@
     	<div class="modal-header" style="height:70px">
 	    	<span class="close">×</span>
 	    	<h3 class="modalTitle" name="nombre"></h3>
+	    	
 	    </div>
 	    <div class="modal-body">
 	    	<div class="loader" style="display:none;"></div>
