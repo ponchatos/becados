@@ -221,6 +221,18 @@
 						<p>V</p><input type="text" name="v" />
 					</div>
 				</form>
+				<table id="pagos_tabla">
+					<thead>
+						<tr>
+							<th>Periodo de Pago</th>
+							<th>Fecha de Pago</th>
+							<th>Importe</th>
+						</tr>
+					</thead>
+					<tbody>
+
+					</tbody>
+				</table>
 			</div>
 
 			<div id="div_dpersonales">
