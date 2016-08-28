@@ -284,11 +284,6 @@ $(".sidebar-icon").click(function() {
 				toggle = !toggle;
 			});
 </script>
-<!--js -->
-<!--<script src="js/jquery.nicescroll.js"></script>-->
-<!--<script src="js/scripts.js"></script>-->
-<!-- Bootstrap Core JavaScript -->
-<!--<script src="js/bootstrap.min.js"></script>-->
 
 <script type="text/javascript">
 $(document).ready(function() {

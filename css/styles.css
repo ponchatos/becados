@@ -32,6 +32,9 @@ body{
 	background:#eee;
 	font-family: 'Open Sans', sans-serif;
 }
+.titulos{
+	color:red;
+}
 #form{
 	width:100%;
 }
@@ -52,7 +55,7 @@ th {
 	padding:1.3em;
 }
 .header h1 {
-	color:#272727;
+	color:#D20102;
 	font-weight:700;
 	font-size:22px;
 }
@@ -70,7 +73,7 @@ th {
 	font-size:17px;
 	font-weight:600;
 	margin:15px 3px;
-	color:#3F3D3D;
+	color:#D20102;
 }
 
 .left-form{

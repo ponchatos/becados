@@ -10,120 +10,472 @@
 		    cursor: pointer;
 		}
 	</style>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="keywords" content="Gretong Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
+	Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+	<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+	<link href="<?=base_url();?>css/bootstrap.min.css" rel='stylesheet' type='text/css' />
+	<link href="<?=base_url();?>css/style.css" rel='stylesheet' type='text/css' />
+	<link href="<?=base_url();?>css/font-awesome.css" rel="stylesheet"> 
+	<link href='//fonts.googleapis.com/css?family=Roboto:700,500,300,100italic,100,400' rel='stylesheet' type='text/css'/>
+	<link href='//fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Quicksand:400,700' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="<?=base_url();?>css/icon-font.min.css" type='text/css' />
+
+
+
 </head>
 <body>
-	<div id="div_message" class="w3-container w3-green w3-card-8" style="display:none;">
-		<span onclick="this.parentElement.style.display='none'" class="w3-closebtn">&times;</span>
-		<div id="message"></div>
+<div class="page-container">
+	<div class="left-content">
+	   <div class="inner-content">
+			<div class="header-section">
+						<div class="top_bg">
+							
+								<div class="header_top">
+									<div class="top_right">
+										<p>SISTEMA DE GESTION DE BECAS</p>
+									</div>
+									<div class="top_left">
+										<h2> Patronato Pro-Educación de Ahome A.C.</h2>
+									</div>
+										<div class="clearfix"> </div>
+								</div>
+							
+						</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="header_bg">
+						
+							<div class="header">
+								<div class="head-t">
+									<div class="logo">
+										<a href="index.html"><img src="<?=base_url();?>images/logo_patt.png" class="img-responsive" alt=""> </a>
+
+									</div>
+								<div class="clearfix"> </div>
+	<div class="women_main">
+		    <div class="w_content">
+				<div id="div_message" class="w3-container w3-green w3-card-8" style="display:none;">
+					<span onclick="this.parentElement.style.display='none'" class="w3-closebtn">&times;</span>
+					<div id="message"></div>
+				</div>
+
+				<table id="solicitudes_tabla">
+					<thead>
+						<tr>
+							<th>N° Solicitud</th>
+							<th>Fecha de Solicitud</th>
+							<th>Nombre</th>
+							<th>Promedio</th>
+							<th>Nivel</th>
+							<th>Puntaje</th>
+						</tr>
+					</thead>	
+					<tbody>
+						<?php
+						if(isset($solicitudes_tabla)){
+							foreach ($solicitudes_tabla as $row) {
+								echo '<tr class="row_solicitud">';
+								echo '<td>'.$row["id_solicitud"].'</td>';
+								echo '<td>'.$row["fec_solicitud"].'</td>';
+								echo '<td>'.$row["nombre"].' '.$row["ape_pat"].' '.$row["ape_mat"].'</td>';
+								echo '<td>'.$row["promedio"].'</td>';
+								echo '<td>'.$row["nivel_educativo"].'</td>';
+								echo '<td>'.$row["puntaje"].'</td>';
+								echo '</tr>';
+							}
+						}
+					?>
+					</tbody>
+				</table>
+		</div>
 	</div>
-	<table id="solicitudes_tabla">
-		<thead>
-			<tr>
-				<th>N° Solicitud</th>
-				<th>Fecha de Solicitud</th>
-				<th>Nombre</th>
-				<th>Promedio</th>
-				<th>Nivel</th>
-				<th>Puntaje</th>
-			</tr>
-		</thead>	
-		<tbody>
-			<?php
-			if(isset($solicitudes_tabla)){
-				foreach ($solicitudes_tabla as $row) {
-					echo '<tr class="row_solicitud">';
-					echo '<td>'.$row["id_solicitud"].'</td>';
-					echo '<td>'.$row["fec_solicitud"].'</td>';
-					echo '<td>'.$row["nombre"].' '.$row["ape_pat"].' '.$row["ape_mat"].'</td>';
-					echo '<td>'.$row["promedio"].'</td>';
-					echo '<td>'.$row["nivel_educativo"].'</td>';
-					echo '<td>'.$row["puntaje"].'</td>';
-					echo '</tr>';
-				}
-			}
-		?>
-		</tbody>
-	</table>
+	<div class="clearfix"> </div>
+  
+				<div class="sidebar-menu">
+					<header class="logo1">
+						<a href="#" class="sidebar-icon"> <span class="fa fa-bars"></span> </a> 
+					</header>
+						<div style="border-top:1px ridge rgba(255, 255, 255, 0.15)"></div>
+                           <div class="menu">
+									<ul id="menu" >
+										<li><a href="#"><i class="fa fa-tachometer"></i> <span>INICIO</span></a></li>
+										 <li><a href="#"><i class="fa fa-file-text-o"></i> <span>BECADOS</span></a></li>
+									<li><a href="#"><i class="lnr lnr-pencil"></i> <span>SOLICITUDES</span></a></li>
+									<li><a href="#"><i class="lnr lnr-chart-bars"></i> <span>ADMINISTRADOR</span></a></li>
+									<li><a href="#"><i class="fa fa-file-text-o"></i> <span>SALIR</span></a></li>
+								  </ul>
+								</div>
+							  </div>
+							  <div class="clearfix"></div>						
+						<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+							<script>
+							var toggle = true;
+										
+							$(".sidebar-icon").click(function() {                
+							  if (toggle)
+							  {
+								$(".page-container").addClass("sidebar-collapsed").removeClass("sidebar-collapsed-back");
+								$("#menu span").css({"position":"absolute"});
+							  }
+							  else
+							  {
+								$(".page-container").removeClass("sidebar-collapsed").addClass("sidebar-collapsed-back");
+								setTimeout(function() {
+								  $("#menu span").css({"position":"relative"});
+								}, 400);
+							  }
+											
+											toggle = !toggle;
+										});
+							</script>
+<div class="clearfix"> </div>
+
 	<div id="myModal" class="modal">
 	<!-- Modal content -->
 	<div class="modal-content">
     	<div class="modal-header" style="height:70px">
 	    	<span class="close">×</span>
-	    	<h3 class="modalTitle">Titulo</h3>
+	    	N° Solicitud: <input type="text" name="id_solicitud" disabled/>
+	    	Fecha de Solicitud: <input type="text" name="fec_solicitud" disabled/>
+	    	
 	    </div>
 	    <div class="modal-body">
 	    	<div class="loader" style="display:none;"></div>
-	    	N° Solicitud<input type="text" name="id_solicitud" disabled/>
-			Fecha de Solicitud<input type="text" name="fec_solicitud" disabled/>
-			Nombre<input type="text" name="nombre" disabled/>
-			Sexo<input type="text" name="sexo" disabled/>
-			Fecha de Nacimiento<input type="text" name="fec_nac" disabled/>
-			Estado Civil<input type="text" name="estado_civil_solicitante" disabled/>
-			Tiene Hijos<input type="text" name="hijos" disabled/>
-			Direccion<input type="text" name="direccion" disabled/>
-			Entre Calle <input type="text" name="entre_calle_1" disabled/>
-			y Calle <input type="text" name="entre_calle_2" disabled/>
-			Cerca de <input type="text" name="cerca_de" disabled/>
-			Ciudad<input type="text" name="ciudad" disabled/>
-			Telefono<input type="text" name="tel" disabled/>
-			Celular<input type="text" name="cel" disabled/>
-			Correo<input type="text" name="correo" disabled/>
-			Nombre de Padre o Tutor<input type="text" name="padre_nombre" disabled/>
-			Edad de Padre o Tutor<input type="text" name="padre_edad" disabled/>
-			Nivel Educativo de Padre o Tutor<input type="text" name="padre_nivel_educativo" disabled/>
-			Ocupacion de Padre o Tutor<input type="text" name="padre_ocupacion" disabled/>
-			Estado del Padre o Tutor<input type="text" name="padre_vivo_muerto" disabled/>
-			Nombre de Madre o Tutor<input type="text" name="madre_nombre" disabled/>
-			Edad de Madre o Tutor<input type="text" name="madre_edad" disabled/>
-			Nivel Educativo de Madre o Tutor<input type="text" name="madre_nivel_educativo" disabled/>
-			Ocupacion de Madre o Tutor<input type="text" name="madre_ocupacion" disabled/>
-			Estado del Madre o Tutor<input type="text" name="madre_vivo_muerto" disabled/>
-			Estado Civil de los Padres<input type="text" name="edo_civil_padres" disabled/>
-			Actualmente,¿Con quién vives?<input type="text" name="vive_con" disabled/>
-			¿Cuántas personas dependen del ingreso familiar	<input type="text" name="personas_dependen_ingreso" disabled/>
-			¿Cuántas de ellas estudian?<input type="text" name="familia_estudian" disabled/>
-			¿En qué niveles educativos?<input type="text" name="niveles_estudian" disabled/>
-			Periodo	<input type="text" name="periodo" disabled/>
-			Nivel Educativo	<input type="text" name="nivel_educativo" disabled/>
-			Escuela	<input type="text" name="escuela" disabled/>
-			Carrera	<input type="text" name="carrera" disabled/>
-			Grado<input type="text" name="grado" disabled/>
-			Turno<input type="text" name="turno" disabled/>
-			Promedio<input type="text" name="promedio" disabled/>
-			Estado de Inscripcion	<input type="text" name="estado" disabled/>
-			1.- ¿Cuál es el total de cuartos, piezas o habitaciones con que cuenta su hogar?<input type="text" name="res1" disabled/>
-			2.- ¿Cuántos baños completos con regadera y W.C. (excusado) hay para uso exclusivo de los integrantes del hogar?<input type="text" name="res2" disabled/>
-			3.- ¿En el hogar cuenta con regadera funcionando en alguno de los baños?<input type="text" name="res3" disabled/>
-			4.- Contanto todos los focos que utiliza para iluminar su hogar, incluyendo los techos, paredes y lámparas de buró o piso ¿Cuántos focos tiene su vivienda?<input type="text" name="res4" disabled/>
-			5.- El piso de su hogar es predominate de tierra, cemento o de algún otro tipo de acabado?<input type="text" name="res5" disabled/>
-			6.- ¿Cuántos automóviles propios, excluyendo taxis, tienen en su hogar?<input type="text" name="res6" disabled/>
-			7.- ¿Cuántas televisiones a color tienen funcionando e su hogar?<input type="text" name="res7" disabled/>
-			8.- ¿Cuántas computadoras personales, ya sea de escritorio o laptop, tienen funcionando en su hogar?	<input type="text" name="res8" disabled/>
-			9.- ¿En su hogar cuentan con estufa de gas o eléctrica?	<input type="text" name="res9" disabled/>
-			10.- Pensando en la persona que aporta la mayor parte del ingreso a su hogar, ¿Cuál fue el último año de estudios que completó? ¿Realizó otros estudios?<input type="text" name="res10" disabled/>
-			<form id="form_cal">
-				Calificacion Respuesta 1<input class="cal" type="number" name="cal1" required/>
-				Calificacion Respuesta 2<input class="cal" type="number" name="cal2" required/>
-				Calificacion Respuesta 3<input class="cal" type="number" name="cal3" required/>
-				Calificacion Respuesta 4<input class="cal" type="number" name="cal4" required/>
-				Calificacion Respuesta 5<input class="cal" type="number" name="cal5" required/>
-				Calificacion Respuesta 6<input class="cal" type="number" name="cal6" required/>
-				Calificacion Respuesta 7<input class="cal" type="number" name="cal7" required/>
-				Calificacion Respuesta 8<input class="cal" type="number" name="cal8" required/>
-				Calificacion Respuesta 9<input class="cal" type="number" name="cal9" required/>
-				Calificacion Respuesta 10<input class="cal" type="number" name="cal10" required/>
-				Puntaje<input type="text" name="puntaje" disabled/>
-				Nivel<input type="text" name="nivel"/>
-				Observaciones<input type="text" name="observaciones"/>
-				<select name="proceso" form="form_cal">
-					<option value="0">Solicitud</option>
-					<option value="1">En Proceso</option>
-					<option value="2">Becar</option>
-					<option disabled>-------</option>
-					<option value="3">Eliminar</option>
-				</select>
-				<button id="btn_proc_solicitud">Procesar Solicitud</button>
-			</form>
+
+			<ul class="w3-pagination w3-white w3-border-bottom" style="width:100%;">
+
+		   <li><a href="#" class="tablink" id="btn_dpersonales">DATOS PERSONALES</a></li>
+		   <li><a href="#" class="tablink" id="btn_dfamiliares">DATOS FAMILIARES</a></li>
+		   <li><a href="#" class="tablink" id="btn_descolares">DATOS ESCOLARES</a></li>
+		   <li><a href="#" class="tablink" id="btn_dencuesta">DATOS ENCUESTA</a></li>
+		  </ul>
+
+
+	    	<div id="div_dpersonales">
+
+				<p>Nombre</p><input type="text"   class="form-control" name="nombre" disabled/>
+				<br>
+				<form class="form-inline">
+					<div class="form-group"> 
+						<p>Sexo</p><input type="text"  class="form-control"  name="sexo" disabled/>
+					</div>
+					<div class="form-group"> 
+						<p>Fecha de Nacimiento</p><input type="text" class="form-control" id="exampleInputName2 " name="fec_nac" disabled/>
+					</div>
+					<div class="form-group"> 
+						<p>Estado Civil</p><input type="text" class="form-control" id="exampleInputName2 " name="estado_civil_solicitante" disabled/>
+					</div>
+					<div class="form-group"> 
+						<p>Tiene Hijos</p><input type="text" class="form-control" id="exampleInputName2 " name="hijos" disabled/>
+					</div>
+				</form>
+				<br>
+				<form class="form-inline">
+					<div class="form-group"> 
+						<p>Direccion</p><input type="text" name="direccion" disabled/>
+					</div>
+					<div class="form-group"> 
+						<p>Entre Calle </p><input type="text" name="entre_calle_1" disabled/>
+					</div>
+					<div class="form-group"> 
+						<p>y Calle </p><input type="text" name="entre_calle_2" disabled/>
+					</div>
+					<div class="form-group"> 
+						<p>Cerca de </p><input type="text" name="cerca_de" disabled/>
+					</div>
+				</form>
+				<br>
+				<form class="form-inline">
+					<div class="form-group"> 
+						<p>Ciudad</p><input type="text" name="ciudad" disabled/>
+					</div>
+					<div class="form-group"> 
+						<p>Teléfono </p><input type="text" name="tel" disabled/>
+					</div>
+					<div class="form-group"> 
+						<p>Celular </p><input type="text" name="cel" disabled/>
+					</div>
+					<div class="form-group"> 
+						<p>Correo </p><input type="text" name="correo" disabled/>
+					</div>
+				</form>
+	
+			</div>
+			<div id="div_dfamiliares">
+				<p>Nombre de Padre o Tutor</p><input type="text"  class="form-control" name="padre_nombre" disabled/>
+				<br>
+				<form class="form-inline">
+					<div class="form-group"> 
+						<p>Edad</p><input type="text" name="padre_edad" disabled/>
+					</div>
+					<div class="form-group"> 
+						<p>Nivel Educativo</p><input type="text" name="padre_nivel_educativo" disabled/>
+					</div>
+					<div class="form-group"> 
+						<p>Ocupación</p><input type="text" name="padre_ocupacion" disabled/>
+					</div>
+					<div class="form-group"> 
+						<p>Estado</p><input type="text" name="padre_vivo_muerto" disabled/>
+					</div>
+				</form>
+				<br>
+				<p>Nombre de Madre o Tutor</p><input type="text" class="form-control" name="madre_nombre" disabled/>
+				<br>
+				<form class="form-inline">
+					<div class="form-group"> 
+						<p>Edad</p><input type="text" name="madre_edad" disabled/>
+					</div>
+					<div class="form-group"> 
+						<p>Nivel Educativo</p><input type="text" name="madre_nivel_educativo" disabled/>
+					</div>
+					<div class="form-group"> 
+						<p>Ocupación</p><input type="text" name="madre_ocupacion" disabled/>
+					</div>
+					<div class="form-group"> 
+						<p>Estado</p><input type="text" name="madre_vivo_muerto" disabled/>
+					</div>
+				</form>
+				<br>
+				<form class"form-inline">
+					<div class="form-group">
+						<p>Estado Civil de los Padres</p><input type="text" name="edo_civil_padres" disabled/>
+					</div>
+				</form>
+				<br>
+				<p>Actualmente,¿Con quién vives?</p><input type="text" name="vive_con" class="form-control" disabled/>
+				<br>
+				<p>¿Cuántas personas dependen del ingreso familiar?</p><input type="text" name="personas_dependen_ingreso" class="form-control" disabled/>
+				<br>
+				<p>¿Cuántas de ellas estudian?</p><input type="text" name="familia_estudian" class="form-control" disabled/>
+				<br>
+				<p>¿En qué niveles educativos?</p><input type="text" name="niveles_estudian" class="form-control" disabled/>
+				<br>
+			</div>
+			<div id="div_descolares">
+				<form class="form-inline">
+					<div class="form-group"> 
+						<p>Periodo</p><input type="text" name="periodo" disabled/>
+					</div>
+					<div class="form-group"> 
+						<p>Nivel Educativo</p><input type="text" name="nivel_educativo" disabled/>
+					</div>
+					
+				</form>
+				<br>
+				<p>Escuela</p><input type="text" class="form-control" name="escuela" disabled/>
+				<br>
+				<form class="form-inline">
+					<div class="form-group"> 
+						<p>Carrera</p><input type="text" name="carrera" disabled/>
+					</div>
+					<div class="form-group"> 
+						<p>Grado</p><input type="text" name="grado" disabled/>
+					</div>
+					<div class="form-group"> 
+						<p>Turno</p><input type="text" name="turno" disabled/>
+					</div>
+					<div class="form-group"> 
+						<p>Promedio</p><input type="text" name="promedio" disabled/>
+					</div>
+					<div class="form-group"> 
+						<p>Estado de Inscripción</p><input type="text" name="estado" disabled/>
+					</div>
+				</form>
+
+			</div>
+			<div id="div_dencuesta">
+				<form class="form-inline">
+					<div class="form-group"> 
+						<p>1.- ¿Cuál es el total de cuartos, piezas o habitaciones con que cuenta su hogar?</p>
+					</div>
+				</form>
+				<form class="form-inline">
+					<div class="w3-container w3-half">
+						Respuesta:<input type="text"  name="res1" disabled/>
+					</div>
+					<div class="form-group"> 
+						Calificación:<input class="cal" type="number" name="cal1" required/>
+					</div>
+					
+				</form>
+				<br>
+
+				<form class="form-inline">
+					<div class="form-group">
+						<p>2.-¿Cuántos baños completos con regadera y W.C. (excusado) hay para uso exclusivo de los integrantes del hogar?</p>
+					</div>
+				</form>
+				<form class="form-inline">
+					<div class="w3-container w3-half">
+						Respuesta:<input type="text" name="res2"  disabled/>
+					</div>
+					<div class="form-group" > 
+						Calificación:<input class="cal" type="number" name="cal2" required/>
+					</div>
+					
+				</form>
+				<br>
+
+				<form class="form-inline">
+					<div class="form-group"> 
+						<p>3.- ¿En el hogar cuenta con regadera funcionando en alguno de los baños?</p>
+					</div>
+				</form>
+				<form class="form-inline">
+					<div class="w3-container w3-half"> 
+						Respuesta:<input type="text" name="res3"  disabled/>
+					</div>
+					<div class="form-group"> 
+						Calificación:<input class="cal" type="number" name="cal3" required/>
+					</div>
+				</form>
+				<br>
+
+				<form class="form-inline">
+					<div class="form-group"> 
+						<p>4.- Contanto todos los focos que utiliza para iluminar su hogar, incluyendo los techos, paredes y lámparas de buró o piso ¿Cuántos focos tiene su vivienda?</p>
+					</div>
+				</form>
+				<form class="form-inline">
+					<div class="w3-container w3-half"> 
+						Respuesta:<input type="text" name="res4" disabled/>
+					</div>
+					<div class="form-group"> 
+						Calificación:<input class="cal" type="number" name="cal4" required/>
+					</div>
+				</form>
+				<br>
+
+				<form class="form-inline">
+					<div class="form-group"> 
+						<p>5.- El piso de su hogar es predominate de tierra, cemento o de algún otro tipo de acabado?</p>
+					</div>
+				</form>
+				<form class="form-inline">
+					<div class="w3-container w3-half"> 
+						Respuesta:<input type="text" name="res5" disabled/>
+					</div>
+					<div class="form-group"> 
+						Calificación:<input class="cal" type="number" name="cal5" required/>
+					</div>
+				</form>
+				<br>
+
+				<form class="form-inline">
+					<div class="form-group"> 
+						<p>6.- ¿Cuántos automóviles propios, excluyendo taxis, tienen en su hogar?</p>
+					</div>
+				</form>
+				<form class="form-inline">
+					<div class="w3-container w3-half"> 
+						Respuesta:<input type="text" name="res6" disabled/>
+					</div>
+					<div class="form-group"> 
+						Calificación:<input class="cal" type="number" name="cal6" required/>
+					</div>
+				</form>
+				<br>
+
+				<form class="form-inline">
+					<div class="form-group"> 
+						<p>7.- ¿Cuántas televisiones a color tienen funcionando e su hogar?</p>
+					</div>
+				</form>
+				<form class="form-inline">
+					<div class="w3-container w3-half"> 
+						Respuesta:<input type="text" name="res7" disabled/>
+					</div>
+					<div class="form-group"> 
+						Calificación:<input class="cal" type="number" name="cal7" required/>
+					</div>
+				</form>
+				<br>
+				<form class="form-inline">
+					<div class="form-group"> 
+						<p>8.- ¿Cuántas computadoras personales, ya sea de escritorio o laptop, tienen funcionando en su hogar?</p>
+					</div>
+				</form>
+				<form class="form-inline">
+					<div class="w3-container w3-half"> 
+						Respuesta:<input type="text" name="res8" disabled/>
+					</div>
+					<div class="form-group"> 
+						Calificación:<input class="cal" type="number" name="cal8" required/>
+					</div>
+				</form>
+				<br>
+
+				<form class="form-inline">
+					<div class="form-group"> 
+						<p>9.- ¿En su hogar cuentan con estufa de gas o eléctrica?</p>
+					</div>
+				</form>
+				<form class="form-inline">
+					<div class="w3-container w3-half"> 
+						Respuesta:<input type="text" name="res9" disabled/>
+					</div>
+					<div class="form-group"> 
+						Calificación:<input class="cal" type="number" name="cal9" required/>
+					</div>
+				</form>
+				<br>
+
+				<form class="form-inline">
+					<div class="form-group"> 
+						<p>10.- Pensando en la persona que aporta la mayor parte del ingreso a su hogar, ¿Cuál fue el último año de estudios que completó? ¿Realizó otros estudios?</p>
+					</div>
+				</form>
+				<form class="form-inline">
+					<div class="w3-container w3-half"> 
+						Respuesta:<input type="text" name="res10" disabled/>
+					</div>
+					<div class="form-group"> 
+						Calificación:<input class="cal" type="number" name="cal10" required/>
+					</div>
+				</form>
+				<br>
+				
+				<form id="form_cal" >
+					<form class="form-inline" >
+						<div class="w3-container w3-half"> 
+							
+						</div>
+						<div class="form-group"> 
+							Puntaje:&nbsp &nbsp &nbsp &nbsp<input type="text" name="puntaje" disabled/>
+						</div>
+					</form>
+
+					<form class="form-inline" >
+						<div class="w3-container w3-half"> 
+							Nivel:&nbsp &nbsp &nbsp &nbsp &nbsp<input type="text" name="nivel"/>
+						</div>
+						<div class="form-group"> 
+							Status:&nbsp &nbsp &nbsp &nbsp &nbsp <select name="proceso" form="form_cal">
+										<option value="0">Solicitud</option>
+										<option value="1">En Proceso</option>
+										<option value="2">Becar</option>
+										<option disabled>-------</option>
+										<option value="3">Eliminar</option>
+									</select>
+						</div>
+					</form>
+					<br>
+					<br>
+					<p>Observaciones:<p><textarea type="text"class="form-control" name="observaciones"/></textarea>
+					
+			
+					<button id="btn_proc_solicitud">Procesar Solicitud</button>
+					
+					
+				</form>
+			</div>
+
+
+
 	    	<div class="loader" style="display:none;"></div>
 	    	<div id="div_modalMessage" class="w3-container w3-red w3-card-8" style="display:none;">
 				<span onclick="this.parentElement.style.display='none'" class="w3-closebtn">&times;</span>
@@ -132,11 +484,55 @@
 	    </div>
 	</div>
 	</div>
+</div>
+</div>
+</div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
 
 
+	$("#div_dfamiliares").hide();
+	$("#div_descolares").hide();
+	$("#div_dencuesta").hide();
 
+	$("#btn_dpersonales").click(function(event){
+		event.preventDefault();
+		$("#div_dpersonales").show();
+		$("#div_dfamiliares").hide();
+		$("#div_descolares").hide();
+		$("#div_dencuesta").hide();
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	});
+	$("#btn_dfamiliares").click(function(event){
+		event.preventDefault();
+		$("#div_dpersonales").hide();
+		$("#div_dfamiliares").show();
+		$("#div_descolares").hide();
+		$("#div_dencuesta").hide();
+
+	});
+	$("#btn_descolares").click(function(event){
+		event.preventDefault();
+		$("#div_dpersonales").hide();
+		$("#div_dfamiliares").hide();
+		$("#div_descolares").show();
+		$("#div_dencuesta").hide();
+
+	});
+	$("#btn_dencuesta").click(function(event){
+		event.preventDefault();
+		$("#div_dpersonales").hide();
+		$("#div_dfamiliares").hide();
+		$("#div_descolares").hide();
+		$("#div_dencuesta").show();
+
+	});
+
+});
+</script>
+
 <script type="text/javascript">
 $(document).ready(function() {
 	var table=$('#solicitudes_tabla').DataTable({
@@ -318,14 +714,8 @@ $(document).ready(function() {
 				$(".modalMessage").text('<h3>Error!</h3><p>'+res.statusText+'</p>');
 			}
 		});
-		//var nombre=$(this).children('td:nth-child(2)').text();
-		//$("input[name='id_becado_hddn']").val(id_becado);
-		//$("input[name='nombre']").val(nombre);
 		<?php 
-			//if(isset($this->session->userdata['logged_in'])&&$this->session->userdata['logged_in']['privilegios']==99)
-			//	echo "$('#hddn_eliminar').val(folio);\n";
 		?>
-		//$('.modal_agregar_horas').show();
 		$('#myModal').show();
 	});
 	$('.close').on('click',function(e){
@@ -338,6 +728,8 @@ $(document).ready(function() {
 	});
 });
 </script>
+<script src="<?=base_url();?>js/bootstrap.min.js"></script>
+
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.11/css/jquery.dataTables.css">
 <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.11/js/jquery.dataTables.js"></script>
 </body>
