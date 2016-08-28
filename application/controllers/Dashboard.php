@@ -49,6 +49,94 @@ public function index(){
 	}
 }
 
+public function becar(){
+	if(isset($this->session->userdata['logged_in'])){
+		if($this->session->userdata['logged_in']['privilegios']==99){
+			$this->form_validation->set_rules('id_solicitud', 'Solicitud', 'trim|required|xss_clean|numeric');
+			$this->form_validation->set_rules('recomendado', 'Recomendado', 'trim|xss_clean');
+			$this->form_validation->set_rules('observacion', 'Observacion', 'trim|xss_clean');
+			$this->form_validation->set_rules('car_compromiso', 'Carta Compromiso', 'trim|required|xss_clean|numeric');
+			$this->form_validation->set_rules('formulario_IB', 'Formulario IB', 'trim|required|xss_clean|numeric');
+			$this->form_validation->set_rules('facebook', 'Facebook', 'trim|xss_clean');
+			$this->form_validation->set_rules('h_artisticas', 'Habilidades Artisticas', 'trim|xss_clean');
+			$this->form_validation->set_rules('h_deportivas', 'Habilidades Deportivas', 'trim|xss_clean');
+			$this->form_validation->set_rules('h_civicas', 'Habilidades Civicas', 'trim|xss_clean');
+			$this->form_validation->set_rules('h_lenguaje', 'Habilidades Lenguaje', 'trim|xss_clean');
+			$this->form_validation->set_rules('puntaje', 'Puntaje', 'trim|xss_clean');
+			$this->form_validation->set_rules('v', 'V', 'trim|xss_clean');
+			$this->form_validation->set_rules('diagnostico_social', 'Diagnostico Social', 'trim|xss_clean');
+			$this->form_validation->set_rules('username', 'Usuario', 'trim|required|xss_clean');
+			$this->form_validation->set_rules('password', 'Contraseña', 'trim|required|xss_clean');
+			$this->form_validation->set_rules('confirm_password', 'Confirm Contraseña', 'trim|required|xss_clean');
+
+			
+			if ($this->form_validation->run() == FALSE) {
+				$response['success']=-1;
+				$response['message']="Fallo en la validación de campos";
+			}else{
+				$this->load->model('login_database');
+				if($this->login_database->user_exists($this->input->post('username'))){
+					$response['success']=0;
+					$response['message']="El usuario ".$this->input->post('username')." ya existe";
+				}else if($this->input->post('password')!=$this->input->post('confirm_password')){
+					$response['success']=-1;
+					$response['message']="Los campos de contraseña no coinciden";
+				}else{
+					$data=array(
+						'id_solicitud'=>$this->input->post('id_solicitud'),
+						'recomendado'=>$this->input->post('recomendado')==null?'':$this->input->post('recomendado'),
+						'observacion'=>$this->input->post('observacion')==null?'':$this->input->post('observacion'),
+						'car_compromiso'=>$this->input->post('car_compromiso'),
+						'formulario_IB'=>$this->input->post('formulario_IB'),
+						'facebook'=>$this->input->post('facebook')==null?'':$this->input->post('facebook'),
+						'h_artisticas'=>$this->input->post('h_artisticas')==null?'':$this->input->post('h_artisticas'),
+						'h_deportivas'=>$this->input->post('h_deportivas')==null?'':$this->input->post('h_deportivas'),
+						'h_civicas'=>$this->input->post('h_civicas')==null?'':$this->input->post('h_civicas'),
+						'h_lenguaje'=>$this->input->post('h_lenguaje')==null?'':$this->input->post('h_lenguaje'),
+						'v'=>$this->input->post('v')==null?'':$this->input->post('v'),
+						'diagnostico_social'=>$this->input->post('diagnostico_social')==null?'':$this->input->post('diagnostico_social'),
+						'puntaje'=>$this->input->post('puntaje')==null?'':$this->input->post('puntaje'),
+						'username'=>$this->input->post('username'),
+						'password'=>$this->input->post('password')
+					);
+					$this->load->model('user');
+					$result=$this->user->becar($data);
+					if($result!=FALSE){
+						$response['success']=1;
+						$response['message']="Becado agregado correctamente";	
+					}else{
+						$response['success']=0;
+						$response['message']="No se ha podido registrar el becado";
+					}
+				
+				}
+			}
+			die(json_encode($response));
+		}else{
+			redirect(base_url().'dashboard/','refresh');
+		}
+	}else{
+		redirect(base_url(),'refresh');
+	}
+}
+
+public function becados(){
+	if(isset($this->session->userdata['logged_in'])){
+		if($this->session->userdata['logged_in']['privilegios']==99){
+			$data=array();
+			$becados=$this->read_data->get_becados();
+			if($becados!=FALSE) $data['becados_tabla']=$becados;
+			$data['campos_data']=$this->read_data->get_becados_fields();
+			$this->load->view('admin_becados',$data);
+		}else{
+			redirect(base_url().'dashboard/','refresh');
+		}
+	}else{
+		redirect(base_url(),'refresh');
+	}
+
+}
+
 public function solicitudes(){
 	if(isset($this->session->userdata['logged_in'])){
 		if($this->session->userdata['logged_in']['privilegios']==99){

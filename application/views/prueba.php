@@ -46,6 +46,12 @@
 	</script>
 </head>
 <body>
+	<form method="post" action="<?=base_url()?>ajax_post/get_data_becado">
+		<input name="id_becado" type="text" value="5"/>
+		<input type="submit" value="Send"/>
+		
+	</form>
+	<br><br><bR>
 	<form method="post" action="<?=base_url().'dashboard/set_solicitud_info'?>">
 		<input name="id_solicitud" type="text" value="3"/>
 		<input name="cal1" type="text" value="4"/>
@@ -72,5 +78,10 @@
 		<input type="submit" value="submit"/>
 	</form>
 	<div id="testo"></div>
+	<br><br>
+	<form>
+		<input type="checkbox" name="chbx" value="aa"/>
+		<button>Send</button>
+	</form>
 </body>
 </html>
