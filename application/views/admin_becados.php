@@ -222,6 +222,9 @@
 						<p>V</p><input type="text" name="v" />
 					</div>
 				</form>
+				<form id="save_dgenerales">
+					<button>Guardar Datos Generales</button>
+				</form>
 				<table id="pagos_tabla">
 					<thead>
 						<tr>
@@ -611,6 +614,7 @@ $(document).ready(function() {
 		clearModal();
 	});
 
+
 	function clearModal(){
 		$("input").each(function(){
 			$(this).val('');
@@ -725,6 +729,38 @@ $(document).ready(function() {
 		$('#myModal').show();
 	});
 
+	$("#save_dgenerales").submit(function(e){
+		e.preventDefault();
+		$(".loader").show();
+
+		var status = $("select[name='status']").val();
+		var notas = $("input[name='notas']").val();
+		var recomendado = $("input[name='recomendado']").val();
+		var observacion = $("input[name='observacion']").val();
+		var car_compromiso = $("select[name='car_compromiso']").val();
+		var formulario_IB = $("select[name='formulario_IB']").val();
+		var puntaje_encuesta_p1 = $("input[name='puntaje_encuesta_p1']").val();
+		var nivel = $("input[name='nivel']").val();
+		var diagnostico_social = $("input[name='diagnostico_social']").val();
+		var puntaje_encuesta_p2 = $("input[name='puntaje_encuesta_p2']").val();
+		var v = $("input[name='v']").val();
+
+		jQuery.ajax({
+			type: "POST",
+			url: "http://<?php echo $_SERVER['SERVER_NAME']; ?>/becados/ajax_post/update_data_becado",
+			dataType: 'json',
+			data: {id_becado:id_becado,status:status,notas:notas,recomendado:recomendado,observacion:observacion,car_compromiso:car_compromiso,formulario_IB:formulario_IB,puntaje_encuesta_p1:puntaje_encuesta_p1,nivel:nivel,diagnostico_social:diagnostico_social,v:v},
+			success: function(obj) {
+				$(".loader").hide();
+				$(".modalMessage").text('Datos actualizados correctamente');
+				$("#div_modalMessage").show();
+			},
+			error: function(res){
+				$(".loader").hide();
+				$(".modalMessage").text('<h3>Error!</h3><p>'+res.statusText+'</p>');
+			}
+		});
+	});
 
 	$('.close').on('click',function(e){
 		$('#myModal,#div_modalMessage').hide();

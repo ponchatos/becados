@@ -226,11 +226,32 @@ public function update_data_becado(){
 			$this->form_validation->set_rules('observacion', 'Becado', 'trim|xss_clean');
 			$this->form_validation->set_rules('car_compromiso', 'Becado', 'trim|required|xss_clean|numeric');
 			$this->form_validation->set_rules('formulario_IB', 'Becado', 'trim|required|xss_clean|numeric');
+			$this->form_validation->set_rules('puntaje_encuesta_p1', 'Becado', 'trim|xss_clean');
+			$this->form_validation->set_rules('nivel', 'Becado', 'trim|xss_clean');
+			$this->form_validation->set_rules('diagnostico_social', 'Becado', 'trim|xss_clean');
+			$this->form_validation->set_rules('puntaje_encuesta_p2', 'Becado', 'trim|xss_clean');
+			$this->form_validation->set_rules('v', 'Becado', 'trim|xss_clean');
 
 			if ($this->form_validation->run() == FALSE) {
 				$response['success']=-1;
 				$response['message']="Fallo en la validación";
 			}else{
+				$this->load->model('user');
+				$data_enc_1=array(
+					'id_becado'=>$this->input->post('id_becado'),
+					'puntaje'=>$this->input->post('puntaje_encuesta_p1'),
+					'nivel'=>$this->input->post('nivel')
+					);
+				$this->user->update_encuesta_p1($data_enc_1);
+
+				$data_enc_2=array(
+					'id_becado'=>$this->input->post('id_becado'),
+					'v'=>$this->input->post('v'),
+					'diagnostico_social'=>$this->input->post('diagnostico_social'),
+					'puntaje'=>$this->input->post('puntaje_encuesta_p2')
+					);
+				$this->user->update_encuesta_p2($data_enc_2);
+
 				$data=array(
 					'id_becado'=>$this->input->post('id_becado'),
 					'status'=>$this->input->post('status'),
@@ -241,7 +262,7 @@ public function update_data_becado(){
 					'formulario_IB'=>$this->input->post('formulario_IB')
 				);
 
-				$this->load->modal('user');
+				
 				$result=$this->user->update_data_becado($data);
 				if($result!=FALSE){
 					$response['success']=1;
