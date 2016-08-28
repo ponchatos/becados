@@ -229,7 +229,7 @@
 						?>
 					</select>
 					Escuela 
-					<select name="id_escuela" form="form_descolares">
+					<select name="escuela" form="form_descolares">
 						<?php 
 							if(isset($campos_data['escuela'])){
 								foreach ($campos_data['escuela'] as $row) {
@@ -263,9 +263,21 @@
 					</select>
 				</form>
 
-				periodo pago<input type="text" name="periodo_pago" disabled/>
+				<!--periodo pago<input type="text" name="periodo_pago" disabled/>
 				fecha<input type="text" name="fecha_pago" disabled/>
-				importe<input type="text" name="importe_pago" disabled/>
+				importe<input type="text" name="importe_pago" disabled/>-->
+				<table id="pagos_tabla">
+					<thead>
+						<tr>
+							<th>Periodo de Pago</th>
+							<th>Fecha de Pago</th>
+							<th>Importe</th>
+						</tr>
+					</thead>
+					<tbody>
+
+					</tbody>
+				</table>
 
 	    	</div>
 
@@ -290,13 +302,22 @@ $(document).ready(function() {
 	$('#btn_prueba').click(function(e){
 		e.preventDefault();
 		//$("select[name='status']").find('option[text="Egresado"]').attr('selected','selected');
-		$("select[name='status'] option:contains("+obj.data.status+")").attr('selected','selected');
+		//$("select[name='status'] option:contains("+obj.data.status+")").attr('selected','selected');
+		clearModal();
 	});
+
+	function clearModal(){
+		$("input").each(function(){
+			$(this).val('');
+		});
+	}
 
 	var id_becado;
 	$('#becados_tabla tbody').on( 'click','tr',function (e) {
 		id_becado=$(this).children('td:nth-child(1)').text();
 		$(".loader").show();
+		$("#pagos_tabla").children("tbody").text("");
+		clearModal();
 
 		jQuery.ajax({
 			type: "POST",
@@ -367,6 +388,11 @@ $(document).ready(function() {
 				$("select[name='turno'] option:contains("+obj.data.turno+")").attr('selected','selected');
 				$("input[name='promedio']").val(obj.data.promedio);
 				$("select[name='estado'] option[value='"+obj.data.estado+"']").attr('selected','selected');
+
+				$.each(obj.data.pagos, function( index, value ){
+					var str = "<tr><td>"+value.periodo+"</td><td>"+value.fecha+"</td><td>"+value.importe+"</td></tr>";
+					$("#pagos_tabla").children("tbody").append(str);
+				});
 				//$("#div_modalMessage").show();
 				//$("#modalMessage").text('');
 				//$("#modalMessage").append(JSON.stringify(obj));

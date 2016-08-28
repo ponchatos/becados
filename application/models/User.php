@@ -12,7 +12,7 @@ public function update_data_escolares($data){
 		$this->db->update('datos_escolares',$data);
 		return $this->db->affected_rows()>0;
 	}else{
-		return FALSE
+		return FALSE;
 	}
 }
 
@@ -26,7 +26,7 @@ public function update_data_familiares($data){
 		$this->db->update('datos_familiares',$data);
 		return $this->db->affected_rows()>0;
 	}else{
-		return FALSE
+		return FALSE;
 	}
 }
 
@@ -40,7 +40,7 @@ public function update_data_personales($data){
 		$this->db->update('datos_personales',$data);
 		return $this->db->affected_rows()>0;
 	}else{
-		return FALSE
+		return FALSE;
 	}
 }
 
