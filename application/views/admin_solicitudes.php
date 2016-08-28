@@ -27,6 +27,7 @@
 
 </head>
 <body>
+<div style="margin:0 auto;text-align:center"><button onclick="document.getElementById('Modal_Becar').style.display = 'block';">Pa abrir modal, especialmente para ti chiquito ;)</button></div>
 <div class="page-container">
 	<div class="left-content">
 	   <div class="inner-content">
@@ -61,7 +62,7 @@
 					<span onclick="this.parentElement.style.display='none'" class="w3-closebtn">&times;</span>
 					<div id="message"></div>
 				</div>
-
+				<div class="resp_table">
 				<table id="solicitudes_tabla">
 					<thead>
 						<tr>
@@ -90,6 +91,7 @@
 					?>
 					</tbody>
 				</table>
+				</div>
 		</div>
 	</div>
 	<div class="clearfix"> </div>
@@ -439,22 +441,22 @@
 				</form>
 				<br>
 				
-				<form id="form_cal" >
+				
 					<form class="form-inline" >
 						<div class="w3-container w3-half"> 
 							
 						</div>
 						<div class="form-group"> 
-							Puntaje:&nbsp &nbsp &nbsp &nbsp<input type="text" name="puntaje" disabled/>
+							Puntaje:&nbsp; &nbsp; &nbsp; &nbsp;<input type="text" name="puntaje" disabled/>
 						</div>
 					</form>
 
 					<form class="form-inline" >
 						<div class="w3-container w3-half"> 
-							Nivel:&nbsp &nbsp &nbsp &nbsp &nbsp<input type="text" name="nivel"/>
+							Nivel:&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<input type="text" name="nivel"/>
 						</div>
 						<div class="form-group"> 
-							Status:&nbsp &nbsp &nbsp &nbsp &nbsp <select name="proceso" form="form_cal">
+							Status:&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <select name="proceso" form="form_cal">
 										<option value="0">Solicitud</option>
 										<option value="1">En Proceso</option>
 										<option value="2">Becar</option>
@@ -465,10 +467,11 @@
 					</form>
 					<br>
 					<br>
-					<p>Observaciones:<p><textarea type="text"class="form-control" name="observaciones"/></textarea>
+					<p>Observaciones:<p><textarea type="text" class="form-control" name="observaciones"/></textarea>
 					
-			
+				<form id="form_cal" >
 					<button id="btn_proc_solicitud">Procesar Solicitud</button>
+					<!--<input type="submit" value="Procesar Solicitud"/>-->
 					
 					
 				</form>
@@ -483,6 +486,65 @@
 			</div>
 	    </div>
 	</div>
+	</div>
+	<div id="Modal_Becar" class="modal">
+		<div class="modal-content">
+	    	<div class="modal-header" style="height:70px">
+		    	<span class="close">×</span>
+		    	N° Solicitud: <input type="text" name="id_solicitud" disabled/>
+		    	Fecha de Solicitud: <input type="text" name="fec_solicitud" disabled/>
+		    	
+		    </div>
+		    <div class="modal-body">
+		    	<div class="loader" style="display:none;"></div>
+
+		    	<form id="form_becar" name="form_becar" method="post">
+					Recomendado por:
+					<input type="text" name="recomendado" />
+					Observación:
+					<input type="text" name="observacion_becado" />
+					Carta compromiso:
+					<input type="radio" name="car_compromiso" value="0" checked/>No<br>
+					<input type="radio" name="car_compromiso" value="1" />Si<br>
+					Formulario:
+					<input type="radio" name="formulario_IB" value="0" checked/>No<br>
+					<input type="radio" name="formulario_IB" value="1" />Si<br>
+					Facebook:
+					<input type="text" name="facebook"/>
+					Habilidades:
+					Artisticas:
+					<input type="text" name="h_artisticas"/>
+					Deportivas:
+					<input type="text" name="h_deportivas"/>
+					Civicas:
+					<input type="text" name="h_civicas"/>
+					Lenguaje:
+					<input type="text" name="h_lenguaje"/>
+					Puntaje:
+					<input type="text" name="puntaje"/>
+					V:
+					<input type="text" name="v"/>
+					Diagnostico Social:
+					<textarea form="form_becar" name="diagnostico_social" cols="50" rows="6" maxlength="400"></textarea>
+					<br>
+					Crear usuario:
+					<input type="text" name="username" required/>
+					Contraseña:
+					<input type="password" name="password" required/>
+					Confirmar contraseña:
+					<input type="password" name="confirm_password" required>
+					<button class="genPass" onclick="generate_password();" value="Generar Contraseña">Generar Contraseña</button>
+					<button class="genPass" onclick="toggle_password();" value="Ver/Ocultar Contraseña">Ver/Ocultar Contraseña</button>
+					
+					<br>
+					<button type="submit" id="btn_becar" value="Becar">Becar</button>
+					<div id="div_modalBecarMessage" class="w3-container w3-red w3-card-8" style="display:none;">
+						<span onclick="this.parentElement.style.display='none'" class="w3-closebtn">&times;</span>
+						<div id="modalBecarMessage"></div>
+					</div>
+				</form>
+		    </div>
+		</div>
 	</div>
 </div>
 </div>
@@ -534,17 +596,47 @@ $(document).ready(function(){
 </script>
 
 <script type="text/javascript">
+	function randomPassword(length=10) {
+	    var chars = "abcdefghijklmnopqrstuvwxyz1234567890";
+	    var pass = "";
+	    for (var x = 0; x < length; x++) {
+	        var i = Math.floor(Math.random() * chars.length);
+	        pass += chars.charAt(i);
+	    }
+	    return pass;
+	}
+
+	function generate_password() {
+	    form_becar.password.type="text";
+	    form_becar.confirm_password.type="text";
+	    var pass=randomPassword(10);
+	    form_becar.password.value = pass;
+	    form_becar.confirm_password.value = pass;
+	}
+
+	function toggle_password(){
+		form_becar.password.type=form_becar.password.type=="text"?"password":"text";
+	    form_becar.confirm_password.type=form_becar.confirm_password.type=="text"?"password":"text";
+	}
+</script>
+
+<script type="text/javascript">
 $(document).ready(function() {
 	var table=$('#solicitudes_tabla').DataTable({
 		"destroy":true,
 	    "pageLength": 10,
-	    "autoWidth": false
+	    "autoWidth": false,
+	    "responsive": true
 	});
 
 
 
 	var id_solicitud;
 	$(".loader").hide();
+
+	$(".genPass").click(function(e){
+		e.preventDefault();
+	});
 
 	$(".cal").change(function () {
 	    //var suma = $("input[name='cal1']").val()+
@@ -572,7 +664,7 @@ $(document).ready(function() {
 		var cal9=$("input[name='cal9']").val();
 		var cal10=$("input[name='cal10']").val();
 		var nivel=$("input[name='nivel']").val();
-		var observaciones=$("input[name='observaciones']").val();
+		var observaciones=$("textarea[name='observaciones']").val();
 		var proceso=$("select[name='proceso']").val();
 
 		if(proceso==3){
@@ -592,6 +684,9 @@ $(document).ready(function() {
 					$("#message").text(obj.message);
 					$("#myModal").hide();
 					
+					if(proceso==2){
+						$("#Modal_Becar").show();
+					}
 					if(proceso==3){
 						$(".row_solicitud").each(function(){
 							if($(this).children('td:nth-child(1)').text()==id_solicitud){
@@ -613,7 +708,89 @@ $(document).ready(function() {
 		});
 	});
 
+	$("#form_becar").submit(function(event){
+		event.preventDefault();
+		if($("input[name=password").val()!=$("input[name=confirm_password").val()){
+			$("#modalBecarMessage").text("Los campos de contraseña no coinciden");
+			$("#div_modalBecarMessage").show();
+			return false;
+		}
+		//$("#form_becar").submit();
+		var recomendado = $("input[name='recomendado']").val();
+		var observacion = $("input[name='observacion_becado']").val();
+		var car_compromiso = $("input[type='radio'][name='car_compromiso']:checked").val();
+		var formulario_IB = $("input[name='formulario_IB']:checked").val();
+		var facebook = $("input[name='facebook']").val();
+		var h_artisticas = $("input[name='h_artisticas']").val();
+		var h_deportivas = $("input[name='h_deportivas']").val();
+		var h_civicas = $("input[name='h_civicas']").val();
+		var h_lenguaje = $("input[name='h_lenguaje']").val();
+		var puntaje = $("input[name='puntaje']").val();
+		var v = $("input[name='v']").val();
+		var diagnostico_social = $("textarea[name='diagnostico_social']").val();
+		var username = $("input[name='username']").val();
+		var password = $("input[name='password']").val();
+		var confirm_password = $("input[name='confirm_password']").val();
+
+		/*var str = 
+		"id_solicitud="+id_solicitud
+		+"\n,recomendado="+recomendado
+		+"\n,observacion="+observacion
+		+"\n,car_compromiso="+car_compromiso
+		+"\n,formulario_IB="+formulario_IB
+		+"\n,facebook="+facebook
+		+"\n,h_artisticas="+h_artisticas
+		+"\n,h_deportivas="+h_deportivas
+		+"\n,h_civicas="+h_civicas
+		+"\n,h_lenguaje="+h_lenguaje
+		+"\n,puntaje="+puntaje
+		+"\n,v="+v
+		+"\n,diagnostico_social="+diagnostico_social
+		+"\n,username="+username
+		+"\n,password="+password
+		+"\n,confirm_password="+confirm_password;
+		alert(str);*/
+
+		jQuery.ajax({
+			type: "POST",
+			url: "http://<?php echo $_SERVER['SERVER_NAME']; ?>/becados/dashboard/becar",
+			dataType: 'json',
+			data: {id_solicitud:id_solicitud,recomendado:recomendado,observacion:observacion,car_compromiso:car_compromiso,formulario_IB:formulario_IB,facebook:facebook,h_artisticas:h_artisticas,h_deportivas:h_deportivas,h_civicas:h_civicas,h_lenguaje:h_lenguaje,puntaje:puntaje,v:v,diagnostico_social:diagnostico_social,username:username,password:password,confirm_password:confirm_password},
+			success: function(obj) {
+				if(obj.success==1){
+					$("#div_message").show();
+					$("#message").text(obj.message);
+					$("#Modal_Becar").hide();
+
+						$(".row_solicitud").each(function(){
+							if($(this).children('td:nth-child(1)').text()==id_solicitud){
+								table.row($(this)).remove().draw();
+							}
+						});
+				}else{
+					$("#div_modalBecarMessage").show();
+					$("#modalBecarMessage").text('');
+					$("#modalBecarMessage").append('<h3>Error!</h3><p>'+obj.message+'</p>');
+				}
+				$(".loader").hide();
+			},
+			error: function(res){
+				$(".loader").hide();
+				$(".modalBecarMessage").text('<h3>Error!</h3><p>'+res.statusText+'</p>');
+			}
+		});
+	});
+
+	function clearModal(){
+		$("input").each(function(){
+			if($(this).attr('type')!="radio" && $(this).attr('type')!="submit"){
+				$(this).val('');
+			}
+		});
+	}
+
 	$('#solicitudes_tabla tbody').on( 'click','tr',function (e) {
+		clearModal();
 		id_solicitud=$(this).children('td:nth-child(1)').text();
 		$(".loader").show();
 
@@ -709,11 +886,13 @@ $(document).ready(function() {
 		$('#myModal').show();
 	});
 	$('.close').on('click',function(e){
-		$('#myModal,#div_modalMessage').hide();
+		$('#myModal,#div_modalMessage,#Modal_Becar,#div_modalBecarMessage').hide();
+		//$('#myModal,#div_modalMessage').hide();
 	});
 	$(window).click(function(event){
-		if(event.target.id == "myModal"){
-			$('#myModal,#div_modalMessage').hide();
+		if(event.target.id == "myModal" || event.target.id == "Modal_Becar"){
+			$('#myModal,#div_modalMessage,#Modal_Becar,#div_modalBecarMessage').hide();
+			//$('#myModal,#div_modalMessage').hide();
 		}
 	});
 });
@@ -722,5 +901,11 @@ $(document).ready(function() {
 
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.11/css/jquery.dataTables.css">
 <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.11/js/jquery.dataTables.js"></script>
+<style type="text/css">
+	.resp_table{
+		 overflow-x: auto !important;
+		 white-space: nowrap !important;
+	}
+</style>
 </body>
 </html>
