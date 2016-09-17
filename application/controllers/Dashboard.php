@@ -282,7 +282,7 @@ public function agregar_horas(){
 
 			$this->form_validation->set_rules('id_becado_hddn', 'Becado', 'trim|required|xss_clean|numeric');
 			$this->form_validation->set_rules('evento', 'Evento', 'trim|required|xss_clean');
-			$this->form_validation->set_rules('horas', 'Horas', 'trim|required|xss_clean|numeric');
+			$this->form_validation->set_rules('horas', 'Horas', 'trim|required|xss_clean|numeric|greater_than_equal_to[0]');
 			$this->form_validation->set_rules('fecha', 'Fecha', 'trim|required|xss_clean|callback_date_valid');
 			$this->form_validation->set_rules('observacion', 'Observacion', 'trim|xss_clean');
 

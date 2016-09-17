@@ -37,6 +37,7 @@ public function update_data_escolares(){
 				$response['message']="Fallo en la validación";
 			}else{
 				$data=array(
+					'id_becado'=>$this->input->post('id_becado'),
 					'id_nivel_educativo'=>$this->input->post('nivel_educativo'),
 					'id_escuela'=>$this->input->post('escuela'),
 					'carrera'=>$this->input->post('carrera'),
@@ -46,7 +47,7 @@ public function update_data_escolares(){
 					'estado'=>$this->input->post('estado'),
 				);
 
-				$this->load->modal('user');
+				$this->load->model('user');
 				$result=$this->user->update_data_escolares($data);
 				if($result!=FALSE){
 					$response['success']=1;
@@ -119,7 +120,7 @@ public function update_data_familiares(){
 					'niveles_estudian'=>$this->input->post('niveles_estudian')
 				);
 
-				$this->load->modal('user');
+				$this->load->model('user');
 				$result=$this->user->update_data_familiares($data);
 				if($result!=FALSE){
 					$response['success']=1;
@@ -152,6 +153,7 @@ public function update_data_personales(){
 			$this->form_validation->set_rules('hijos', 'Becado', 'trim|required|xss_clean|numeric');
 			$this->form_validation->set_rules('calle', 'Becado', 'trim|required|xss_clean');
 			$this->form_validation->set_rules('num_casa', 'Becado', 'trim|required|xss_clean');
+			$this->form_validation->set_rules('colonia', 'Becado', 'trim|required|xss_clean');
 			$this->form_validation->set_rules('entre_calle_1', 'Becado', 'trim|xss_clean');
 			$this->form_validation->set_rules('entre_calle_2', 'Becado', 'trim|xss_clean');
 			$this->form_validation->set_rules('cerca_de', 'Becado', 'trim|xss_clean');
@@ -160,10 +162,10 @@ public function update_data_personales(){
 			$this->form_validation->set_rules('cel', 'Becado', 'trim|required|xss_clean|numeric');
 			$this->form_validation->set_rules('correo', 'Becado', 'trim|required|xss_clean');
 			$this->form_validation->set_rules('facebook', 'Becado', 'trim|xss_clean');
-			$this->form_validation->set_rules('h_artisticas', 'Becado', 'trim|required|xss_clean');
-			$this->form_validation->set_rules('h_civicas', 'Becado', 'trim|required|xss_clean');
-			$this->form_validation->set_rules('h_deportivas', 'Becado', 'trim|required|xss_clean');
-			$this->form_validation->set_rules('h_lenguaje', 'Becado', 'trim|required|xss_clean');
+			$this->form_validation->set_rules('h_artisticas', 'Becado', 'trim|xss_clean');
+			$this->form_validation->set_rules('h_civicas', 'Becado', 'trim|xss_clean');
+			$this->form_validation->set_rules('h_deportivas', 'Becado', 'trim|xss_clean');
+			$this->form_validation->set_rules('h_lenguaje', 'Becado', 'trim|xss_clean');
 
 			if ($this->form_validation->run() == FALSE) {
 				$response['success']=-1;
@@ -180,6 +182,7 @@ public function update_data_personales(){
 					'hijos'=>$this->input->post('hijos'),
 					'calle'=>$this->input->post('calle'),
 					'num_casa'=>$this->input->post('num_casa'),
+					'colonia'=>$this->input->post('colonia'),
 					'entre_calle_1'=>$this->input->post('entre_calle_1'),
 					'entre_calle_2'=>$this->input->post('entre_calle_2'),
 					'cerca_de'=>$this->input->post('cerca_de'),
@@ -194,7 +197,7 @@ public function update_data_personales(){
 					'h_lenguaje'=>$this->input->post('h_lenguaje'),
 				);
 
-				$this->load->modal('user');
+				$this->load->model('user');
 				$result=$this->user->update_data_personales($data);
 				if($result!=FALSE){
 					$response['success']=1;

@@ -88,6 +88,11 @@ $(document).ready(function() {
 		var horas=$( "input[name='horas']").val();
 		var fecha=$( "input[name='fecha']").val();
 		var observacion=$( "input[name='observacion']").val();
+		if(horas < 0){
+			$("#div_modalMessage").show();
+			$("#modalMessage").text('No puedes ingresar horas negativas');
+			return false;
+		}
 		$(".loader").show();
 
 		jQuery.ajax({

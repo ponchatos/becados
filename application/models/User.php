@@ -9,6 +9,7 @@ public function update_data_escolares($data){
 	$query_id_descolares=$this->db->get('becado');
 	if($query_id_descolares->num_rows()>0){
 		$this->db->where('id_descolares',$query_id_descolares->row(0)->id_descolares);
+		unset($data['id_becado']);
 		$this->db->update('datos_escolares',$data);
 		return $this->db->affected_rows()>0;
 	}else{
@@ -22,7 +23,8 @@ public function update_data_familiares($data){
 	$this->db->where('id_becado',$data['id_becado']);
 	$query_id_dfamiliares=$this->db->get('becado');
 	if($query_id_dfamiliares->num_rows()>0){
-		$this->db->where('id_dpersonales',$query_id_dfamiliares->row(0)->id_dfamiliares);
+		$this->db->where('id_dfamiliares',$query_id_dfamiliares->row(0)->id_dfamiliares);
+		unset($data['id_becado']);
 		$this->db->update('datos_familiares',$data);
 		return $this->db->affected_rows()>0;
 	}else{
