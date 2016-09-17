@@ -61,6 +61,8 @@
 		color: #5C5C5C;
 		font-weight: bold !important; 
 	}
+	.bot{
+		text-align: right; 	}
 
 
 	/* Modal Body */
