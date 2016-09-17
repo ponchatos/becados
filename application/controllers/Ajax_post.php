@@ -37,6 +37,7 @@ public function update_data_escolares(){
 				$response['message']="Fallo en la validación";
 			}else{
 				$data=array(
+					'id_becado'=>$this->input->post('id_becado'),
 					'id_nivel_educativo'=>$this->input->post('nivel_educativo'),
 					'id_escuela'=>$this->input->post('escuela'),
 					'carrera'=>$this->input->post('carrera'),
@@ -46,7 +47,7 @@ public function update_data_escolares(){
 					'estado'=>$this->input->post('estado'),
 				);
 
-				$this->load->modal('user');
+				$this->load->model('user');
 				$result=$this->user->update_data_escolares($data);
 				if($result!=FALSE){
 					$response['success']=1;
@@ -119,7 +120,7 @@ public function update_data_familiares(){
 					'niveles_estudian'=>$this->input->post('niveles_estudian')
 				);
 
-				$this->load->modal('user');
+				$this->load->model('user');
 				$result=$this->user->update_data_familiares($data);
 				if($result!=FALSE){
 					$response['success']=1;
@@ -152,6 +153,7 @@ public function update_data_personales(){
 			$this->form_validation->set_rules('hijos', 'Becado', 'trim|required|xss_clean|numeric');
 			$this->form_validation->set_rules('calle', 'Becado', 'trim|required|xss_clean');
 			$this->form_validation->set_rules('num_casa', 'Becado', 'trim|required|xss_clean');
+			$this->form_validation->set_rules('colonia', 'Becado', 'trim|required|xss_clean');
 			$this->form_validation->set_rules('entre_calle_1', 'Becado', 'trim|xss_clean');
 			$this->form_validation->set_rules('entre_calle_2', 'Becado', 'trim|xss_clean');
 			$this->form_validation->set_rules('cerca_de', 'Becado', 'trim|xss_clean');
@@ -160,10 +162,10 @@ public function update_data_personales(){
 			$this->form_validation->set_rules('cel', 'Becado', 'trim|required|xss_clean|numeric');
 			$this->form_validation->set_rules('correo', 'Becado', 'trim|required|xss_clean');
 			$this->form_validation->set_rules('facebook', 'Becado', 'trim|xss_clean');
-			$this->form_validation->set_rules('h_artisticas', 'Becado', 'trim|required|xss_clean');
-			$this->form_validation->set_rules('h_civicas', 'Becado', 'trim|required|xss_clean');
-			$this->form_validation->set_rules('h_deportivas', 'Becado', 'trim|required|xss_clean');
-			$this->form_validation->set_rules('h_lenguaje', 'Becado', 'trim|required|xss_clean');
+			$this->form_validation->set_rules('h_artisticas', 'Becado', 'trim|xss_clean');
+			$this->form_validation->set_rules('h_civicas', 'Becado', 'trim|xss_clean');
+			$this->form_validation->set_rules('h_deportivas', 'Becado', 'trim|xss_clean');
+			$this->form_validation->set_rules('h_lenguaje', 'Becado', 'trim|xss_clean');
 
 			if ($this->form_validation->run() == FALSE) {
 				$response['success']=-1;
@@ -180,6 +182,7 @@ public function update_data_personales(){
 					'hijos'=>$this->input->post('hijos'),
 					'calle'=>$this->input->post('calle'),
 					'num_casa'=>$this->input->post('num_casa'),
+					'colonia'=>$this->input->post('colonia'),
 					'entre_calle_1'=>$this->input->post('entre_calle_1'),
 					'entre_calle_2'=>$this->input->post('entre_calle_2'),
 					'cerca_de'=>$this->input->post('cerca_de'),
@@ -194,7 +197,7 @@ public function update_data_personales(){
 					'h_lenguaje'=>$this->input->post('h_lenguaje'),
 				);
 
-				$this->load->modal('user');
+				$this->load->model('user');
 				$result=$this->user->update_data_personales($data);
 				if($result!=FALSE){
 					$response['success']=1;
@@ -226,11 +229,32 @@ public function update_data_becado(){
 			$this->form_validation->set_rules('observacion', 'Becado', 'trim|xss_clean');
 			$this->form_validation->set_rules('car_compromiso', 'Becado', 'trim|required|xss_clean|numeric');
 			$this->form_validation->set_rules('formulario_IB', 'Becado', 'trim|required|xss_clean|numeric');
+			$this->form_validation->set_rules('puntaje_encuesta_p1', 'Becado', 'trim|xss_clean');
+			$this->form_validation->set_rules('nivel', 'Becado', 'trim|xss_clean');
+			$this->form_validation->set_rules('diagnostico_social', 'Becado', 'trim|xss_clean');
+			$this->form_validation->set_rules('puntaje_encuesta_p2', 'Becado', 'trim|xss_clean');
+			$this->form_validation->set_rules('v', 'Becado', 'trim|xss_clean');
 
 			if ($this->form_validation->run() == FALSE) {
 				$response['success']=-1;
 				$response['message']="Fallo en la validación";
 			}else{
+				$this->load->model('user');
+				$data_enc_1=array(
+					'id_becado'=>$this->input->post('id_becado'),
+					'puntaje'=>$this->input->post('puntaje_encuesta_p1'),
+					'nivel'=>$this->input->post('nivel')
+					);
+				$this->user->update_encuesta_p1($data_enc_1);
+
+				$data_enc_2=array(
+					'id_becado'=>$this->input->post('id_becado'),
+					'v'=>$this->input->post('v'),
+					'diagnostico_social'=>$this->input->post('diagnostico_social'),
+					'puntaje'=>$this->input->post('puntaje_encuesta_p2')
+					);
+				$this->user->update_encuesta_p2($data_enc_2);
+
 				$data=array(
 					'id_becado'=>$this->input->post('id_becado'),
 					'status'=>$this->input->post('status'),
@@ -241,8 +265,47 @@ public function update_data_becado(){
 					'formulario_IB'=>$this->input->post('formulario_IB')
 				);
 
-				$this->load->modal('user');
+				
 				$result=$this->user->update_data_becado($data);
+				if($result!=FALSE){
+					$response['success']=1;
+					$response['message']="Becado actualizado correctamente";
+				}else{
+					$response['success']=0;
+					$response['message']="No se pudo actualizar al becado";
+				}
+			}
+
+			die(json_encode($response));
+		}else{
+			redirect(base_url().'dashboard/','refresh');
+		}
+	}else{
+		redirect(base_url(),'refresh');
+	}
+}
+
+public function update_comprobantes(){
+	if(isset($this->session->userdata['logged_in'])){
+		if($this->session->userdata['logged_in']['privilegios']==99){
+
+			$this->form_validation->set_rules('id_becado', 'Becado', 'trim|required|xss_clean|numeric');
+			$this->form_validation->set_rules('pago', 'Becado', 'trim|required|xss_clean|numeric');
+			$this->form_validation->set_rules('boleta', 'Becado', 'trim|required|xss_clean|numeric');
+
+			if ($this->form_validation->run() == FALSE) {
+				$response['success']=-1;
+				$response['message']="Fallo en la validación";
+			}else{
+				
+				$data=array(
+					'id_becado'=>$this->input->post('id_becado'),
+					'pago'=>$this->input->post('pago'),
+					'boleta'=>$this->input->post('boleta')
+				);
+
+				$this->load->model('user');
+				$result=$this->user->update_comprobantes($data);
 				if($result!=FALSE){
 					$response['success']=1;
 					$response['message']="Becado actualizado correctamente";

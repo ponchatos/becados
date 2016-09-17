@@ -49,6 +49,102 @@ public function index(){
 	}
 }
 
+public function administrador(){
+	if(isset($this->session->userdata['logged_in'])){
+		if($this->session->userdata['logged_in']['privilegios']==99){
+
+			$this->load->model('user');
+			$usuarios=$this->user->get_users();
+			if($usuarios!=FALSE)
+				$data['usuarios'] = $usuarios;
+			$this->load->view('admin_administrador',$data);
+		}else{
+			redirect(base_url().'dashboard/','refresh');
+		}
+	}else{
+		redirect(base_url(),'refresh');
+	}
+}
+
+public function administrador_create_user(){
+	if(isset($this->session->userdata['logged_in'])){
+		if($this->session->userdata['logged_in']['privilegios']==99){
+
+			$this->form_validation->set_rules('usuario', 'Usuario', 'trim|required|xss_clean');
+			$this->form_validation->set_rules('password', 'Contraseña', 'trim|required|xss_clean');
+			$this->form_validation->set_rules('nombre', 'Nombre', 'trim|required|xss_clean');
+			$this->form_validation->set_rules('ape_pat', 'Apellido Paterno', 'trim|required|xss_clean');
+			$this->form_validation->set_rules('ape_mat', 'Apellido Materno', 'trim|required|xss_clean');
+			$this->form_validation->set_rules('privilegios', 'Privilegios', 'trim|required|xss_clean|numeric');
+
+			if ($this->form_validation->run() == FALSE) {
+				$response['success']=-1;
+				$response['message']="Fallo en la validación de campos";
+			}else{
+				$data= array(
+					'usuario'=>$this->input->post('usuario'),
+					'password'=>$this->input->post('password'),
+					'nombre'=>$this->input->post('nombre'),
+					'apellido_paterno'=>$this->input->post('ape_pat'),
+					'apellido_materno'=>$this->input->post('ape_mat'),
+					'privilegios'=> ( $this->input->post('password') == 99 ? 99 : 50 ),
+					'id_becado' => -1
+					);
+
+				$this->load->model('user');
+				if($this->user->create_user($data)){
+					$response['success']=1;
+					$response['message']="Usuario ".$this->input->post('usuario')." creado correctamente";
+				}else{
+					$response['success']=0;
+					$response['message']="Usuario ".$this->input->post('usuario')." ya existe";
+				}
+			}
+
+			$this->session->set_flashdata('message', $response['message']);
+			$this->administrador();
+			//die(json_encode($response));
+		}else{
+			redirect(base_url().'dashboard/','refresh');
+		}
+	}else{
+		redirect(base_url(),'refresh');
+	}
+}
+
+public function administrador_delete_user(){
+	if(isset($this->session->userdata['logged_in'])){
+		if($this->session->userdata['logged_in']['privilegios']==99){
+
+			$this->form_validation->set_rules('usuario', 'Usuario', 'trim|required|xss_clean');
+
+			if ($this->form_validation->run() == FALSE) {
+				$response['success']=-1;
+				$response['message']="Fallo en la validación de campos";
+				
+			}else{
+
+				$this->load->model('user');
+				if($this->user->delete_user($this->input->post('usuario'))){
+					$response['success']=1;
+					$response['message']="Usuario ".$this->input->post('usuario')." eliminado correctamente";
+				}else{
+					$response['success']=0;
+					$response['message']="Usuario ".$this->input->post('usuario')." no se ha podido eliminar";
+				}
+			}
+
+			//die(json_encode($response));
+			$this->session->set_flashdata('message', $response['message']);
+			$this->administrador();
+		}else{
+			redirect(base_url().'dashboard/','refresh');
+		}
+	}else{
+		redirect(base_url(),'refresh');
+	}
+}
+
 public function becar(){
 	if(isset($this->session->userdata['logged_in'])){
 		if($this->session->userdata['logged_in']['privilegios']==99){
@@ -282,7 +378,7 @@ public function agregar_horas(){
 
 			$this->form_validation->set_rules('id_becado_hddn', 'Becado', 'trim|required|xss_clean|numeric');
 			$this->form_validation->set_rules('evento', 'Evento', 'trim|required|xss_clean');
-			$this->form_validation->set_rules('horas', 'Horas', 'trim|required|xss_clean|numeric');
+			$this->form_validation->set_rules('horas', 'Horas', 'trim|required|xss_clean|numeric|greater_than_equal_to[0]');
 			$this->form_validation->set_rules('fecha', 'Fecha', 'trim|required|xss_clean|callback_date_valid');
 			$this->form_validation->set_rules('observacion', 'Observacion', 'trim|xss_clean');
 

@@ -2,13 +2,58 @@
 
 Class User extends CI_Model {
 
-//pendiente de calar
+public function create_user($data){
+	/*$user=array(
+		'usuario'=>$data['username'],
+		'password'=>$data['password'],
+		'nombre'=>$query_nombres->row(0)->nombre,
+		'apellido_paterno'=>$query_nombres->row(0)->ape_pat,
+		'apellido_materno'=>$query_nombres->row(0)->ape_mat,
+		'privilegios'=>0,
+		'id_becado'=>$id_becado
+	);*/
+	$this->load->model('login_database');
+
+	return $this->login_database->registration_insert($data);
+}
+
+public function delete_user($username){
+	$this->db->where('usuario',$username);
+	$user = $this->db->get('usuarios');
+	if($user->num_rows()>0){
+		if($user->row(0)->privilegios<99){
+			$this->db->where('usuario',$username);
+			$this->db->delete('usuarios');
+
+			return $this->db->affected_rows()>0;
+		}else{
+			return FALSE;
+		}
+	}else{
+		return FALSE;
+	}
+}
+
+public function get_users(){
+	
+	$this->db->where('privilegios >',0);
+	$this->db->where('id_becado',-1);
+	$result = $this->db->get('usuarios');
+	if($result->num_rows()>0){
+		return $result->result();
+	}else{
+		return FALSE;
+	}
+}
+
+
 public function update_data_escolares($data){
 	$this->db->select('id_descolares');
 	$this->db->where('id_becado',$data['id_becado']);
-	$query_id_descolares=$this->db->get('becados');
+	$query_id_descolares=$this->db->get('becado');
 	if($query_id_descolares->num_rows()>0){
 		$this->db->where('id_descolares',$query_id_descolares->row(0)->id_descolares);
+		unset($data['id_becado']);
 		$this->db->update('datos_escolares',$data);
 		return $this->db->affected_rows()>0;
 	}else{
@@ -16,13 +61,14 @@ public function update_data_escolares($data){
 	}
 }
 
-//pendiente de calar
+
 public function update_data_familiares($data){
 	$this->db->select('id_dfamiliares');
 	$this->db->where('id_becado',$data['id_becado']);
-	$query_id_dfamiliares=$this->db->get('becados');
+	$query_id_dfamiliares=$this->db->get('becado');
 	if($query_id_dfamiliares->num_rows()>0){
-		$this->db->where('id_dpersonales',$query_id_dfamiliares->row(0)->id_dfamiliares);
+		$this->db->where('id_dfamiliares',$query_id_dfamiliares->row(0)->id_dfamiliares);
+		unset($data['id_becado']);
 		$this->db->update('datos_familiares',$data);
 		return $this->db->affected_rows()>0;
 	}else{
@@ -30,13 +76,14 @@ public function update_data_familiares($data){
 	}
 }
 
-//pendiente de calar
+
 public function update_data_personales($data){
 	$this->db->select('id_dpersonales');
 	$this->db->where('id_becado',$data['id_becado']);
-	$query_id_dpersonales=$this->db->get('becados');
+	$query_id_dpersonales=$this->db->get('becado');
 	if($query_id_dpersonales->num_rows()>0){
 		$this->db->where('id_dpersonales',$query_id_dpersonales->row(0)->id_dpersonales);
+		unset($data['id_becado']);
 		$this->db->update('datos_personales',$data);
 		return $this->db->affected_rows()>0;
 	}else{
@@ -44,12 +91,72 @@ public function update_data_personales($data){
 	}
 }
 
-//pendiente de calar
+public function update_comprobantes($data){
+	$this->load->model('read_data');
+	$periodo_actual=$this->read_data->periodo_actual_id();
+
+	$this->db->where('id_becado',$data['id_becado']);
+	$this->db->where('id_periodo',$periodo_actual);
+	$boleta_existe = $this->db->count_all_results('comprobante_boleta');
+	if($boleta_existe > 0){
+		$this->db->where('id_becado',$data['id_becado']);
+		$this->db->where('id_periodo',$periodo_actual);
+		$this->db->update('comprobante_boleta',array('validacion'=>$data['boleta']));
+	}
+
+	$this->db->where('id_becado',$data['id_becado']);
+	$this->db->where('id_periodo',$periodo_actual);
+	$pago_existe = $this->db->count_all_results('comprobante_pago');
+	if($pago_existe > 0){
+		$this->db->where('id_becado',$data['id_becado']);
+		$this->db->where('id_periodo',$periodo_actual);
+		$this->db->update('comprobante_pago',array('validacion'=>$data['pago']));
+	}
+
+
+	if($boleta_existe > 0 || $pago_existe > 0){
+		return TRUE;
+	}else{
+		return FALSE;
+	}
+
+}
+
+
 public function update_data_becado($data){
 	$this->db->where('id_becado',$data['id_becado']);
 	$this->db->update('becado',$data);
 	return $this->db->affected_rows()>0;
 }
+
+public function update_encuesta_p1($data){
+	$this->db->select('id_encuesta');
+	$this->db->where('id_becado',$data['id_becado']);
+	$query_id_encuesta=$this->db->get('becado');
+	if($query_id_encuesta->num_rows()>0){
+		$this->db->where('id_encuesta',$query_id_encuesta->row(0)->id_encuesta);
+		unset($data['id_becado']);
+		$this->db->update('encuesta_p1',$data);
+		return $this->db->affected_rows()>0;
+	}else{
+		return FALSE;
+	}
+}
+
+public function update_encuesta_p2($data){
+	$this->db->select('id_encuesta_p2');
+	$this->db->where('id_becado',$data['id_becado']);
+	$query_id_encuesta=$this->db->get('becado');
+	if($query_id_encuesta->num_rows()>0){
+		$this->db->where('id_encuesta_p2',$query_id_encuesta->row(0)->id_encuesta_p2);
+		unset($data['id_becado']);
+		$this->db->update('encuesta_p2',$data);
+		return $this->db->affected_rows()>0;
+	}else{
+		return FALSE;
+	}
+}
+
 
 public function becar($data){
 	$this->db->trans_begin();

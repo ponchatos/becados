@@ -222,6 +222,9 @@
 						<p>V</p><input type="text" name="v" />
 					</div>
 				</form>
+				<form id="save_dgenerales">
+					<button>Guardar Datos Generales</button>
+				</form>
 				<table id="pagos_tabla">
 					<thead>
 						<tr>
@@ -256,7 +259,7 @@
 				<form class="form-inline">
 					<div class="form-group">
 						<p>Sexo</p>
-						<select name="Sexo" form="form_dpersonales">
+						<select name="sexo" form="form_dpersonales">
 							<option value="M">Masculino</option>
 							<option value="F">Femenino</option>		
 						</select>
@@ -346,6 +349,9 @@
 						<p>Habilidades  Lingüísticas</p><input type="text" name="h_lenguaje" />
 					</div>
 				</form>
+					<form id="save_dpersonales">
+						<button>Guardar Datos Personales</button>
+					</form>
 			</div>
 				
 			<div id="div_dfamiliares">
@@ -474,6 +480,9 @@
 						<p>Niveles que Estudian</p><input type="text" name="niveles_estudian" />
 					</div>
 				</form>
+				<form id="save_dfamiliares">
+					<button>Guardar Datos Familiares</button>
+				</form>
 			</div>
 			
 			<div id="div_descolares">
@@ -546,9 +555,12 @@
 				
 					
 					</form>
-
+					<form id="save_descolares">
+						<button>Guardar Datos Escolares</button>
+					</form>
 			</div>
 			<div id="div_comprobantes">
+
 			<div class="w3-row-padding w3-margin-top" >
 
 				<div class="w3-third">
@@ -591,7 +603,29 @@
 				</div>
 				</div>
 			</div>	
-			</div>
+
+				<!--Comprobante de pago:
+				<a href="" target="_blank">
+					<img width="300" name="img_pago" src="<?=base_url()?>images/sin_imagen.png" />
+				</a>
+				<select name="select_pago">
+					<option value="0">Sin Validar</option>
+					<option value="1">Validada</option>
+				</select>
+				<br>
+				Boleta de calificaciones:
+				<a href="" target="_blank">
+					<img width="300" name="img_boleta" src="<?=base_url()?>images/sin_imagen.png" />
+				</a>
+				<select name="select_boleta">
+					<option value="0">Sin Validar</option>
+					<option value="1">Validada</option>
+				</select>
+				<form id="save_comprobantes">
+						<button>Guardar Estado de Comprobantes</button>
+				</form>
+
+			</div>-->
 
 	    	<div class="loader" style="display:none;"></div>
 	    	<div id="div_modalMessage" class="w3-container w3-red w3-card-8" style="display:none;">
@@ -619,6 +653,22 @@ $(document).ready(function() {
 		//$("select[name='status'] option:contains("+obj.data.status+")").attr('selected','selected');
 		clearModal();
 	});
+
+	function setModalErrorMessage(message){
+		$("#div_modalMessage").attr("class","w3-container w3-red w3-card-8");
+		setModalMessage(message);
+	}
+
+	function setModalSuccessMessage(message){
+		$("#div_modalMessage").attr("class","w3-container w3-green w3-card-8");
+		setModalMessage(message);
+	}
+
+	function setModalMessage(message){
+		$("#modalMessage").text('');
+		$("#modalMessage").append(message);
+		$("#div_modalMessage").show();
+	}
 
 	function clearModal(){
 		$("input").each(function(){
@@ -653,7 +703,7 @@ $(document).ready(function() {
 				$("h3[name='nombre']").text(obj.data.nombre);
 				$("input[name='ape_pat']").val(obj.data.ape_pat);
 				$("input[name='ape_mat']").val(obj.data.ape_mat);
-				$("select[name='Sexo'] option[value='"+obj.data.sexo+"']").attr('selected','selected');
+				$("select[name='sexo'] option[value='"+obj.data.sexo+"']").attr('selected','selected');
 				$("input[name='fec_nac']").val(obj.data.fec_nac);
 				$("select[name='estado_civil_solicitante'] option:contains("+obj.data.estado_civil_solicitante+")").attr('selected','selected');
 				$("select[name='hijos'] option[value='"+obj.data.hijos+"']").attr('selected','selected');
@@ -696,9 +746,10 @@ $(document).ready(function() {
 				$("input[name='v']").val(obj.data.v);
 				$("input[name='diagnostico_social']").val(obj.data.diagnostico_social);
 				$("input[name='puntaje_encuesta_p2']").val(obj.data.puntaje_encuesta_2);
-				$("input[name='nivel_educativo']").val(obj.data.nivel_educativo);
-				$("select[name='periodo'] option:contains("+obj.data.periodo+")").attr('selected','selected');
-				$("select[name='nivel educativo'] option:contains("+obj.data.nivel_educativo+")").attr('selected','selected');
+				//$("input[name='nivel_educativo']").val(obj.data.nivel_educativo);
+				//$("select[name='periodo'] option:contains("+obj.data.periodo+")").attr('selected','selected');
+				$("input[name='periodo']").val(obj.data.periodo);
+				$("select[name='nivel_educativo'] option:contains("+obj.data.nivel_educativo+")").attr('selected','selected');
 				$("select[name='escuela'] option:contains("+obj.data.escuela+")").attr('selected','selected');
 				$("input[name='carrera']").val(obj.data.carrera);
 				$("input[name='grado']").val(obj.data.grado);
@@ -728,12 +779,229 @@ $(document).ready(function() {
 			},
 			error: function(res){
 				$(".loader").hide();
-				$(".modalMessage").text('<h3>Error!</h3><p>'+res.statusText+'</p>');
+				//$("#modalMessage").text('<h3>Error!</h3><p>'+res.statusText+'</p>');
+				setModalErrorMessage('<h3>Error!</h3><p>'+res.statusText+'</p>');
 			}
 		});
 		$('#myModal').show();
 	});
 
+	$("#save_dgenerales").submit(function(e){
+		e.preventDefault();
+		$(".loader").show();
+
+		var status = $("select[name='status']").val();
+		var notas = $("input[name='notas']").val();
+		var recomendado = $("input[name='recomendado']").val();
+		var observacion = $("input[name='observacion']").val();
+		var car_compromiso = $("select[name='car_compromiso']").val();
+		var formulario_IB = $("select[name='formulario_IB']").val();
+		var puntaje_encuesta_p1 = $("input[name='puntaje_encuesta_p1']").val();
+		var nivel = $("input[name='nivel']").val();
+		var diagnostico_social = $("input[name='diagnostico_social']").val();
+		var puntaje_encuesta_p2 = $("input[name='puntaje_encuesta_p2']").val();
+		var v = $("input[name='v']").val();
+
+		jQuery.ajax({
+			type: "POST",
+			url: "http://<?php echo $_SERVER['SERVER_NAME']; ?>/becados/ajax_post/update_data_becado",
+			dataType: 'json',
+			data: {id_becado:id_becado,status:status,notas:notas,recomendado:recomendado,observacion:observacion,car_compromiso:car_compromiso,formulario_IB:formulario_IB,puntaje_encuesta_p1:puntaje_encuesta_p1,nivel:nivel,diagnostico_social:diagnostico_social,v:v},
+			success: function(obj) {
+				$(".loader").hide();
+				//$("#modalMessage").text('Datos actualizados correctamente');
+				//$("#div_modalMessage").show();
+				if(obj.success==1){
+					setModalSuccessMessage('Datos actualizados correctamente');
+				}else{
+					setModalErrorMessage(obj.message);
+				}
+
+			},
+			error: function(res){
+				$(".loader").hide();
+				//$("#modalMessage").text('<h3>Error!</h3><p>'+res.statusText+'</p>');
+				//$("#div_modalMessage").show();
+				setModalErrorMessage('<h3>Error!</h3><p>'+res.statusText+'</p>');
+			}
+		});
+	});
+
+	$("#save_dpersonales").submit(function(e){
+		e.preventDefault();
+		$(".loader").show();
+
+		var nombre = $("input[name='nombre']").val();
+		var ape_pat = $("input[name='ape_pat']").val();
+		var ape_mat = $("input[name='ape_mat']").val();
+		var fec_nac = $("input[name='fec_nac']").val();
+		var sexo = $("select[name='sexo']").val();
+		var edo_civil = $("select[name='estado_civil_solicitante']").val();
+		var hijos = $("select[name='hijos']").val();
+		var calle = $("input[name='calle']").val();
+		var num_casa = $("input[name='num_casa']").val();
+		var colonia = $("input[name='colonia']").val();
+		var entre_calle_1 = $("input[name='entre_calle_1']").val();
+		var entre_calle_2 = $("input[name='entre_calle_2']").val();
+		var cerca_de = $("input[name='cerca_de']").val();
+		var ciudad = $("input[name='ciudad']").val();
+		var tel = $("input[name='tel']").val();
+		var cel = $("input[name='cel']").val();
+		var correo = $("input[name='correo']").val();
+		var facebook = $("input[name='facebook']").val();
+		var h_artisticas = $("input[name='h_artisticas']").val();
+		var h_civicas = $("input[name='h_civicas']").val();
+		var h_deportivas = $("input[name='h_deportivas']").val();
+		var h_lenguaje = $("input[name='h_lenguaje']").val();
+
+		jQuery.ajax({
+			type: "POST",
+			url: "http://<?php echo $_SERVER['SERVER_NAME']; ?>/becados/ajax_post/update_data_personales",
+			dataType: 'json',
+			data: {id_becado:id_becado,nombre:nombre,ape_pat:ape_pat,ape_mat:ape_mat,sexo:sexo,fec_nac:fec_nac,estado_civil_solicitante:edo_civil,hijos:hijos,calle:calle,num_casa:num_casa,colonia:colonia,entre_calle_1:entre_calle_1,entre_calle_2:entre_calle_2,cerca_de:cerca_de,ciudad:ciudad,tel:tel,cel:cel,correo:correo,facebook:facebook,h_artisticas:h_artisticas,h_civicas:h_civicas,h_deportivas:h_deportivas,h_lenguaje:h_lenguaje},
+			success: function(obj) {
+				$(".loader").hide();
+				//$("#modalMessage").text('Datos actualizados correctamente');
+				//$("#div_modalMessage").show();
+				if(obj.success==1){
+					setModalSuccessMessage('Datos actualizados correctamente');
+				}else{
+					setModalErrorMessage(obj.message);
+				}
+
+			},
+			error: function(res){
+				$(".loader").hide();
+				//$("#modalMessage").text('<h3>Error!</h3><p>'+res.statusText+'</p>');
+				//$("#div_modalMessage").show();
+				setModalErrorMessage('<h3>Error!</h3><p>'+res.statusText+'</p>');
+			}
+		});
+	});
+
+	$("#save_dfamiliares").submit(function(e){
+		e.preventDefault();
+		$(".loader").show();
+
+		//var nombre = $("input[name='nombre']").val();
+		var  padre_nombre = $("input[name='padre_nombre']").val();
+		var  padre_ape_pat = $("input[name='padre_ape_pat']").val();
+		var  padre_ape_mat = $("input[name='padre_ape_mat']").val();
+		var  padre_edad = $("input[name='padre_edad']").val();
+		var  padre_ocupacion = $("input[name='padre_ocupacion']").val();
+		var  padre_nivel_educativo= $("select[name='padre_nivel_educativo']").val();
+		var  padre_vivo_muerto= $("select[name='padre_vivo_muerto']").val();
+		var  madre_nombre = $("input[name='madre_nombre']").val();
+		var  madre_ape_pat = $("input[name='madre_ape_pat']").val();
+		var  madre_ape_mat = $("input[name='madre_ape_mat']").val();
+		var  madre_edad = $("input[name='madre_edad']").val();
+		var  madre_ocupacion = $("input[name='madre_ocupacion']").val();
+		var  madre_nivel_educativo= $("select[name='madre_nivel_educativo']").val();
+		var  madre_vivo_muerto= $("select[name='madre_vivo_muerto']").val();
+		var  edo_civil_padres= $("select[name='edo_civil_padres']").val();
+		var  vive_con = $("input[name='vive_con']").val();
+		var  personas_dependen_ingreso = $("input[name='personas_dependen_ingreso']").val();
+		var  familia_estudian = $("input[name='familia_estudian']").val();
+		var  niveles_estudian = $("input[name='niveles_estudian']").val();
+
+
+		jQuery.ajax({
+			type: "POST",
+			url: "http://<?php echo $_SERVER['SERVER_NAME']; ?>/becados/ajax_post/update_data_familiares",
+			dataType: 'json',
+			data: {id_becado:id_becado,padre_nombre:padre_nombre,padre_ape_pat:padre_ape_pat,padre_ape_mat:padre_ape_mat,padre_edad:padre_edad,padre_ocupacion:padre_ocupacion,padre_nivel_educativo:padre_nivel_educativo,padre_vivo_muerto:padre_vivo_muerto,madre_nombre:madre_nombre,madre_ape_pat:madre_ape_pat,madre_ape_mat:madre_ape_mat,madre_edad:madre_edad,madre_ocupacion:madre_ocupacion,madre_nivel_educativo:madre_nivel_educativo,madre_vivo_muerto:madre_vivo_muerto,edo_civil_padres:edo_civil_padres,vive_con:vive_con,personas_dependen_ingreso:personas_dependen_ingreso,familia_estudian:familia_estudian,niveles_estudian:niveles_estudian},
+			success: function(obj) {
+				$(".loader").hide();
+				//$("#modalMessage").text('Datos actualizados correctamente');
+				//$("#div_modalMessage").show();
+				if(obj.success==1){
+					setModalSuccessMessage('Datos actualizados correctamente');
+				}else{
+					setModalErrorMessage(obj.message);
+				}
+
+			},
+			error: function(res){
+				$(".loader").hide();
+				//$("#modalMessage").text('<h3>Error!</h3><p>'+res.statusText+'</p>');
+				//$("#div_modalMessage").show();
+				setModalErrorMessage('<h3>Error!</h3><p>'+res.statusText+'</p>');
+			}
+		});
+	});
+
+	$("#save_descolares").submit(function(e){
+		e.preventDefault();
+		$(".loader").show();
+
+		//var periodo = $("input[name='periodo']").val();
+		var nivel_educativo= $("select[name='nivel_educativo']").val();
+		var escuela= $("select[name='escuela']").val();
+		var carrera = $("input[name='carrera']").val();
+		var grado = $("input[name='grado']").val();
+		var promedio = $("input[name='promedio']").val();
+		var turno= $("select[name='turno']").val();
+		var estado= $("select[name='estado']").val();
+		
+
+		jQuery.ajax({
+			type: "POST",
+			url: "http://<?php echo $_SERVER['SERVER_NAME']; ?>/becados/ajax_post/update_data_escolares",
+			dataType: 'json',
+			data: {id_becado:id_becado,nivel_educativo:nivel_educativo,escuela:escuela,carrera:carrera,grado:grado,promedio:promedio,turno:turno,estado:estado},
+			success: function(obj) {
+				$(".loader").hide();
+				//$("#modalMessage").text('Datos actualizados correctamente');
+				//$("#div_modalMessage").show();
+				if(obj.success==1){
+					setModalSuccessMessage('Datos actualizados correctamente');
+				}else{
+					setModalErrorMessage(obj.message);
+				}
+
+			},
+			error: function(res){
+				$(".loader").hide();
+				//$("#modalMessage").text('<h3>Error!</h3><p>'+res.statusText+'</p>');
+				//$("#div_modalMessage").show();
+				setModalErrorMessage('<h3>Error!</h3><p>'+res.statusText+'</p>');
+			}
+		});
+	});
+
+	$("#save_comprobantes").submit(function(e){
+		e.preventDefault();
+		$(".loader").show();
+
+		//var periodo = $("input[name='periodo']").val();
+		var boleta= $("select[name='select_boleta']").val();
+		var pago= $("select[name='select_pago']").val();
+		
+
+		jQuery.ajax({
+			type: "POST",
+			url: "http://<?php echo $_SERVER['SERVER_NAME']; ?>/becados/ajax_post/update_comprobantes",
+			dataType: 'json',
+			data: {id_becado:id_becado,boleta:boleta,pago:pago},
+			success: function(obj) {
+				$(".loader").hide();
+				//$("#modalMessage").text('Datos actualizados correctamente');
+				//$("#div_modalMessage").show();
+				if(obj.success==1){
+					setModalSuccessMessage('Datos actualizados correctamente');
+				}else{
+					setModalErrorMessage(obj.message);
+				}
+
+			},
+			error: function(res){
+				$(".loader").hide();
+				//$("#modalMessage").text('<h3>Error!</h3><p>'+res.statusText+'</p>');
+				//$("#div_modalMessage").show();
+				setModalErrorMessage('<h3>Error!</h3><p>'+res.statusText+'</p>');
+			}
+		});
+	});
 
 	$('.close').on('click',function(e){
 		$('#myModal,#div_modalMessage').hide();
