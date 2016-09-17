@@ -47,6 +47,37 @@ public function update_data_personales($data){
 	}
 }
 
+public function update_comprobantes($data){
+	$this->load->model('read_data');
+	$periodo_actual=$this->read_data->periodo_actual_id();
+
+	$this->db->where('id_becado',$data['id_becado']);
+	$this->db->where('id_periodo',$periodo_actual);
+	$boleta_existe = $this->db->count_all_results('comprobante_boleta');
+	if($boleta_existe > 0){
+		$this->db->where('id_becado',$data['id_becado']);
+		$this->db->where('id_periodo',$periodo_actual);
+		$this->db->update('comprobante_boleta',array('validacion'=>$data['boleta']));
+	}
+
+	$this->db->where('id_becado',$data['id_becado']);
+	$this->db->where('id_periodo',$periodo_actual);
+	$pago_existe = $this->db->count_all_results('comprobante_pago');
+	if($pago_existe > 0){
+		$this->db->where('id_becado',$data['id_becado']);
+		$this->db->where('id_periodo',$periodo_actual);
+		$this->db->update('comprobante_pago',array('validacion'=>$data['pago']));
+	}
+
+
+	if($boleta_existe > 0 || $pago_existe > 0){
+		return TRUE;
+	}else{
+		return FALSE;
+	}
+
+}
+
 //pendiente de calar
 public function update_data_becado($data){
 	$this->db->where('id_becado',$data['id_becado']);

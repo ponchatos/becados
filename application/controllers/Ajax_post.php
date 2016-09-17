@@ -285,6 +285,45 @@ public function update_data_becado(){
 	}
 }
 
+public function update_comprobantes(){
+	if(isset($this->session->userdata['logged_in'])){
+		if($this->session->userdata['logged_in']['privilegios']==99){
+
+			$this->form_validation->set_rules('id_becado', 'Becado', 'trim|required|xss_clean|numeric');
+			$this->form_validation->set_rules('pago', 'Becado', 'trim|required|xss_clean|numeric');
+			$this->form_validation->set_rules('boleta', 'Becado', 'trim|required|xss_clean|numeric');
+
+			if ($this->form_validation->run() == FALSE) {
+				$response['success']=-1;
+				$response['message']="Fallo en la validación";
+			}else{
+				
+				$data=array(
+					'id_becado'=>$this->input->post('id_becado'),
+					'pago'=>$this->input->post('pago'),
+					'boleta'=>$this->input->post('boleta')
+				);
+
+				$this->load->model('user');
+				$result=$this->user->update_comprobantes($data);
+				if($result!=FALSE){
+					$response['success']=1;
+					$response['message']="Becado actualizado correctamente";
+				}else{
+					$response['success']=0;
+					$response['message']="No se pudo actualizar al becado";
+				}
+			}
+
+			die(json_encode($response));
+		}else{
+			redirect(base_url().'dashboard/','refresh');
+		}
+	}else{
+		redirect(base_url(),'refresh');
+	}
+}
+
 public function get_data_becado(){
 	if(isset($this->session->userdata['logged_in'])){
 		if($this->session->userdata['logged_in']['privilegios']==99){

@@ -593,6 +593,9 @@
 					<option value="0">Sin Validar</option>
 					<option value="1">Validada</option>
 				</select>
+				<form id="save_comprobantes">
+						<button>Guardar Estado de Comprobantes</button>
+				</form>
 			</div>
 
 	    	<div class="loader" style="display:none;"></div>
@@ -917,6 +920,40 @@ $(document).ready(function() {
 			url: "http://<?php echo $_SERVER['SERVER_NAME']; ?>/becados/ajax_post/update_data_escolares",
 			dataType: 'json',
 			data: {id_becado:id_becado,nivel_educativo:nivel_educativo,escuela:escuela,carrera:carrera,grado:grado,promedio:promedio,turno:turno,estado:estado},
+			success: function(obj) {
+				$(".loader").hide();
+				//$("#modalMessage").text('Datos actualizados correctamente');
+				//$("#div_modalMessage").show();
+				if(obj.success==1){
+					setModalSuccessMessage('Datos actualizados correctamente');
+				}else{
+					setModalErrorMessage(obj.message);
+				}
+
+			},
+			error: function(res){
+				$(".loader").hide();
+				//$("#modalMessage").text('<h3>Error!</h3><p>'+res.statusText+'</p>');
+				//$("#div_modalMessage").show();
+				setModalErrorMessage('<h3>Error!</h3><p>'+res.statusText+'</p>');
+			}
+		});
+	});
+
+	$("#save_comprobantes").submit(function(e){
+		e.preventDefault();
+		$(".loader").show();
+
+		//var periodo = $("input[name='periodo']").val();
+		var boleta= $("select[name='select_boleta']").val();
+		var pago= $("select[name='select_pago']").val();
+		
+
+		jQuery.ajax({
+			type: "POST",
+			url: "http://<?php echo $_SERVER['SERVER_NAME']; ?>/becados/ajax_post/update_comprobantes",
+			dataType: 'json',
+			data: {id_becado:id_becado,boleta:boleta,pago:pago},
 			success: function(obj) {
 				$(".loader").hide();
 				//$("#modalMessage").text('Datos actualizados correctamente');
