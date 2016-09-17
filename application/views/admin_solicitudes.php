@@ -27,7 +27,6 @@
 
 </head>
 <body>
-<div style="margin:0 auto;text-align:center"><button onclick="document.getElementById('Modal_Becar').style.display = 'block';">Pa abrir modal, especialmente para ti chiquito ;)</button></div>
 <div class="page-container">
 	<div class="left-content">
 	   <div class="inner-content">
