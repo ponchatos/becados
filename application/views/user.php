@@ -222,9 +222,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
   				<img class="img_boleta" src="<?php if(isset($comprobantes['boleta'])) echo base_url()."".$comprobantes['boleta']['url']; ?>" width="400px"/>
   			</a><br>
   		</div></center>
-  		<div class="modal-body">
+  		<center><div class="modal-body">
 
-  		</div>
+  		</div></center>
   		
   		<div class="modal-button" >
   			<div class="tool-tips">
@@ -377,7 +377,7 @@ $(document).ready(function() {
 			if($valid) echo 'Tu comprobante ya fue validado.<br> ';
 		}
 			echo '<form id="form_pago" method="post" enctype="multipart/form-data">';
-			echo '<input id="file" type="file" name="userfile" '.$valid.'/>';
+			echo '<br><input id="file" type="file" name="userfile" '.$valid.'/><br>';
 			
 			echo '</form>';
 			echo '\');';

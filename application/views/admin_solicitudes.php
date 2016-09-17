@@ -103,11 +103,11 @@
 						<div style="border-top:1px ridge rgba(255, 255, 255, 0.15)"></div>
                            <div class="menu">
 									<ul id="menu" >
-										<li><a href="#"><i class="fa fa-tachometer"></i> <span>INICIO</span></a></li>
-										 <li><a href="#"><i class="fa fa-file-text-o"></i> <span>BECADOS</span></a></li>
-									<li><a href="#"><i class="lnr lnr-pencil"></i> <span>SOLICITUDES</span></a></li>
-									<li><a href="#"><i class="lnr lnr-chart-bars"></i> <span>ADMINISTRADOR</span></a></li>
-									<li><a href="#"><i class="fa fa-file-text-o"></i> <span>SALIR</span></a></li>
+										<li><a href="<?php echo base_url();?>"><i class="fa fa-tachometer"></i> <span>INICIO</span></a></li>
+										 <li><a href="<?php echo base_url();?>dashboard/becados"><i class="fa fa-file-text-o"></i> <span>BECADOS</span></a></li>
+									<li><a href="<?php echo base_url();?>dashboard/solicitudes"><i class="lnr lnr-pencil"></i> <span>SOLICITUDES</span></a></li>
+									<li><a href="<?php echo base_url();?>dashboard/administrador"><i class="lnr lnr-chart-bars"></i> <span>ADMINISTRADOR</span></a></li>
+									<li><a href="<?=base_url()?>user_authentication/logout""><i class="fa fa-file-text-o"></i> <span>SALIR</span></a></li>
 								  </ul>
 								</div>
 							  </div>

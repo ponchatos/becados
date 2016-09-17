@@ -22,7 +22,7 @@
 	<link href='//fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
 	<link href='https://fonts.googleapis.com/css?family=Quicksand:400,700' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="<?=base_url();?>css/icon-font.min.css" type='text/css' />
-
+	<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
 
 
 </head>
@@ -105,11 +105,11 @@
 						<div style="border-top:1px ridge rgba(255, 255, 255, 0.15)"></div>
                            <div class="menu">
 									<ul id="menu" >
-										<li><a href="#"><i class="fa fa-tachometer"></i> <span>INICIO</span></a></li>
-										 <li><a href="#"><i class="fa fa-file-text-o"></i> <span>BECADOS</span></a></li>
-									<li><a href="#"><i class="lnr lnr-pencil"></i> <span>SOLICITUDES</span></a></li>
-									<li><a href="#"><i class="lnr lnr-chart-bars"></i> <span>ADMINISTRADOR</span></a></li>
-									<li><a href="#"><i class="fa fa-file-text-o"></i> <span>SALIR</span></a></li>
+										<li><a href="<?php echo base_url();?>"><i class="fa fa-tachometer"></i> <span>INICIO</span></a></li>
+										 <li><a href="<?php echo base_url();?>dashboard/becados"><i class="fa fa-file-text-o"></i> <span>BECADOS</span></a></li>
+									<li><a href="<?php echo base_url();?>dashboard/solicitudes"><i class="lnr lnr-pencil"></i> <span>SOLICITUDES</span></a></li>
+									<li><a href="<?php echo base_url();?>dashboard/administrador"><i class="lnr lnr-chart-bars"></i> <span>ADMINISTRADOR</span></a></li>
+									<li><a href="<?=base_url()?>user_authentication/logout""><i class="fa fa-file-text-o"></i> <span>SALIR</span></a></li>
 								  </ul>
 								</div>
 							  </div>
@@ -185,7 +185,7 @@
 					<div class="form-group"> 
 						<p>Observación</p><input type="text"  name="observacion"/>
 					</div>
-					&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+					
 				 	<div class="form-group">
 						<p>Carta Compromiso</p>
 							<select name="car_compromiso" form="form_dbecado"  id="exampleInputName2 ">
@@ -261,7 +261,7 @@
 							<option value="F">Femenino</option>		
 						</select>
 					</div>
-					&nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+					
 
 					<div class="form-group">
 						<p>Estado Civil</p>
@@ -275,7 +275,7 @@
 							?>
 						</select>
 					</div>
-					&nbsp;  &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+					
 					<div class="form-group">
 						<p>¿El Solicitante Tiene Hijos?</p>
 						<select name="hijos" form="form_dpersonales">
@@ -366,14 +366,7 @@
 					<div class="form-group"> 
 						<p>Ocupación</p><input type="text" name="padre_ocupacion" />
 					</div>
-				</form>
-				<br>
 
-				<form class="form-inline">
-					&nbsp; &nbsp;   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-					&nbsp; &nbsp;   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-					&nbsp; &nbsp;   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-					&nbsp; &nbsp;   &nbsp; &nbsp; &nbsp; 
 					<div class="form-group"> 
 						<p>Nivel Educativo</p>
 						<select name="padre_nivel_educativo" form="form_dfamiliares">
@@ -400,8 +393,8 @@
 						</select>
 					</div>
 				</form>
-				<br>
-				<br>
+				<br><br><br>
+
 				<form class="form-inline">
 					<div class="form-group"> 
 						<p>Nombre de la Madre</p><input type="text" name="madre_nombre" />
@@ -418,14 +411,6 @@
 					<div class="form-group"> 
 						<p>Ocupación</p><input type="text" name="madre_ocupacion" />
 					</div>
-				</form>
-				<br>
-
-				<form class="form-inline">
-					&nbsp; &nbsp;   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-					&nbsp; &nbsp;   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-					&nbsp; &nbsp;   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-					&nbsp; &nbsp;   &nbsp; &nbsp; &nbsp; 
 					<div class="form-group"> 
 						<p>Nivel Educativo</p>
 						<select name="madre_nivel_educativo" form="form_dfamiliares">
@@ -451,6 +436,11 @@
 						?>
 						</select>
 					</div>
+				</form>
+				<br>
+
+				<form class="form-inline">
+				
 					<br>
 					<br>
 				<form class="form-inline">
@@ -488,10 +478,7 @@
 			
 			<div id="div_descolares">
 				<form class="form-inline">
-					&nbsp; &nbsp;   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-					&nbsp; &nbsp;   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-					&nbsp; &nbsp;   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-					&nbsp; &nbsp;   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+					
 					<div class="form-group"> 
 						<p>Periodo</p><input type="text" name="periodo" disabled/>
 					</div>
@@ -531,9 +518,7 @@
 					<div class="form-group"> 
 						<p>Promedio</p><input type="text" name="promedio"/>
 					</div>
-					&nbsp; &nbsp;   &nbsp; &nbsp; &nbsp; &nbsp; 
-					&nbsp; &nbsp;   &nbsp; &nbsp; &nbsp; &nbsp; 
-					&nbsp; &nbsp;   
+					   
 					<div class="form-group"> 
 						<p>Turno</p>
 						<select name="turno" form="form_descolares">
@@ -563,25 +548,49 @@
 					</form>
 
 			</div>
-
 			<div id="div_comprobantes">
-				Comprobante de pago:
-				<a href="" target="_blank">
-					<img width="300" name="img_pago" src="<?=base_url()?>images/sin_imagen.png" />
-				</a>
-				<select name="select_pago">
-					<option value="0">Sin Validar</option>
-					<option value="1">Validada</option>
-				</select>
-				<br>
-				Boleta de calificaciones:
-				<a href="" target="_blank">
-					<img width="300" name="img_boleta" src="<?=base_url()?>images/sin_imagen.png" />
-				</a>
-				<select name="select_boleta">
-					<option value="0">Sin Validar</option>
-					<option value="1">Validada</option>
-				</select>
+			<div class="w3-row-padding w3-margin-top" >
+
+				<div class="w3-third">
+				<div class="w3-card-2">
+					<a href="" target="_blank">
+						<img style="width:100%" name="img_pago" src="<?=base_url()?>images/sin_imagen.png" />
+					</a>
+					<div class="w3-container w3-center">
+						<h4>COMPROBANTE DE PAGO</h4>
+						<br>
+						<select name="select_pago">
+							<option value="0">Sin Validar</option>
+							<option value="1">Validada</option>
+						</select>
+					</div>
+				</div>
+				</div>
+				<div class="w3-third">
+				<div class="w3-card-2">
+					<center><img src="<?=base_url()?>images/alert.png" style="width:50%"></center>
+					<div class="w3-container w3-center">
+						<h4>! VERIFICA ANTES DE VALIDAR ¡</h4>
+					</div>
+				</div>
+				</div>
+				 
+				<div class="w3-third">
+				<div class="w3-card-2">
+					<a href="" target="_blank">
+								<img style="width:100%" name="img_boleta" src="<?=base_url()?>images/sin_imagen.png" />
+							</a>
+					<div class="w3-container w3-center">
+						<h4>BOLETA DE CALIFICACIONES</h4>
+						<br>
+						<select name="select_boleta">
+							<option value="0">Sin Validar</option>
+							<option value="1">Validada</option>
+						</select>
+					</div>
+				</div>
+				</div>
+			</div>	
 			</div>
 
 	    	<div class="loader" style="display:none;"></div>
