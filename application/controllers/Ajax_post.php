@@ -18,7 +18,36 @@ $this->load->model('read_data');
 
 }
 
-//falta calar
+
+public function get_pagos_autorizados(){
+	if(isset($this->session->userdata['logged_in'])){
+		if($this->session->userdata['logged_in']['privilegios']==99){
+			$this->form_validation->set_rules('id_periodo', 'Becado', 'trim|required|xss_clean|numeric');
+
+			if ($this->form_validation->run() == FALSE) {
+				$response['success']=-1;
+				$response['message']="Fallo en la validación";
+			}else{
+				$result=$this->read_data->get_pagos_autorizados($this->input->post('id_periodo'));
+				if($result!=FALSE){
+					$response['success']=1;
+					$response['message']="Lista becados";
+					$response['data']=$result;
+				}else{
+					$response['success']=0;
+					$response['message']="No se encontraron becados";
+				}
+			}
+
+			die(json_encode($response,true));
+		}else{
+			redirect(base_url().'dashboard/','refresh');
+		}
+	}else{
+		redirect(base_url(),'refresh');
+	}
+}
+
 public function update_data_escolares(){
 	if(isset($this->session->userdata['logged_in'])){
 		if($this->session->userdata['logged_in']['privilegios']==99){

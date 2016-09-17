@@ -471,6 +471,60 @@ public function periodo_actual_id(){
 	}
 }
 
+public function get_periodos(){
+	$periodos = $this->db->get('periodo');
+	if($periodos->num_rows()>0){
+		return $periodos->result();
+	}else{
+		return FALSE;
+	}
+}
+
+public function get_pagos_autorizados($periodo_id){
+	$this->db->where('status',1);
+	$becados = $this->db->get('becado');
+
+	if($becados->num_rows()==0){
+		return FALSE;
+	}
+
+	$return=array();
+	foreach ($becados->result() as $becado) {
+
+		$this->db->where('id_becado',$becado->id_becado);
+		$this->db->where('id_periodo',$periodo_id);
+		$this->db->where('validacion',1);
+		$query_boleta = $this->db->get('comprobante_boleta');
+		$boleta= $query_boleta->num_rows()>0;
+
+		$this->db->where('id_becado',$becado->id_becado);
+		$this->db->where('id_periodo',$periodo_id);
+		$this->db->where('validacion',1);
+		$query_pago = $this->db->get('comprobante_pago');
+		$pago= $query_pago->num_rows()>0;
+
+		if($boleta && $pago){
+			$this->db->where('id_becado',$becado->id_becado);
+			$this->db->where('id_periodo',$periodo_id);
+			$horas = $this->db->get('horas');
+			if($horas->num_rows()>0){
+				$horas_totales=0;
+				foreach ($horas->result() as $hora) {
+					$horas_totales+=$hora->hora;
+				}
+				if($horas_totales >= 30){
+					$this->db->where('id_becado',$becado->id_becado);
+					$bdo = $this->db->get('vista_becado');
+					//$return[]=$bdo->row(0);
+					$return[]=array('nombre'=>$bdo->row(0)->nombre,'ape_pat'=>$bdo->row(0)->ape_pat,'ape_mat'=>$bdo->row(0)->ape_mat);
+				}
+			}
+		}
+	}
+
+	return $return;
+}
+
 }
 
 ?>

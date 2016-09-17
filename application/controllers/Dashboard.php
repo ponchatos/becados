@@ -49,6 +49,25 @@ public function index(){
 	}
 }
 
+public function listas(){
+	if(isset($this->session->userdata['logged_in'])){
+		if($this->session->userdata['logged_in']['privilegios']==99){
+				$this->load->model('read_data');
+
+				$data=array();
+				$periodos = $this->read_data->get_periodos();
+				if($periodos!=FALSE){
+					$data['periodos']=$periodos;
+				}
+				$this->load->view('listas',$data);
+			}else{
+			redirect(base_url().'dashboard/','refresh');
+		}
+	}else{
+		redirect(base_url(),'refresh');
+	}
+}
+
 public function administrador(){
 	if(isset($this->session->userdata['logged_in'])){
 		if($this->session->userdata['logged_in']['privilegios']==99){

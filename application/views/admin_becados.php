@@ -602,6 +602,9 @@
 					</div>
 				</div>
 				</div>
+				<form id="save_comprobantes">
+						<button>Guardar Estado de Comprobantes</button>
+				</form>
 			</div>	
 
 				<!--Comprobante de pago:
