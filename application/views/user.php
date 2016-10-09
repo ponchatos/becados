@@ -167,6 +167,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 						<div class="forms">
 								<div class="form-body" data-example-id="simple-form-inline">
 									<form class="form-inline">
+										<b>
+											Formatos de archivos permitidos: gif, jpg y png<br>
+											Tamaño y dimensiones máximas: 2MB, 3264px x 2448px.<br>
+										</b>
 										<div class="form-group"> 
 											<label for="exampleInputName2">Compobante de Pago:</label> 
 											<button id="btn_compobante" type="submit" class="btn btn-default">SUBIR</button>

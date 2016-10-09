@@ -380,32 +380,46 @@ public function lista_pagos(){
                         }  
                       
                         // ---------------------------------------------------------   
-                                                                    
-                        $contador=48;
-						$cont=33;
+                      
+                        // set default font subsetting mode
+                        $pdf->setFontSubsetting(true);  
+                      
+                        // Set font
+                        // dejavusans is a UTF-8 Unicode font, if you only need to
+                        // print standard ASCII chars, you can use core fonts like
+                        // helvetica or times to reduce file size.
+                        $pdf->SetFont('dejavusans', '', 14, '', true);  
+                      
+                        // Add a page
+                        // This method has several options, check the source code documentation for more information.
+                        $pdf->AddPage();
+                      
+                        // set text shadow effect
+                        //$pdf->setTextShadow(array('enabled'=>true, 'depth_w'=>0.2, 'depth_h'=>0.2, 'color'=>array(196,196,196), 'opacity'=>1, 'blend_mode'=>'Normal'));   
+                        
+
+                        // get the current page break margin
+                        $bMargin = $pdf->getBreakMargin();
+                        // get current auto-page-break mode
+                        $auto_page_break = $pdf->getAutoPageBreak();
+                        // disable auto-page-break
+                        $pdf->SetAutoPageBreak(false, 0);
+                        // set bacground image
+                        //$img_file = base_url()."uploads/".;
+                        //$img_file=base_url()."".$carrera_info->diploma_url;
+                        $pdf->Image(base_url()."css/images/Solicitud.png", 0, 0, 210, 297, '', '', '', false, 300, '', false, false, 0);
+                        // restore auto-page-break status
+                        $pdf->SetAutoPageBreak($auto_page_break, $bMargin);
+                        // set the starting point for the page content
+                        $pdf->setPageMark();
+
+                        $contador=20;
                         foreach ($becados as $row) {
-							if($cont==33){	
-								$pdf->setFontSubsetting(true);                        
-								$pdf->SetFont('dejavusans', '', 12, '', true);                       
-								$pdf->AddPage();                     
-								$bMargin = $pdf->getBreakMargin();
-								$auto_page_break = $pdf->getAutoPageBreak();                    
-								$pdf->SetAutoPageBreak(false, 0);
-								$pdf->Image(base_url()."css/images/Membretada.png", 0, 0, 210, 297, '', '', '', false, 300, '', false, false, 0);                     
-								$pdf->SetAutoPageBreak($auto_page_break, $bMargin);                        
-								$pdf->setPageMark();
-								$pdf->SetXY(60,20);
-								$pdf->cell(110,10,"df","B",0,'L',false,'',1);						
-								$pdf->SetXY(15,35);
-								$pdf->cell(175,10,"Nombre ","B",0,'L',false,'',1);
-								$contador=48;
-								$cont=1;							
-							}
-                            $pdf->SetXY(15,$contador);
-                            $pdf->cell(70,10,$cont." ".$row['nombre']." ".$row['ape_pat']." ".$row['ape_mat'],0,0,'L',false,'',1);
-                            $contador+=7;		
-							$cont+=1;												
+                              $pdf->SetXY(100,$contador);
+                              $pdf->cell(70,10,$row['nombre']." ".$row['ape_pat']." ".$row['ape_mat'],"B",0,'L',false,'',1);
+                              $contador+=20;
                         }
+
                         $pdf->Output("Pagos Validados.pdf", 'I');
                   }else{
                         echo "No se ha podido generar PDF.";

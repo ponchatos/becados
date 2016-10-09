@@ -19,6 +19,47 @@ $this->load->model('read_data');
 }
 
 
+public function change_periodo(){
+	if(isset($this->session->userdata['logged_in'])){
+		if($this->session->userdata['logged_in']['privilegios']==99){
+			$this->form_validation->set_rules('semestre', 'Semestre', 'trim|required|xss_clean|numeric');
+			$this->form_validation->set_rules('anio', 'Año', 'trim|required|xss_clean|numeric');
+
+			if ($this->form_validation->run() == FALSE) {
+				$response['success']=-1;
+				$response['message']="Fallo en la validación";
+			}else{
+				$periodo_actual = $this->read_data->periodo_actual_array();
+				$periodo_actual_ciclo_number = ( strtolower($periodo_actual->ciclo)=="ene-jun" ? 1 : 2 );
+				if($this->input->post('anio') <= $periodo_actual->anio && $this->input->post('semestre') <= $periodo_actual_ciclo_number){
+					$response['success']=0;
+					$response['message']="El periodo tiene que ser mayor al actual (".$periodo_actual->ciclo." ".$periodo_actual->anio.")";
+				}else{
+					$periodo_nuevo = array(
+						"ciclo"=>( $this->input->post('semestre') == 1 ? "ENE-JUN" : "AGO-DIC" ),
+						"anio"=>$this->input->post('anio')
+					);
+
+					$this->load->model('metodos');
+					$change_periodo = $this->metodos->change_periodo($periodo_nuevo);
+					if($change_periodo != FALSE){
+						$response['success']=1;
+						$response['message']="Periodo cambiado correctamente";
+					}else{
+						$response['success']=0;
+						$response['message']="No se pudo cambiar el periodo";
+					}
+				}
+			}
+			die(json_encode($response,true));
+		}else{
+			redirect(base_url().'dashboard/','refresh');
+		}
+	}else{
+		redirect(base_url(),'refresh');
+	}
+}
+
 public function get_pagos_autorizados(){
 	if(isset($this->session->userdata['logged_in'])){
 		if($this->session->userdata['logged_in']['privilegios']==99){

@@ -76,6 +76,14 @@ public function administrador(){
 			$usuarios=$this->user->get_users();
 			if($usuarios!=FALSE)
 				$data['usuarios'] = $usuarios;
+			//$this->load->model('user');
+			$periodo = $this->read_data->periodo_actual_array();
+			if($periodo!=FALSE){
+				$data['periodo']=array(
+					'ciclo'=>$periodo->ciclo,
+					'anio'=>$periodo->anio
+				);
+			}
 			$this->load->view('admin_administrador',$data);
 		}else{
 			redirect(base_url().'dashboard/','refresh');
@@ -538,10 +546,10 @@ private function set_upload_options()
         //upload an image options
         $config = array();
         $config['upload_path'] = './uploads/';
-        $config['allowed_types'] = 'gif|jpg|png';
+        $config['allowed_types'] = 'gif|jpg|jpeg|png';
         $config['max_size'] = '2048';
-        $config['max_width'] = '2024';
-        $config['max_height'] = '2008';
+        $config['max_width'] = '3264';
+        $config['max_height'] = '2448';
         $config['encrypt_name'] = TRUE;
 
         return $config;

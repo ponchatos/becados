@@ -391,11 +391,12 @@ public function get_user_hours($id_becado,$periodo=-1){
 			$horas+=$row->hora;
 		}
 	}
-	$this->db->select('horas_acumuladas');
-	$this->db->where('id_becado',$id_becado);
-	$query_periodos=$this->db->get('becado');
-	$horas_acumuladas=$query_periodos->row(0)->horas_acumuladas;
-	return $horas+$horas_acumuladas;
+	//$this->db->select('horas_acumuladas');
+	//$this->db->where('id_becado',$id_becado);
+	///$query_periodos=$this->db->get('becado');
+	//$horas_acumuladas=$query_periodos->row(0)->horas_acumuladas;
+	//return $horas+$horas_acumuladas;
+	return $horas;
 }
 
 public function get_user_info($id_becado){
@@ -451,11 +452,21 @@ public function get_user_info($id_becado){
 
 }
 
+public function periodo_actual_array(){
+	$this->db->where('status',1);
+	$query=$this->db->get('periodo');
+	if($query->num_rows()>0){
+		return $query->row(0);
+	}else{
+		return FALSE;
+	}
+}
+
 public function periodo_actual_nombre(){
 	$this->db->where('status',1);
 	$query=$this->db->get('periodo');
 	if($query->num_rows()>0){
-		return $query->row(0)->nombre;
+		return $query->row(0)->ciclo." ".$query->row(0)->anio;
 	}else{
 		return -1;
 	}
@@ -481,6 +492,11 @@ public function get_periodos(){
 }
 
 public function get_pagos_autorizados($periodo_id){
+	$this->db->where('id_periodo',$periodo_id);
+	if($this->db->count_all_results('periodo') == 0){
+		return FALSE;
+	}
+
 	$this->db->where('status',1);
 	$becados = $this->db->get('becado');
 

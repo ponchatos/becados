@@ -565,7 +565,7 @@
 
 				<div class="w3-third">
 				<div class="w3-card-2">
-					<a href="" target="_blank">
+					<a href="#" target="_blank">
 						<img style="width:100%" name="img_pago" src="<?=base_url()?>images/sin_imagen.png" />
 					</a>
 					<div class="w3-container w3-center">
@@ -769,12 +769,20 @@ $(document).ready(function() {
 					$("img[name='img_pago']").attr("src","<?=base_url()?>"+obj.data.pago.url);
 					$("img[name='img_pago']").parent().attr("href","<?=base_url()?>"+obj.data.pago.url);
 					$("select[name='select_pago'] option[value='"+obj.data.pago.validacion+"']").attr('selected','selected');
+				}else{
+					$("img[name='img_pago']").attr("src","<?=base_url()?>images/sin_imagen.png");
+					$("img[name='img_pago']").parent().attr("href","");
+					$("select[name='select_pago'] option[value='0']").attr('selected','selected');
 				}
 
 				if(obj.data.boleta!=null){
 					$("img[name='img_boleta']").attr("src","<?=base_url()?>"+obj.data.boleta.url);
 					$("img[name='img_boleta']").parent().attr("href","<?=base_url()?>"+obj.data.boleta.url);
 					$("select[name='select_boleta'] option[value='"+obj.data.boleta.validacion+"']").attr('selected','selected');
+				}else{
+					$("img[name='img_boleta']").attr("src","<?=base_url()?>images/sin_imagen.png");
+					$("img[name='img_boleta']").parent().attr("href","");
+					$("select[name='select_boleta'] option[value='0']").attr('selected','selected');
 				}
 				//$("#div_modalMessage").show();
 				//$("#modalMessage").text('');

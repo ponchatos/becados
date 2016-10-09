@@ -217,7 +217,63 @@
 										});
 							</script>
 <div class="clearfix"> </div>
+<select name="periodo_nombre" required>
+	<option>Selecciona periodo</option>
+	<option value="1" 
+	<?=( ( isset($periodo) && strtolower($periodo['ciclo']) == "ene-jun" ) ? "selected" : "" )?>
+	>ENE-JUN</option>
+	<option value="2"
+	<?=( ( isset($periodo) && strtolower($periodo['ciclo']) == "ago-dic" ) ? "selected" : "" )?>
+	>AGO-DIC</option>
+</select>
+<select name="periodo_anio" required>
+	<?php
+		$i = isset($periodo) ? $periodo['anio'] : "2000";
+		for($i; $i<=2030; $i++){
+			echo "<option>".$i."</option>";
+		}
+	?>
+</select>
+<form id="form_cambiar_periodo">
+<button>
+	Cambiar Periodo
+</button>
+</form>
+
+
 <script type="text/javascript">
+$(document).ready(function(){
+	$("#form_cambiar_periodo").submit(function(e){
+		e.preventDefault();
+
+		var semestre = $("select[name=periodo_nombre]").val();
+		var anio = $("select[name=periodo_anio]").val();
+
+		jQuery.ajax({
+			type: "POST",
+			url: "http://<?php echo $_SERVER['SERVER_NAME']; ?>/becados/ajax_post/change_periodo",
+			dataType: 'json',
+			data: {semestre:semestre,anio:anio},
+			success: function(obj) {
+				//$(".loader").hide();
+				//$("#modalMessage").text('Datos actualizados correctamente');
+				//$("#div_modalMessage").show();
+				if(obj.success==1){
+					//setModalSuccessMessage('Datos actualizados correctamente');
+				}else{
+					//setModalErrorMessage(obj.message);
+				}
+
+			},
+			error: function(res){
+				//$(".loader").hide();
+				//$("#modalMessage").text('<h3>Error!</h3><p>'+res.statusText+'</p>');
+				//$("#div_modalMessage").show();
+				//setModalErrorMessage('<h3>Error!</h3><p>'+res.statusText+'</p>');
+			}
+		});
+	});
+});
 $(document).ready(function(){
 
 

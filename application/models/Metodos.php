@@ -2,6 +2,74 @@
 
 Class Metodos extends CI_Model {
 
+//falta calarlo
+public function change_periodo($periodo_nuevo){
+	$this->db->where('ciclo',$periodo_nuevo['ciclo']);
+	$this->db->where('anio',$periodo_nuevo['anio']);
+	if($this->db->count_all_results('periodo') == 0){
+		$this->db->trans_begin();
+
+		$this->db->insert('periodo',array("ciclo"=>$periodo_nuevo['ciclo'],"anio"=>$periodo_nuevo['anio'],"status"=>0));
+		if($this->db->affected_rows()>0){
+			$id_periodo_nuevo = $this->db->insert_id();
+
+			$becados=$this->db->get('becado');
+			if($becados->num_rows()>0){
+				$this->load->model('read_data');
+				$periodo_actual = $this->read_data->periodo_actual_id();
+
+				foreach ($becados->result() as $becado) {
+					$this->db->where('id_becado',$becado->id_becado);
+					$this->db->where('id_periodo',$periodo_actual);
+					$horas = $this->db->get('horas');
+					if($horas->num_rows()>0){
+						$horas_totales=0;
+						foreach ($horas->result() as $hora) {
+							$horas_totales+=$hora->hora;
+						}
+						if($horas_totales > 30){
+							$insert_horas = array(
+								'id_becado'=>$becado->id_becado,
+								'id_periodo'=>$id_periodo_nuevo,
+								'evento'=>'Horas acumuladas del periodo anterior',
+								'hora'=>$horas_totales-30,
+								'fecha'=>date('YYYY-mm-dd'),
+								'observacion'=>'Horas acumuladas del periodo pasado',
+								'id_usuario'=>1);
+							$this->db->insert('horas',$insert_horas);
+							if($this->db->affected_rows()<=0){
+								$this->db->trans_rollback();
+								return FALSE;
+							}
+						}
+					}
+				}
+
+				$this->db->where('id_periodo',$periodo_actual);
+				$this->db->update('periodo',array('status'=>0));
+				if($this->db->affected_rows()>0){
+					$this->db->where('id_periodo',$id_periodo_nuevo);
+					$this->db->update('periodo',array('status'=>1));
+					if($this->db->affected_rows() > 0){
+						$this->db->trans_commit();
+						return TRUE;
+					}
+				}
+				$this->db->trans_rollback();
+				return FALSE;
+
+			}
+
+		}else{
+			$this->db->trans_rollback();
+			return FALSE;		
+		}
+		
+	}else{
+		return FALSE;
+	}
+}
+
 public function valid_upload_file($id_becado,$table){
 	$id_periodo=$this->periodo_actual();
 	$this->db->where('id_becado',$id_becado);
