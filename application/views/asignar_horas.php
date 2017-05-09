@@ -102,6 +102,7 @@ $(document).ready(function() {
 			data: {id_becado_hddn:id_becado_hddn,evento:evento,horas:horas,fecha:fecha,observacion:observacion},
 			success: function(obj) {
 				if(obj.success==1){
+					location.reload();
 					$("#message").text('');
 					$("#message").append("<h3>Bien!</h3><p>"+obj.message+"</p>");
 					$("#div_message").show();

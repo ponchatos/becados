@@ -413,14 +413,19 @@ public function get_user_info($id_becado){
 				$horas+=$row->hora;
 			}
 		}*/
-		$horas=$this->get_user_hours($id_becado,$query->row(0)->periodo);
+		//CAMBIE ESTO AL PERIODO ACTIO Y NO AL DEL BECADO
+		// $horas=$this->get_user_hours($id_becado,$query->row(0)->periodo);
+		$horas=$this->get_user_hours($id_becado);
+		$id_periodo = $this->periodo_actual_id();
 
 		$this->db->where('id_becado',$id_becado);
-		$this->db->where('id_periodo',$query->row(0)->periodo);
+		//CAMBIE ESTO AL PERIODO ACTIO Y NO AL DEL BECADO
+		// $this->db->where('id_periodo',$query->row(0)->periodo);
+		$this->db->where('id_periodo',$id_periodo);
 		$query_comprobante=$this->db->get('comprobante_pago');
 		$comprobante="";
 		if($query_comprobante->num_rows()>0){
-			$comprobante=$query_comprobante->row(0)->comprobante_url!=null?$query_comprobante->row(0)->comprobante_url:'';
+			$comprobante=$query_comprobante->row(0)->url!=null?$query_comprobante->row(0)->url:'';
 		}
 
 		$this->db->where('id_becado',$id_becado);
@@ -428,7 +433,7 @@ public function get_user_info($id_becado){
 		$query_boleta=$this->db->get('comprobante_boleta');
 		$boleta="";
 		if($query_boleta->num_rows()>0){
-			$comprobante=$query_boleta->row(0)->boleta_url!=null?$query_boleta->row(0)->boleta_url:'';
+			$comprobante=$query_boleta->row(0)->url!=null?$query_boleta->row(0)->url:'';
 		}
 		
 		$return=array(
@@ -439,7 +444,7 @@ public function get_user_info($id_becado){
 			'cel'=>$query->row(0)->cel,
 			'correo'=>$query->row(0)->correo,
 			'face'=>$query->row(0)->facebook,
-			'periodo'=>$query->row(0)->periodo,
+			'periodo'=>$this->periodo_actual_nombre(),
 			'status'=>$query->row(0)->status,
 			'horas'=>$horas,
 			'comprobante_url'=>$comprobante,
