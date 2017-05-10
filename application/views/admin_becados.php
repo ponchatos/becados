@@ -155,6 +155,7 @@
 		   <li><a href="#" class="tablink" id="btn_dfamiliares">DATOS FAMILIARES</a></li>
 		   <li><a href="#" class="tablink" id="btn_descolares">DATOS ESCOLARES</a></li>
 		   <li><a href="#" class="tablink" id="btn_comprobantes">COMPROBANTES</a></li>
+		   <li><a href="#" class="tablink" id="btn_horas">HORAS</a></li>
 		  </ul>
 
 
@@ -559,8 +560,23 @@
 						<button>Guardar Datos Escolares</button>
 					</form>
 			</div>
-			
-			<div id="div_comprobantes">
+			<div id="div_horas">
+
+			<table id="ahoras_tabla">
+					<thead>
+						<tr>
+							<th>Evento</th>
+							<th>Ahoras</th>
+							<th>Fecha</th>
+							<th>Observación</th>
+						</tr>
+					</thead>
+					<tbody>
+
+					</tbody>
+				</table>
+			</div>
+						<div id="div_comprobantes">
 
 			<div class="w3-row-padding w3-margin-top" >
 
@@ -607,6 +623,38 @@
 						<button>Guardar Estado de Comprobantes</button>
 				</form>
 			</div>	
+
+				<!--Comprobante de pago:
+				<a href="" target="_blank">
+					<img width="300" name="img_pago" src="<?=base_url()?>images/sin_imagen.png" />
+				</a>
+				<select name="select_pago">
+					<option value="0">Sin Validar</option>
+					<option value="1">Validada</option>
+				</select>
+				<br>
+				Boleta de calificaciones:
+				<a href="" target="_blank">
+					<img width="300" name="img_boleta" src="<?=base_url()?>images/sin_imagen.png" />
+				</a>
+				<select name="select_boleta">
+					<option value="0">Sin Validar</option>
+					<option value="1">Validada</option>
+				</select>
+				<form id="save_comprobantes">
+						<button>Guardar Estado de Comprobantes</button>
+				</form>
+
+			</div>-->
+
+	    	<div class="loader" style="display:none;"></div>
+	    	<div id="div_modalMessage" class="w3-container w3-red w3-card-8" style="display:none;">
+				<span onclick="this.parentElement.style.display='none'" class="w3-closebtn">&times;</span>
+				<div id="modalMessage"></div>
+			</div>
+	    </div>
+		
+			
 
 				<!--Comprobante de pago:
 				<a href="" target="_blank">
@@ -1034,6 +1082,7 @@ $(document).ready(function(){
 	$("#div_descolares").hide();
 	$("#div_dpersonales").hide();
 	$("#div_comprobantes").hide();
+	$("#div_horas").hide();
 
 	function selectTab(tab){
 		$("#div_dgenerales").hide();
@@ -1041,6 +1090,8 @@ $(document).ready(function(){
 		$("#div_descolares").hide();
 		$("#div_dpersonales").hide();
 		$("#div_comprobantes").hide();
+		$("#div_horas").hide();
+
 		$(tab).show();
 	}
 
@@ -1069,6 +1120,10 @@ $(document).ready(function(){
 	$("#btn_comprobantes").click(function (event){
 		event.preventDefault();
 		selectTab("#div_comprobantes");
+	});
+	$("#btn_horas").click(function (event){
+		event.preventDefault();
+		selectTab("#div_horas");
 	});
 
 });
