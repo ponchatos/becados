@@ -18,6 +18,7 @@ public function __construct(){
       }
 
       public function index(){
+            $this->form_validation->set_data($this->input->get());
             $this->form_validation->set_rules('id_solicitud', 'Solicitud', 'trim|required|xss_clean|numeric');
             if ( ( $this->form_validation->run() == FALSE ) && ( $this->input->get('id_solicitud') == null )) {
                   echo "No se ha recibido petición de Solicitud";

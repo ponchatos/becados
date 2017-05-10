@@ -20,7 +20,7 @@ $this->load->library('session');
 }
 
 public function prueba(){
-	$this->load->view('prueba');
+	redirect(base_url().'pdf_creator/?id_solicitud=22','refresh');
 }
 
 
@@ -256,15 +256,15 @@ public function registrar_solicitud(){
 			'p10'=>$this->input->post('p10')
 			);*/
 		$result=$this->solicitud_db->registrar_solicitud($data);
-		if($result==FALSE){
+		echo '<script>console.log("'.$result.'");</script>';
+		if($result===FALSE){
 			$data=$this->solicitud_db->get_spinner_datas();
 			$data['error_message'] = "Error al registrar su solicitud, intentelo nuevamente";
 			$this->load->view('solicitud',$data);
 		}else{
 			// $this->session->set_flashdata("message", $data['datos_personales']['nombre']." ".$data['datos_personales']['ape_pat']." ".$data['datos_personales']['ape_mat']." Registrado Correctamente.");
 			// redirect(base_url(),'refresh');
-			$this->load->library('../controllers/Pdf_creator');
-			$this->pdf_creator->__pdf_solicitud($result);
+			redirect(base_url().'pdf_creator/?id_solicitud='.$result,'refresh');
 		}
 	}
 }
