@@ -247,7 +247,11 @@ public function __construct(){
             $pdf->SetXY(13,240);
             $pdf->cell(80,10,"Nivel Eductivo: ".$query['nivel_educativo'],"B",0,'L',false,'',1);
             $pdf->SetXY(93,240);
-            $pdf->cell(100,10,"Estado: ".$query['estado'],"B",0,'L',false,'',1);
+			if($query['estado']==1){
+				$pdf->cell(100,10,"Estado: Nuevo Ingreso","B",0,'L',false,'',1);
+			}else{
+				$pdf->cell(100,10,"Estado: Reingreso","B",0,'L',false,'',1);
+			}
             $pdf->SetXY(13,250);
             $pdf->cell(135,10,"Escuela: ".$query['escuela'],"B",0,'L',false,'',1);
             $pdf->SetXY(148,250);
@@ -293,25 +297,38 @@ public function __construct(){
             $pdf->SetXY(13,40);
             $pdf->cell(180,10,"1.-¿Cuál es el total de cuartos, piezas o habitaciones con los que cuenta su hogar?",0,0,'L',false,'',1);
             $pdf->SetXY(18,50);
-            $pdf->cell(30,10,$query['res1'],"B",0,'L',false,'',1);
+			if($query['res1']==7){
+				$pdf->cell(30,10,$query['res1']." o mas","B",0,'L',false,'',1);
+			}else{
+				$pdf->cell(30,10,$query['res1'] ,"B",0,'L',false,'',1);			
+			}
             $pdf->SetXY(13,60);
             $pdf->cell(180,10,"2.-¿Cuántos baños completos con regadera y W.C.(excusado) hay para uso exclusivo de los integrandes de su hogar?",0,0,'L',false,'',1);
             $pdf->SetXY(18,70);
-            $pdf->cell(30,10,$query['res2'],"B",0,'L',false,'',1);
+			if($query['res2']==4){
+				$pdf->cell(30,10,$query['res2']." o mas","B",0,'L',false,'',1);
+			}else{
+				$pdf->cell(30,10,$query['res2'] ,"B",0,'L',false,'',1);						           
+			}           
             $pdf->SetXY(13,80);
             $pdf->cell(180,10,"3.-¿En el hogar cuenta con regadera funcionando en alguno de los baños?",0,0,'L',false,'',1);
             $pdf->SetXY(18,90);
             $pdf->cell(30,10,$query['res3'],"B",0,'L',false,'',1);
             $pdf->SetXY(13,100);
-            $pdf->cell(180,10,"4.-Contando todos los fotos que utiliza para iluminar su hogar, incluyendo los techos,",0,0,'L',false,'',1);
+            $pdf->cell(180,10,"4.-Contando todos los focos que utiliza para iluminar su hogar, incluyendo los techos,",0,0,'L',false,'',1);
             $pdf->SetXY(18,110);
             $pdf->cell(170,10,"paredes y lámparas de buró o piso.¿Cuántos focos tiene la vivienda?",0,0,'L',false,'',1);
             $pdf->SetXY(18,120);
-            $pdf->cell(30,10,$query['res4'],"B",0,'L',false,'',1);
+			if($query['res4']==1){$pdf->cell(70,10,"de 0 a 5","B",0,'L',false,'',1);}
+			if($query['res4']==2){$pdf->cell(70,10,"de 0 a 5","B",0,'L',false,'',1);}
+			if($query['res4']==3){$pdf->cell(70,10,"de 0 a 5","B",0,'L',false,'',1);}
+			if($query['res4']==4){$pdf->cell(70,10,"de 0 a 5","B",0,'L',false,'',1);}
+			if($query['res4']==5){$pdf->cell(70,10,"de 0 a 5","B",0,'L',false,'',1);}
+         
             $pdf->SetXY(13,130);
             $pdf->cell(180,10,"5.-¿El piso de su hogar es predominantemente de tierra, o de cemento, o de algún otro tipo de acabado?",0,0,'L',false,'',1);
-            $pdf->SetXY(18,140);
-            $pdf->cell(70,10,$query['res5'],"B",0,'L',false,'',1);
+            $pdf->SetXY(18,140);								
+            $pdf->cell(70,10,$query['res5'],"B",0,'L',false,'',1);			
             $pdf->SetXY(13,150);
             $pdf->cell(180,10,"6.-¿Cuantos automoviles propios, excluyendo taxis, tienen en su hogar?",0,0,'L',false,'',1);
             $pdf->SetXY(18,160);

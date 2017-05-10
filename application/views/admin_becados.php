@@ -563,6 +563,7 @@
 						<button>Guardar Datos Escolares</button>
 					</form>
 			</div>
+			
 			<div id="div_comprobantes">
 
 			<div class="w3-row-padding w3-margin-top" >

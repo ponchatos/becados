@@ -182,7 +182,7 @@
 				<?php
 					if(isset($niveles_educativos)){
 						foreach ($niveles_educativos as $nivel) {
-							echo '<option  value="'.$nivel["id_nivel"].'">'.$nivel["nombre"].'</option>';
+							echo '<option selected  value="'.$nivel["id_nivel"].'">'.$nivel["nombre"].'</option>';
 						}
 					}
 				 ?>
@@ -227,7 +227,7 @@
         	 <li>
             	<select form="form"  name="p1" required>
 					<option disabled selected value>Seleccione una Opción</option>
-						<option value="1">1</option>
+						<option selected value="1">1</option>
 						<option value="2">2</option>
 						<option value="3">3</option>
 						<option value="4">4</option>
@@ -237,12 +237,12 @@
 				</select>
 				<div class="clear"> </div>
             </li>           
-            <h4>2.-¿Cuántos baños completos con regadera y W.C. (excusado)  hay parab uso exclusivo de los integrantes de su hogar?</h4>
+            <h4>2.-¿Cuántos baños completos con regadera y W.C. (excusado)  hay para uso exclusivo de los integrantes de su hogar?</h4>
             <br><div class="clear"> </div>
             <li>
             	<select form="form"  name="p2" required>
 					<option disabled selected value>Seleccione una Opción</option>
-						<option value="1">1</option>
+						<option selected value="1">1</option>
 						<option value="2">2</option>
 						<option value="3">3</option>
 						<option value="4">4 o más.</option>
@@ -250,11 +250,11 @@
 				<div class="clear"> </div>
 				
             </li><div class="clear"> </div>
-            <h4>3.-¿En el hogar cuenta co regadera funcionando en alguno de los baños?</h4><br><div class="clear"> </div>
+            <h4>3.-¿En el hogar cuenta con regadera funcionando en alguno de los baños?</h4><br><div class="clear"> </div>
             <li>
             	<select form="form"  name="p3" required>
 					<option disabled selected value>Seleccione una Opción</option>
-						<option value="1">No tiene.</option>
+						<option selected value="1">No tiene.</option>
 						<option value="2">Si tiene.</option>
 				</select>
 			</li>
@@ -262,7 +262,7 @@
             <li>
             	<select form="form"  name="p4" required>
 					<option disabled selected value>Seleccione una Opción</option>
-						<option value="1">De 0 a 5</option>
+						<option selected value="1">De 0 a 5</option>
 						<option value="2">De 6 a 10</option>
 						<option value="3">De 11 a 15</option>
 						<option value="4">De 16 a 20</option>
@@ -274,7 +274,7 @@
             <li>
             	<select form="form"  name="p5" required>
 					<option disabled selected value>Seleccione una Opción</option>
-						<option value="1">Tierra o cemento (firme de).</option>
+						<option selected value="1">Tierra o cemento (firme de).</option>
 						<option value="2">Otro tipo de acabado o material.</option>
 				</select>
 			</li>
@@ -376,7 +376,7 @@
 	        <li>
 	        	<select form="form" id="id_vive_padre" name="padre_vivo_muerto" required>
 					<option disabled selected value>Situación</option>
-					<option selected value="1">Vive</option>
+					<option selected  value="1">Vive</option>
 					<option value="2">Finado</option>
 				</select>
 				<div class="clear"> </div>
@@ -389,7 +389,7 @@
 				<?php
 					if(isset($niveles_educativos)){
 						foreach ($niveles_educativos as $nivel) {
-							echo '<option  value="'.$nivel["id_nivel"].'">'.$nivel["nombre"].'</option>';
+							echo '<option selected  value="'.$nivel["id_nivel"].'">'.$nivel["nombre"].'</option>';
 						}
 					}
 				 ?>
@@ -399,7 +399,7 @@
 			<h4>Ocupación:</h4>
 	        <br>
 			<li>
-				<input  type="text" name="padre_ocupacion" placeholder="Ocupación del padre o tutor"  required/></a>
+				<input  type="text" name="padre_ocupacion" placeholder="Ocupación del padre o tutor" value="32"   required/></a>
 				<div class="clear"> </div>
         	</li> 
 	        <br>
@@ -429,7 +429,7 @@
 				<?php
 					if(isset($niveles_educativos)){
 						foreach ($niveles_educativos as $nivel) {
-							echo '<option  value="'.$nivel["id_nivel"].'">'.$nivel["nombre"].'</option>';
+							echo '<option selected  value="'.$nivel["id_nivel"].'">'.$nivel["nombre"].'</option>';
 						}
 					}
 				 ?>
@@ -439,7 +439,7 @@
 		<h4>Ocupación:</h4>
 	        <br>
         <li>
-			<input  type="text" name="madre_ocupacion" placeholder="Ocupación"  required/></a>
+			<input  type="text" name="madre_ocupacion" placeholder="Ocupación"  value="1" required/></a>
 			<div class="clear"> </div>
         </li>        
          <br>
@@ -453,7 +453,7 @@
         	<h4>¿En qué niveles educativos?</h4> 
         	<br>
         	<li>
-				<input  type="text" name="en_que_niveles" placeholder=""  required/></a>
+				<input  type="text" name="en_que_niveles" placeholder="" value="1"  required/></a>
 				<div class="clear"> </div>
         	</li> 
 
@@ -469,7 +469,7 @@
 					<?php
 						if(isset($turnos)){
 							foreach ($turnos as $turno) {
-								echo '<option  value="'.$turno["id_turno"].'">'.$turno["nombre"].'</option>';
+								echo '<option selected  value="'.$turno["id_turno"].'">'.$turno["nombre"].'</option>';
 							}
 						}
 					 ?>
@@ -479,13 +479,13 @@
 			<h4>Semestre o Grado:</h4>
         	<br>
         	 <li>
-				<input  type="text" name="grado" placeholder="Semestre o Grado"  required/></a>
+				<input  type="text" name="grado" placeholder="Semestre o Grado" value="2"   required/></a>
 				<div class="clear"> </div>
         	</li>
 			<h4>Promedio:</h4>
         	<br>
         	 <li>
-				<input  type="text" name="promedio" placeholder="Promedio"  required/></a>
+				<input  type="text" name="promedio" placeholder="Promedio" value="2"  required/></a>
 				<div class="clear"> </div>
         	</li>
 			<h4>Tipo de Incripción:</h4>
@@ -493,7 +493,7 @@
         	<li>
 	        	<select form="form" id="id_ingreso" name="ingreso" required>
 					<option disabled selected value>Tipo de Incripción</option>
-						<option value="1">Nuevo Ingreso</option>
+						<option selected value="1">Nuevo Ingreso</option>
 						<option value="2">Reingreso</option>
 				</select>
 				<div class="clear"> </div>
@@ -507,7 +507,7 @@
             <li>
             	<select form="form"  name="p6" id="p6" required>
 					<option disabled selected value>Seleccione una Opción</option>
-						<option value="1">Ninguno</option>
+						<option selected value="1">Ninguno</option>
 						<option value="2">1</option>
 						<option value="3">2 </option>
 						<option value="4">3 o más.</option>
@@ -518,7 +518,7 @@
             <br><div class="clear"> </div><li>
             	<select form="form"  name="p7" required>
 					<option disabled selected value>Seleccione una Opción</option>
-						<option value="1">Ninguno</option>
+						<option selected value="1">Ninguno</option>
 						<option value="2">1</option>
 						<option value="3">2 o más.</option>
 				</select>
@@ -529,7 +529,7 @@
             <br><div class="clear"> </div><li>
             	<select form="form"  name="p8" required>
 					<option disabled selected value>Seleccione una Opción</option>
-						<option value="1">Ninguno</option>
+						<option selected value="1">Ninguno</option>
 						<option value="2">1</option>
 						<option value="3">2 o más.</option>
 				</select>
@@ -539,8 +539,8 @@
             <li>
             	<select form="form"  name="p9" required>
 					<option disabled selected value>Seleccione una Opción</option>
-						<option value="2">Si tiene.</option>
 						<option value="1">No tiene.</option>
+						<option selected value="2">Si tiene.</option>						
 				</select>
 				<div class="clear"> </div>
 			</li>
@@ -549,7 +549,7 @@
 			<div class="clear"> </div><li>
             	<select form="form"  name="p10" required>
 					<option disabled selected value>Seleccione una Opción</option>
-						<option value="1">No estudió.</option>
+						<option selected value="1">No estudió.</option>
 						<option value="2">Primaria Incompleta.</option>
 						<option value="3">Primaria Completa.</option>
 						<option value="4">Secundaria Incompleta.</option>
@@ -566,7 +566,7 @@
 				</select>
 				<div class="clear"> </div>
 			</li>
-			<h4>EStado:</h4><br>
+			<h4>Estado:</h4><br>
         	<li>
 	        	<select form="form" id="id_ingreso" name="ingreso" required>
 					<option disabled selected value>Estado</option>
