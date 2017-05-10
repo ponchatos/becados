@@ -60,6 +60,59 @@ public function change_periodo(){
 	}
 }
 
+public function update_pago_realizado(){
+	if(isset($this->session->userdata['logged_in'])){
+		if($this->session->userdata['logged_in']['privilegios']==99){
+			$this->form_validation->set_rules('id_becado', 'Becado', 'trim|required|xss_clean|numeric');
+			
+			if ($this->form_validation->run() == FALSE) {
+				$response['success']=-1;
+				$response['message']="Fallo en la validación";
+			}else{
+				$this->load->model('read_data');
+
+				$id_becado = $this->input->post('id_becado');
+				$id_periodo = $this->read_data->periodo_actual_id();
+				$fecha = date('Y-m-d');
+				$importe = 1000;
+
+				$data=array(
+					'id_becado'=>$id_becado,
+					'id_periodo'=>$id_periodo,
+					'fecha'=>$fecha,
+					'importe'=>$importe
+				);
+
+
+				if($this->read_data->is_becado_valid($id_becado)){
+					$result=$this->db->insert('pagos',$data);
+					if($this->db->affected_rows()>0){
+						$response['success']=1;
+						$response['message']="Pago confirmado correctamente";
+
+						$pagos_realizados = $this->read_data->get_user_pagos_realizados($id_becado);
+						if($pagos_realizados != null){
+							$response['pagos_realizados']=$pagos_realizados;
+						}
+					}else{
+						$response['success']=-1;
+						$response['message']="Error al confirmar el pago";	
+					}
+				}else{
+					$response['success']=-1;
+					$response['message']="El pago del becado no puede ser confirmado, revise comprobantes";
+				}
+
+			}
+			die(json_encode($response));
+		}else{
+			redirect(base_url().'dashboard/','refresh');
+		}
+	}else{
+		redirect(base_url(),'refresh');
+	}
+}
+
 public function get_pagos_autorizados(){
 	if(isset($this->session->userdata['logged_in'])){
 		if($this->session->userdata['logged_in']['privilegios']==99){

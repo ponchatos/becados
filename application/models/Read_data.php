@@ -162,6 +162,7 @@ public function get_becado_info($id_becado){
 			'turno'=>$query->row(0)->turno,
 			'promedio'=>$query->row(0)->promedio,
 			'estado'=>$query->row(0)->estado,
+			'pago_realizado'=>$this->get_is_user_pago_realizado($id_becado)
 			);
 
 		$comprobantes=$this->get_comprobantes_info($id_becado);
@@ -172,23 +173,70 @@ public function get_becado_info($id_becado){
 			$return['pago']=$comprobantes['pago'];
 		}
 
-		$this->db->where('id_becado',$id_becado);
-		$pagos_query=$this->db->get('vista_pagos');
-		if($pagos_query->num_rows()>0){
-			$return['pagos']=array();
-			foreach ($pagos_query->result() as $row) {
-				$return['pagos'][]=array(
-					'periodo'=>$row->periodo,
-					'fecha'=>$row->fecha,
-					'importe'=>$row->importe
-					);
-			}
+		// $this->db->where('id_becado',$id_becado);
+		// $pagos_query=$this->db->get('vista_pagos');
+		// if($pagos_query->num_rows()>0){
+		// 	$return['pagos']=array();
+		// 	foreach ($pagos_query->result() as $row) {
+		// 		$return['pagos'][]=array(
+		// 			'periodo'=>$row->periodo,
+		// 			'fecha'=>$row->fecha,
+		// 			'importe'=>$row->importe
+		// 			);
+		// 	}
+		// }
+		$pagos_realizados = $this->get_user_pagos_realizados($id_becado);
+		if($pagos_realizados!=null){
+			$return['pagos']=$pagos_realizados;
 		}
 		return $return;
 
 	}else{
 		return FALSE;
 	}
+}
+
+public function get_is_user_pago_realizado($id_becado){
+	$periodo_actual_id = $this->periodo_actual_id();
+	$this->db->where('id_becado',$id_becado);
+	$this->db->where('id_periodo',$periodo_actual_id);
+	$result = $this->db->get('pagos');
+	if($result->num_rows()>0){
+		return TRUE;
+	}else{
+		return FALSE;
+	}
+}
+
+public function get_user_pagos_realizados($id_becado){
+	$this->db->where('id_becado',$id_becado);
+	$pagos_query=$this->db->get('vista_pagos');
+	if($pagos_query->num_rows()>0){
+		$return['pagos']=array();
+		foreach ($pagos_query->result() as $row) {
+			$return['pagos'][]=array(
+				'periodo'=>$row->periodo,
+				'fecha'=>$row->fecha,
+				'importe'=>$row->importe
+				);
+		}
+		return $return['pagos'];
+	}else{
+		return null;
+	}
+	
+}
+
+public function is_becado_valid($id_becado){
+	$user_hours = $this->get_user_hours($id_becado);
+	if($user_hours<30){
+		return FALSE;
+	}
+	$comprobantes=$this->get_comprobantes_info($id_becado);
+	if($comprobantes==null||!isset($comprobantes['boleta'])||!isset($comprobantes['pago'])){
+		return FALSE;
+	}
+	return TRUE;
 }
 
 public function get_becados(){
@@ -209,6 +257,12 @@ public function get_becados(){
 			}else{
 				$comprobante='Sin archivo';
 			}
+			$pago_text = '';
+			if($this->get_is_user_pago_realizado($row->id_becado)){
+				$pago_text = 'Realizado';
+			}else{
+				$pago_text = ($horas>30&&$boleta=='Validada'&&$comprobante=='Validada')?'Autorizado':'Sin Autorizar';
+			}
 			$return[]=array(
 				'id_becado'=>$row->id_becado,
 				'nombre'=>$row->nombre,
@@ -218,7 +272,7 @@ public function get_becados(){
 				'horas'=>$horas,
 				'boleta'=>$boleta,
 				'comprobante'=>$comprobante,
-				'pago'=>($horas>30&&$boleta=='Validada'&&$comprobante=='Validada')?'Autorizado':'Sin Autorizar',
+				'pago'=>$pago_text,
 				'status'=>$row->status
 			);
 		}

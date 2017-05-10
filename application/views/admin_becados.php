@@ -225,6 +225,7 @@
 				<form id="save_dgenerales">
 					<button>Guardar Datos Generales</button>
 				</form>
+				<br><br><br>
 				<table id="pagos_tabla">
 					<thead>
 						<tr>
@@ -237,6 +238,9 @@
 
 					</tbody>
 				</table>
+				<form id="btn_pago_realizado" style="display:none;">
+					<button>Confirmar pago realizado</button>
+				</form>
 			</div>
 
 			<div id="div_dpersonales">
@@ -677,6 +681,7 @@ $(document).ready(function() {
 		$("input").each(function(){
 			$(this).val('');
 		});
+		$("#btn_pago_realizado").hide();
 		$("img[name='img_pago'],img[name='img_boleta']").attr('src',"<?=base_url()?>images/sin_imagen.png");
 		$("img[name='img_pago'],img[name='img_boleta']").parent().attr('href',"");
 	}
@@ -684,6 +689,7 @@ $(document).ready(function() {
 	var id_becado;
 	$('#becados_tabla tbody').on( 'click','tr',function (e) {
 		id_becado=$(this).children('td:nth-child(1)').text();
+		var horas_realizadas=$(this).children('td:nth-child(4)').text();
 		$(".loader").show();
 		$("#pagos_tabla").children("tbody").text("");
 		clearModal();
@@ -784,6 +790,10 @@ $(document).ready(function() {
 					$("img[name='img_boleta']").parent().attr("href","");
 					$("select[name='select_boleta'] option[value='0']").attr('selected','selected');
 				}
+
+				if(obj.data.pago_realizado===false && obj.data.pago!=null && obj.data.boleta!=null && horas_realizadas>30){
+					$("#btn_pago_realizado").show();
+				}
 				//$("#div_modalMessage").show();
 				//$("#modalMessage").text('');
 				//$("#modalMessage").append(JSON.stringify(obj));
@@ -795,6 +805,43 @@ $(document).ready(function() {
 			}
 		});
 		$('#myModal').show();
+	});
+
+	$("#btn_pago_realizado").submit(function(e){
+		e.preventDefault();
+
+		$(".loader").show();
+		jQuery.ajax({
+			type: "POST",
+			url: "http://<?php echo $_SERVER['SERVER_NAME']; ?>/becados/ajax_post/update_pago_realizado",
+			dataType: 'json',
+			data: {id_becado:id_becado},
+			success: function(obj) {
+				$(".loader").hide();
+				//$("#modalMessage").text('Datos actualizados correctamente');
+				//$("#div_modalMessage").show();
+				if(obj.success==1){
+					setModalSuccessMessage('Confirmación de pago realizada correctamente');
+
+					$("#btn_pago_realizado").hide();
+					$("#pagos_tabla").children("tbody").text("");
+					$.each(obj.pagos_realizados, function( index, value ){
+						var str = "<tr><td>"+value.periodo+"</td><td>"+value.fecha+"</td><td>"+value.importe+"</td></tr>";
+						$("#pagos_tabla").children("tbody").append(str);
+					});
+
+				}else{
+					setModalErrorMessage(obj.message);
+				}
+
+			},
+			error: function(res){
+				$(".loader").hide();
+				//$("#modalMessage").text('<h3>Error!</h3><p>'+res.statusText+'</p>');
+				//$("#div_modalMessage").show();
+				setModalErrorMessage('<h3>Error!</h3><p>'+res.statusText+'</p>');
+			}
+		});
 	});
 
 	$("#save_dgenerales").submit(function(e){
