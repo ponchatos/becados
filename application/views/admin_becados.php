@@ -566,11 +566,11 @@
 			</div>
 			<div id="div_horas">
 
-			<table id="ahoras_tabla">
+			<table id="horas_tabla">
 					<thead>
 						<tr>
 							<th>Evento</th>
-							<th>Ahoras</th>
+							<th>Horas</th>
 							<th>Fecha</th>
 							<th>Observación</th>
 						</tr>
@@ -741,6 +741,7 @@ $(document).ready(function() {
 		var horas_realizadas=$(this).children('td:nth-child(4)').text();
 		$(".loader").show();
 		$("#pagos_tabla").children("tbody").text("");
+		$("#horas_tabla").children("tbody").text("");
 		clearModal();
 
 		jQuery.ajax({
@@ -818,6 +819,11 @@ $(document).ready(function() {
 				$.each(obj.data.pagos, function( index, value ){
 					var str = "<tr><td>"+value.periodo+"</td><td>"+value.fecha+"</td><td>"+value.importe+"</td></tr>";
 					$("#pagos_tabla").children("tbody").append(str);
+				});
+
+				$.each(obj.data.horas, function( index, value ){
+					var str = "<tr><td>"+value.evento+"</td><td>"+value.horas+"</td><td>"+value.fecha+"</td><td>"+value.observacion+"</td></tr>";
+					$("#horas_tabla").children("tbody").append(str);
 				});
 
 				if(obj.data.pago!=null){

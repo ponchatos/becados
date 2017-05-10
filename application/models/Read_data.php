@@ -189,8 +189,23 @@ public function get_becado_info($id_becado){
 		if($pagos_realizados!=null){
 			$return['pagos']=$pagos_realizados;
 		}
-		return $return;
 
+		$id_periodo = $this->periodo_actual_id();
+		$this->db->where('id_becado',$id_becado);
+		$this->db->where('id_periodo',$id_periodo);
+		$horas_periodo = $this->db->get('horas');
+		if($horas_periodo->num_rows()>0){
+			$return['horas']=array();
+			foreach ($horas_periodo->result() as $row) {
+				$return['horas'][]=array(
+					'evento'=>$row->evento,
+					'horas'=>$row->hora,
+					'fecha'=>$row->fecha,
+					'observacion'=>$row->observacion
+				);
+			}
+		}
+		return $return;
 	}else{
 		return FALSE;
 	}
