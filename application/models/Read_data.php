@@ -208,6 +208,26 @@ public function get_is_user_pago_realizado($id_becado){
 	}
 }
 
+public function get_user_pago_importe($id_becado){
+	$id_periodo = $this->periodo_actual_id();
+
+	$this->db->select('nivel_educativo');
+	$this->db->where('id_becado',$id_becado);
+	$becado = $this->db->get('vista_datos_escolares');
+	if($becado->num_rows()>0){
+		$nivel_educativo=$becado->row(0)->nivel_educativo;
+		$this->db->where('nombre',$nivel_educativo);
+		$niveles = $this->db->get('nivel');
+		if($niveles->num_rows()>0){
+			return $niveles->row(0)->importe;
+		}else{
+			return FALSE;
+		}
+	}else{
+		return FALSE;
+	}
+}
+
 public function get_user_pagos_realizados($id_becado){
 	$this->db->where('id_becado',$id_becado);
 	$pagos_query=$this->db->get('vista_pagos');

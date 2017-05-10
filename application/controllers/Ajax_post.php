@@ -74,7 +74,7 @@ public function update_pago_realizado(){
 				$id_becado = $this->input->post('id_becado');
 				$id_periodo = $this->read_data->periodo_actual_id();
 				$fecha = date('Y-m-d');
-				$importe = 1000;
+				$importe = $this->read_data->get_user_pago_importe($id_becado);
 
 				$data=array(
 					'id_becado'=>$id_becado,
