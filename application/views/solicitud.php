@@ -2,6 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <link href="<?php echo base_url();?>css/w3.css" rel='stylesheet' type='text/css' />
     <link href="<?php echo base_url();?>css/styles.css" rel='stylesheet' type='text/css' />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
@@ -20,6 +21,17 @@
     </div>
     <p>FAVOR DE LLENAR TODOS LOS CAMPOS</p>
     <p><?php echo validation_errors(); ?></p>
+    <div id="div_message" class="w3-container w3-red w3-card-8">
+    	<?php 
+	    	if(isset($error_message)){
+	    	echo '</br>
+				<span onclick="this.parentElement.style.display=\'none\'" class="w3-closebtn">&times;</span>
+				<div id="message">'.$error_message.'</div>
+				</br>';
+			}
+		?>
+	</div>
+
   
   <br>
 	<form id="form" method="post" action="<?php echo base_url();?>solicitud/registrar_solicitud">

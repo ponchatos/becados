@@ -113,6 +113,7 @@ public function registrar_solicitud($data){
 	}
 
 	$ins=array(
+		'fec_solicitud'=>date('d-m-Y'),
 		'id_dpersonales'=>$id_datos_personales,
 		'id_dfamiliares'=>$id_datos_familiares,
 		'id_descolares'=>$id_datos_escolares,
@@ -121,7 +122,8 @@ public function registrar_solicitud($data){
 	$this->db->insert('solicitud',$ins);
 	if($this->db->affected_rows()>0){
 		$this->db->trans_commit();
-		return TRUE;
+
+		return $this->db->insert_id();
 	}else{
 		$this->db->trans_rollback();
 		return FALSE;

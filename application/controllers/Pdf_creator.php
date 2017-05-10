@@ -13,15 +13,21 @@ public function __construct(){
     $this->load->library('form_validation');
 
 }
+      public function testing(){
+            $this->__pdf_solicitud(17);
+      }
 
+      public function index(){
+            $this->form_validation->set_rules('id_solicitud', 'Solicitud', 'trim|required|xss_clean|numeric');
+            if ( ( $this->form_validation->run() == FALSE ) && ( $this->input->get('id_solicitud') == null )) {
+                  echo "No se ha recibido petición de Solicitud";
+            }else{
+                  $id_solicitud = ( $this->input->get('id_solicitud')==null ? $this->input->post('id_solicitud') : $this->input->get('id_solicitud') );
+                  $this->__pdf_solicitud($id_solicitud);
+            }
+      }
 
-    public function index(){
-        $this->form_validation->set_rules('id_solicitud', 'Solicitud', 'trim|required|xss_clean|numeric');
-        if ( ( $this->form_validation->run() == FALSE ) && ( $this->input->get('id_solicitud') == null )) {
-            echo "No se ha recibido petición de Solicitud";
-        }else{
-            $id_solicitud = ( $this->input->get('id_solicitud')==null ? $this->input->post('id_solicitud') : $this->input->get('id_solicitud') );
-            
+    public function __pdf_solicitud($id_solicitud){
             $this->load->model('read_data');
             $query = $this->read_data->get_solicitud_info($id_solicitud);
 
@@ -330,7 +336,6 @@ public function __construct(){
             
             $salida = 'Solicitud.pdf';
             $pdf->Output($salida, 'I');   
-        }
     }
 
 public function lista_pagos(){
